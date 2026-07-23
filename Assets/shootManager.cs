@@ -1,16 +1,52 @@
+using System;
+using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class shootManager : MonoBehaviour
+public class ShootManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameManagerMono gameManager;
+    [SerializeField] private KeyEnum key;
+
+    private bool moving;
+
+    public void Start()
     {
-        
+        gameManager.GunBattleGo += OnGunBattleGo;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnGunBattleGo()
     {
-        
+
     }
+
+    private void Update()
+    {
+        if (key == KeyEnum.AKey)
+        {
+            if (Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
+            {
+                Shoot();
+            }
+
+        }
+
+        if (key == KeyEnum.LKey)
+        {
+            if (Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
+            {
+                Shoot();
+            }
+        }
+    }
+
+    public void Shoot()
+    {
+
+    }
+}
+
+public enum KeyEnum
+{
+    AKey, LKey
 }
