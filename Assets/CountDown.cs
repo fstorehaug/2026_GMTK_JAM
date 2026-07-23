@@ -7,7 +7,7 @@ public class CountDown : MonoBehaviour
     [SerializeField] public float startTime = 120f;
     [HideInInspector] public float timeRemaining;
 
-    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] public TextMeshProUGUI timeText;
 
     public bool TimerIsRunning
     {
