@@ -3,53 +3,59 @@ using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = System.Random;
+using TMPro;
 
 public class ShootManager : MonoBehaviour
 {
-    [SerializeField] private GameManagerMono gameManager;
+    [SerializeField] private GameManagerMono _gameManager;
     [SerializeField] private float speedMod = 1;
 
-    [SerializeField] private Transform leftPlayer;
-    [SerializeField] private Transform rightPlayer;
+    [SerializeField] private Transform _leftPlayer;
+    [SerializeField] private Transform _rightPlayer;
+    
+    [SerializeField] private TextMeshProUGUI _leftTimeText;
+    [SerializeField] private TextMeshProUGUI _rightTimeText;
 
-    [SerializeField] private GameObject ShootPlane;
-    [SerializeField] private CountDown countDown;
+    [SerializeField] private GameObject _shootPlane;
+    [SerializeField] private CountDown _countDown;
 
 
     private bool _moving = false;
-    private float linarScaling = 0.206f;
+    // For moving up the slope at an angle.
+    private float _linearScaling = 0.206f;
 
-    public float startTime = 0;
-    public float shootTime = 0;
+    public float StartTime { get; private set; }
+    public float WinningShootTime { get; private set; }
+    public float ShootTimeLeft { get; private set; }
+    public float ShootTimeRight { get; private set; }
 
-    private bool hasShot = false;
+    private bool _leftHasShot = false;
+    private bool _rightHasShot = false;
 
     public void Start()
     {
-        gameManager.GunBattleGo += OnGunBattleGo;
+        _gameManager.GunBattleGo += OnGunBattleGo;
+        _leftTimeText.gameObject.SetActive(false);
+        _rightTimeText.gameObject.SetActive(false);
     }
 
     public void OnGunBattleGo()
     {
-        startTime = Time.time;
+        StartTime = Time.time;
         _moving = true;
-        TurnAround(leftPlayer);
-        TurnAround(rightPlayer);
+        TurnAround(_leftPlayer);
+        TurnAround(_rightPlayer);
     }
 
     private void Update()
     {
-
-        if (hasShot == true)
-            return;
-
-        if (Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
+        if (!_leftHasShot && Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
         {
             ShootLeft();
             _moving = false;
         }
   
-        if (Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
+        if (!_rightHasShot && Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
         {
             ShootRight();
             _moving = false;
@@ -63,30 +69,39 @@ public class ShootManager : MonoBehaviour
 
     private void DoMove(float deltaTime)
     {
-        leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod * -1 ;
-        rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod;
+        _leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod * -1 ;
+        _rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod;
         
-        leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* linarScaling* speedMod;
-        rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* linarScaling* speedMod;
+        _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* speedMod;
+        _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* speedMod;
     }
 
     private void ShootRight()
     {
-        TurnAround(rightPlayer);
-        ShootPlane.SetActive(true);
-        shootTime = Time.time;
-        countDown.timeText.gameObject.SetActive(true);
-        countDown.TimerIsRunning = false;
-        hasShot = true;
+        TurnAround(_rightPlayer);
+        _shootPlane.SetActive(true);
+        _countDown.timeText.gameObject.SetActive(true);
+        _countDown.TimerIsRunning = false;
+
+        ShootTimeRight = Time.time - StartTime;
+        _rightTimeText.gameObject.SetActive(true);
+        _rightTimeText.text = _countDown.FormatTime(ShootTimeRight);
+        if (WinningShootTime == 0) WinningShootTime = ShootTimeRight;
+        _rightHasShot = true;
     }
+
     public void ShootLeft()
     {
-        hasShot = true;
-        TurnAround(leftPlayer);
-        ShootPlane.SetActive(true);
-        shootTime = Time.time;
-        countDown.timeText.gameObject.SetActive(true);
-        countDown.TimerIsRunning = false;
+        TurnAround(_leftPlayer);
+        _shootPlane.SetActive(true);
+        _countDown.timeText.gameObject.SetActive(true);
+        _countDown.TimerIsRunning = false;
+
+        ShootTimeLeft = Time.time - StartTime;
+        _leftTimeText.gameObject.SetActive(true);
+        _leftTimeText.text = _countDown.FormatTime(ShootTimeLeft);
+        if (WinningShootTime == 0) WinningShootTime = ShootTimeLeft;
+        _leftHasShot = true;
     }
 
     private void TurnAround(Transform shooterTransform)
@@ -95,9 +110,4 @@ public class ShootManager : MonoBehaviour
         temp.x = -temp.x;
         shooterTransform.localScale = temp;
     }
-}
-
-public enum KeyEnum
-{
-    AKey, LKey
 }

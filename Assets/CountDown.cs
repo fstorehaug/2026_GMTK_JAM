@@ -24,34 +24,17 @@ public class CountDown : MonoBehaviour
     {
         if (TimerIsRunning)
         {
-            if (timeRemaining > 0)
-            {
-                timeRemaining -= Time.deltaTime;
-                DisplayTime(timeRemaining);
-            }
-            else
-            {
-                timeRemaining = 0;
-                TimerIsRunning = false;
-                DisplayTime(timeRemaining);
-            }
+            timeRemaining -= Time.deltaTime;
+            timeText.text = FormatTime(timeRemaining);
         }
     }
 
-    private void DisplayTime(float timeToDisplay)
+    public string FormatTime(float timeToDisplay)
     {
-        if (timeToDisplay < 0) timeToDisplay = 0;
+        TimeSpan ts = TimeSpan.FromSeconds(timeToDisplay);
+        string minus = timeToDisplay < 0 ? "-" : "";
 
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        float milliseconds = Mathf.FloorToInt((timeToDisplay % 1) * 100);
-        float microFractions = Mathf.FloorToInt((timeToDisplay * 10000) % 100);
-
-        timeText.text = string.Format("{0:00}:{1:00}:{2:00}:{3:00}",
-            minutes,
-            seconds,
-            milliseconds,
-            microFractions);
+        return "<mspace=0.58em>" + minus + ts.ToString("mm\\:ss\\:fff");
     }
 
     public float ExponentialScale()
@@ -61,6 +44,4 @@ public class CountDown : MonoBehaviour
 
         return Mathf.Lerp(0, 1, exponentialTime);
     }
-
-
 }
