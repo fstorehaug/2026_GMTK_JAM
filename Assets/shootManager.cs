@@ -31,6 +31,7 @@ public class ShootManager : MonoBehaviour
     private Material _rightPlayerShootLineMat;
     private FireProjectile _leftPlayerFireProjectile;
     private FireProjectile _rightPlayerFireProjectile;
+    [SerializeField] private AudioManager MyAudioManager;
 
 
 
@@ -59,7 +60,8 @@ public class ShootManager : MonoBehaviour
         _rightPlayerFireProjectile = _rightPlayer.GetComponent<FireProjectile>();
         _leftPlayerShootLineMat = LeftPlayerShootLine.material;
         _rightPlayerShootLineMat = RightPlayerShootLine.material;
-
+        MyAudioManager.playAudio(4);
+        MyAudioManager.fade(4,1,1f);
     }
 
     public void OnGunBattleGo()
@@ -68,6 +70,7 @@ public class ShootManager : MonoBehaviour
         _moving = true;
         TurnAround(_leftPlayer);
         TurnAround(_rightPlayer);
+        MyAudioManager.playAudio(2);
     }
 
     private void Update()
@@ -146,7 +149,9 @@ public class ShootManager : MonoBehaviour
 
     IEnumerator FlashShootVFX(bool left)
     {
-        
+        MyAudioManager.playAudio(0);
+        MyAudioManager.playAudio(2);
+        MyAudioManager.stopAudio(4);
         yield return new WaitForSeconds(0.05f);
         if (left == false)
         {

@@ -205,8 +205,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2870708509710909283}
-  - component: {fileID: 24610386043261248}
   - component: {fileID: 6139739563270322461}
+  - component: {fileID: 1689513226393634043}
   m_Layer: 0
   m_Name: P_snail
   m_TagString: Untagged
@@ -224,7 +224,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4887454318485214221}
@@ -234,7 +234,21 @@ Transform:
   - {fileID: 6845398589274504955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &24610386043261248
+--- !u!114 &6139739563270322461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959296771271356247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f1a9fde867e9f44876d6ac86df0017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
+  projectile: {fileID: 2079639681023958443, guid: 59c113e51ddd2994db02d48e2f9ff7a0, type: 3}
+  speed: 20
+--- !u!95 &1689513226393634043
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -256,20 +270,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6139739563270322461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959296771271356247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f1a9fde867e9f44876d6ac86df0017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
-  projectile: {fileID: 2079639681023958443, guid: 59c113e51ddd2994db02d48e2f9ff7a0, type: 3}
-  speed: 20
 --- !u!1 &2073551142056893709
 GameObject:
   m_ObjectHideFlags: 0
