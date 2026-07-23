@@ -1,12 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 
 public class Board
 {
@@ -22,6 +16,29 @@ public class Board
                 var pos = new TileCoordinate(x, y);
                 _tiles.Add(pos, new Tile(pos));
             }
+        }
+    }
+
+    public void GernrateState()
+    {
+        foreach (var tilesValue in _tiles.Values)
+        {
+            foreach (var tilesValueSubTile in tilesValue.SubTiles)
+            {
+                if (Random.value > .5f)
+                {
+                    tilesValueSubTile.State = TileState.Active;
+                }
+                else
+                {
+                    tilesValueSubTile.State = TileState.Inactive;
+                }
+            }
+        }
+
+        foreach (var subTile in _tiles[new TileCoordinate(1, 1)].SubTiles)
+        {
+            subTile.State = TileState.Empty;
         }
     }
 
@@ -210,7 +227,6 @@ public class BoardValidator
     private static readonly List<int> LargeRocketCenterTop = new List<int>() { 0, 1 };
     private static readonly List<int> LargeRocketCenterBottom = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-
     private static readonly List<int> LargeRocketRightTopInnerEdges = new List<int>() { 6, 2 };
     private static readonly List<int> LargeRocketRightBottomInnerEdges = new List<int>() { 5, 7 };
     private static readonly List<int> LargeRocketLeftBottomInnerEdges = new List<int>() { 3, 5 };
@@ -218,6 +234,25 @@ public class BoardValidator
 
     private static readonly List<int> LargeRocketCenterTopInnerEdges = new List<int>() { 0, 2 };
     private static readonly List<int> LargeRocketCenterBottomOuterEdges = new List<int> { 3, 2, 1, 0, 7, 6 };
+
+    private static readonly List<int> SmallRocketRight = new() { 7, 0, 1 };
+    private static readonly List<int> SmallRocketLeft = new() { 4, 3, 2 };
+
+    private static readonly List<int> SmallRocketCenterTop = new List<int>() { 0, 1 };
+    private static readonly List<int> SmallRocketCenterBottom = new List<int>() { 3, 4, 5, 6 };
+
+    private static readonly List<int> SmallRocketRightInnerEdges = new List<int>() { 6, 2 };
+    private static readonly List<int> SmallRocketLeftInnerEdges = new List<int>() { 1, 4 };
+
+    private static readonly List<int> SmallRocketRightOuterEdges = new List<int>() { 0 };
+    private static readonly List<int> SmallRocketLeftOuterEdges = new List<int>() { 1 };
+
+    private static readonly List<int> SmallRocketCenterTopInnerEdges = new List<int>() { 0, 2 };
+    private static readonly List<int> SmallRocketCenterBottomInnerEdges = new List<int> { 7, 3 };
+
+    private static readonly List<int> SmallRocketCenterBottomOuterEdges = new List<int> { 3, 6};
+
+    //TODO: ADD SHIELDS AND TIMERS
 
     public BoardValidator(Board board)
     {
@@ -227,6 +262,19 @@ public class BoardValidator
     public List<Effect> ValidateBoard()
     {
         var list = new List<Effect>();
+
+        var largeRockets = FindLargeRocketEdge();
+        for (int i = 0; i < largeRockets; i++ )
+        {
+            list.Add(Effect.LargeRocket);
+        }
+
+        var smalRockets = FindSmallRocketEdge();
+        for (int i = 0; i < largeRockets; i++ )
+        {
+            list.Add(Effect.SmallRocket);
+        }
+
         return list;
     }
 
@@ -255,7 +303,21 @@ public class BoardValidator
 
         return true;
     }
+    public bool SubTilesActive(TileCoordinate coordinate, List<int> subTilesIndecies)
+    {
+        return _board.InBounds(coordinate) && subTilesIndecies.All(
+            subTileIndex => _board._tiles[coordinate].SubTiles[subTileIndex].State == TileState.Active
+        );
+    }
+    public void SetEmpty(TileCoordinate coordinate, List<int> subtileIncecies)
+    {
+        foreach (var subTileIndex in subtileIncecies)
+        {
+            _board._tiles[coordinate].SubTiles[subTileIndex].State = TileState.Empty;
+        }
+    }
 
+    //######LARGE ROCKETS#############
 
     public int FindLargeRocketEdge()
     {
@@ -309,72 +371,57 @@ public class BoardValidator
         return rockets;
     }
 
+    //############SMAL ROCKETS################
 
-    //public int FindLargeRocketsFill()
-    //{
-    //    int rockets = 0;
-    //    foreach (var coordinate in _board._tiles.Keys)
-    //    {
-    //        if (!SubTilesActive(coordinate, LargeRocketRight))
-    //        {
-    //            continue;
-    //        }
-
-    //        if (!SubTilesActive(coordinate.Left(), LargeRocketLeft))
-    //        {
-    //            continue;
-    //        }
-
-    //        if (!SubTilesActive(coordinate.Down(), LargeRocketBottomRight))
-    //        {
-    //            continue;
-    //        }
-
-    //        if (!SubTilesActive(coordinate.Down().Left(), LargeRocketBottomLeft))
-    //        {
-    //            continue;
-    //        }
-
-    //        rockets++;
-    //        SetEmpty(coordinate, LargeRocketRight);
-    //        SetEmpty(coordinate.Left(), LargeRocketLeft);
-    //        SetEmpty(coordinate.Down(), LargeRocketBottomRight);
-    //        SetEmpty(coordinate.Down().Left(), LargeRocketBottomLeft);
-
-    //        dirtyTiles.Add(coordinate, true);
-    //        dirtyTiles.Add(coordinate.Left(), true);
-    //        dirtyTiles.Add(coordinate.Down(), true);
-    //        dirtyTiles.Add(coordinate.Down().Left(), true);
-    //    }
-
-    //    return rockets;
-    //}
-
-    //private static readonly List<int> SmallRocketRight = new() { 0};
-    //private static readonly List<int> SmallRocketLeft = new() {  };
-    //private static readonly List<int> SmallRocketBottomLeft = new() { 5, 4 };
-    //private static readonly List<int> SmallRocketBottomRight = new() { 7, 6 };
-
-    //public int FindSmallRockets()
-    //{
-
-    //}
-
-    public bool SubTilesActive(TileCoordinate coordinate, List<int> subTilesIndecies)
+    public int FindSmallRocketEdge()
     {
-        return _board.InBounds(coordinate) && subTilesIndecies.All(
-            subTileIndex => _board._tiles[coordinate].SubTiles[subTileIndex].State == TileState.Active
-            );
-    }
+        int rockets = 0;
 
-    public void SetEmpty(TileCoordinate coordinate, List<int> subtileIncecies)
-    {
-        foreach (var subTileIndex in subtileIncecies)
+        foreach (var coordinate in _board._tiles.Keys)
         {
-            _board._tiles[coordinate].SubTiles[subTileIndex].State = TileState.Empty;
-        }
-    }
+            if (_board._tiles[coordinate].SubTiles[0].State == TileState.Active)
+            {
+                if (!InnerEdges(coordinate, SmallRocketCenterTopInnerEdges))
+                    continue;
+                if (!InnerEdges(coordinate, SmallRocketCenterBottomInnerEdges))
+                    continue;
+                if (!OuterEdges(coordinate.Down(), SmallRocketCenterBottomOuterEdges))
+                    continue;
 
+                rockets++;
+
+                SetEmpty(coordinate, SmallRocketCenterTop);
+                SetEmpty(coordinate, SmallRocketCenterBottom);
+
+                dirtyTiles.Add(coordinate, true);
+                dirtyTiles.Add(coordinate.Down(), true);
+            }
+        }
+
+        foreach (var coordinate in _board._tiles.Keys)
+        {
+            if (_board._tiles[coordinate].SubTiles[7].State == TileState.Active)
+            {
+                if (!InnerEdges(coordinate, SmallRocketRightInnerEdges))
+                    continue;
+                if (!InnerEdges(coordinate, SmallRocketRightOuterEdges))
+                    continue;
+                if (!InnerEdges(coordinate.Left(), SmallRocketLeftInnerEdges))
+                    continue;
+                if (!InnerEdges(coordinate.Left(), SmallRocketLeftOuterEdges))
+                    continue;
+
+                rockets++;
+                SetEmpty(coordinate, SmallRocketRight);
+                SetEmpty(coordinate.Left(), SmallRocketLeft);
+
+                dirtyTiles.Add(coordinate, true);
+                dirtyTiles.Add(coordinate.Left(), true);
+            }
+        }
+
+        return rockets;
+    }
 
 }
 
