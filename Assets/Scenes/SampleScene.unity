@@ -4128,15 +4128,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cee052df5db72044afdb0a7be4c704e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::shootManager
-  gameManager: {fileID: 1807569258}
+  _gameManager: {fileID: 1807569258}
   speedMod: 0.5
-  leftPlayer: {fileID: 700428779}
-  rightPlayer: {fileID: 1045528101}
-  leftTimeText: {fileID: 969807499}
-  rightTimeText: {fileID: 429025846}
-  ShootPlane: {fileID: 829626899}
-  countDown: {fileID: 1807569261}
-  startTime: 0
+  _leftPlayer: {fileID: 700428779}
+  _rightPlayer: {fileID: 1045528101}
+  _leftTimeText: {fileID: 969807499}
+  _rightTimeText: {fileID: 429025846}
+  _shootPlane: {fileID: 829626899}
+  _countDown: {fileID: 1807569261}
 --- !u!114 &1807569261
 MonoBehaviour:
   m_ObjectHideFlags: 0
