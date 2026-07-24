@@ -13,13 +13,16 @@ public class SnailPlayer : MonoBehaviour
     public GameObject PlayerShootLine;
     public GameObject PlayerSplat;
     public SkinnedMeshRenderer BodyMaterial;
-    public SkinnedMeshRenderer ShellMaterial;
-    public GameObject bandaids;
+    public MeshRenderer ShellMaterial;
+    public GameObject bandaid1;
+    public GameObject bandaid2;
     private Transform _playerTransform;
 
     public Texture HealthyTexture_body;
     public Texture DamagedTexture1_body;
-  
+    public Texture HealthyTexture_shell;
+    public Texture DamagedTexture1_shell;
+
 
     [SerializeField] private AudioManager MyAudioManager;
 
@@ -70,9 +73,15 @@ public class SnailPlayer : MonoBehaviour
         {
             case 0:
                 BodyMaterial.material.SetTexture("_BaseMap", HealthyTexture_body);
+                ShellMaterial.material.SetTexture("_BaseMap", HealthyTexture_shell);
+                bandaid1.SetActive(false);
+                bandaid2.SetActive(false);
                 break;
             case 1:
                 BodyMaterial.material.SetTexture("_BaseMap", DamagedTexture1_body);
+                ShellMaterial.material.SetTexture("_BaseMap", DamagedTexture1_shell);
+                bandaid1.SetActive(true);
+                bandaid2.SetActive(true);
                 break;
         }
     }
