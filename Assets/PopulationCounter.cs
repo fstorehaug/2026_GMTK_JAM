@@ -16,13 +16,16 @@ public class PopulationCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI populationText;
     [SerializeField] private TextMeshProUGUI savedText;
 
-    public bool PayToRotate()
+    public void PayToRotate()
+    {
+        Population -= costToTurn;
+        populationText.text = Population.ToString();
+    }
+
+    public bool CanPayToRotate()
     {
         if (costToTurn > Population)
             return false;
-
-        Population -= costToTurn;
-        populationText.text = Population.ToString();
 
         return true;
     }

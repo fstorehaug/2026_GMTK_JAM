@@ -9,18 +9,18 @@ public class TriangleVisualizer : MonoBehaviour
     [SerializeField] private Material InactiveMaterial;
     [SerializeField] private MeshRenderer _meshRenderer;
 
-    private SubTile _subTile;
+    public SubTile SubTile { get; private set; }
     public TileCoordinate Coordinate { get; private set; } //TODO: duplication of state!!
 
     public void Init(SubTile subTile, TileCoordinate coordinate)
     {
-        _subTile = subTile;
+        SubTile = subTile;
         Coordinate = coordinate;
     }
 
     public void UpdateState()
     {
-        switch (_subTile.State)
+        switch (SubTile.State)
         {
             case TileState.Active:
                 _meshRenderer.material = ActiveMaterial;

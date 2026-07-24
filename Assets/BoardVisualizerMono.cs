@@ -65,10 +65,15 @@ public class BoardVisualizerMono : MonoBehaviour
             {
                 if (hit.collider.TryGetComponent<TriangleVisualizer>(out var tileComp))
                 {
-                    if (populationCounter.PayToRotate())
+                    if (populationCounter.CanPayToRotate())
                     {
-                        RotateTileRightCounterClockWise(tileComp.Coordinate);
-                        UpdateVisualState();
+                        //RotateTileRightClockWise(tileComp.Coordinate);
+                        if (RotateSubTileRightClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
+                        {
+                            populationCounter.PayToRotate();
+                            UpdateVisualState();
+
+                        }
                         DoScoring();
                     }
                 }
@@ -84,10 +89,16 @@ public class BoardVisualizerMono : MonoBehaviour
             {
                 if (hit.collider.TryGetComponent<TriangleVisualizer>(out var tileComp))
                 {
-                    if (populationCounter.PayToRotate())
+                    if (populationCounter.CanPayToRotate())
                     {
-                        RotateTileLeftClockWise(tileComp.Coordinate);
-                        UpdateVisualState();
+                        //RotateTileLeftCounterClockWise(tileComp.Coordinate);
+                        if (RotateSubTileLeftCounterClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
+                        {
+                            populationCounter.PayToRotate();
+                            UpdateVisualState();
+
+                        }
+                        ;
                         DoScoring();
                     }
                 }
@@ -119,15 +130,35 @@ public class BoardVisualizerMono : MonoBehaviour
         }
     }
 
-    public void RotateTileRightCounterClockWise(TileCoordinate coordinate)
+    public void RotateTileRightClockWise(TileCoordinate coordinate)
     {
         _board.RotateTileRight(coordinate);
         UpdateVisualState();
     }
-    public void RotateTileLeftClockWise(TileCoordinate coordinate)
+    public void RotateTileLeftCounterClockWise(TileCoordinate coordinate)
     {
         _board.RotateTileLeft(coordinate);
         UpdateVisualState();
+    }
+
+    public bool RotateSubTileLeftCounterClockWise(TileCoordinate coordinate, int index)
+    {
+        if (_board.RotateSubTileLeftCounterClockwise(coordinate, index))
+        {
+            UpdateVisualState();
+            return true;
+        }
+
+        return false;
+    }
+    public bool RotateSubTileRightClockWise(TileCoordinate coordinate, int index)
+    {
+        if (_board.RotateSubTileRightClockwise(coordinate, index))
+        {
+            UpdateVisualState();
+            return true;
+        }
+        return false;
     }
 
 public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordinate)

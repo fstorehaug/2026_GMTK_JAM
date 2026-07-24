@@ -57,6 +57,77 @@ public class Board
         (_tiles[coordinateOne].Empty, _tiles[coordinateTwo].Empty) = (_tiles[coordinateTwo].Empty, _tiles[coordinateOne].Empty);
     }
 
+    public bool RotateSubTileLeftCounterClockwise(TileCoordinate coordinate, int subTileIndex)
+    {
+        if (_tiles[coordinate].Empty)
+            return false;
+
+        if (subTileIndex == 0 || subTileIndex == 1)
+        {
+            if (!InBounds(coordinate.Down()))
+            {
+                return false;
+            }
+
+            if (_tiles[coordinate.Down()].Empty)
+            {
+                return false;
+            }
+
+            (_tiles[coordinate].SubTiles[0].State, _tiles[coordinate].SubTiles[1].State, _tiles[coordinate.Down()].SubTiles[4].State,
+                    _tiles[coordinate.Down()].SubTiles[5].State) =
+                (_tiles[coordinate].SubTiles[1].State, _tiles[coordinate.Down()].SubTiles[4].State, _tiles[coordinate.Down()].SubTiles[5].State,
+                    _tiles[coordinate].SubTiles[0].State);
+            return true;
+        }
+        if (subTileIndex == 2 || subTileIndex == 3)
+        {
+            if ( !InBounds(coordinate.Right()))
+                return false;
+
+            if (_tiles[coordinate.Right()].Empty)
+                return false;
+            
+
+            (_tiles[coordinate].SubTiles[2].State, _tiles[coordinate].SubTiles[3].State, _tiles[coordinate.Right()].SubTiles[6].State,
+                    _tiles[coordinate.Right()].SubTiles[7].State) =
+                (_tiles[coordinate].SubTiles[3].State, _tiles[coordinate.Right()].SubTiles[6].State, _tiles[coordinate.Right()].SubTiles[7].State,
+                    _tiles[coordinate].SubTiles[2].State);
+            return true;
+        }
+        if (subTileIndex == 4 || subTileIndex == 5)
+        {
+            if ( !InBounds(coordinate.Up()))
+                return false;
+
+            return RotateSubTileLeftCounterClockwise(coordinate.Up(), 0);
+        }
+
+        if (subTileIndex == 6 || subTileIndex == 7)
+        {
+
+            if ( !InBounds(coordinate.Left()))
+                return false;
+
+            return RotateSubTileLeftCounterClockwise(coordinate.Left(), 2);
+        }
+
+        return false;
+    }
+
+    public bool RotateSubTileRightClockwise(TileCoordinate coordinate, int subTileIndex)
+    {
+        for (int i = 0; i< 3; i++)
+        {
+            if (!RotateSubTileLeftCounterClockwise(coordinate, subTileIndex))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void RotateTileLeft(TileCoordinate coordinate)
     {
         var tile = _tiles[coordinate];
