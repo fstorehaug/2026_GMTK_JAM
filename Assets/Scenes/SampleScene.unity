@@ -3968,6 +3968,48 @@ MonoBehaviour:
   _rightTimeText: {fileID: 429025846}
   _shootPlane: {fileID: 829626899}
   _countDown: {fileID: 1807569261}
+  _scoreCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.65
+      value: -0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.049793262
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 8.446428
+      outSlope: 8.446428
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.8904491
+    - serializedVersion: 3
+      time: 1.02
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   LeftPlayerShootVFX: {fileID: 1121241111}
   RightPlayerShootVFX: {fileID: 154974456}
   LeftPlayerShootLine: {fileID: 2137574440}

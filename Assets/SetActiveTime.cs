@@ -16,9 +16,9 @@ public class SetActiveTime : MonoBehaviour
         if (animationdone)
             return;
 
-        if (countDown.timeRemaining < activeAt)
+        if (countDown.TimeRemaining < activeAt)
         {
-            if (countDown.timeRemaining < deactivateAt)
+            if (countDown.TimeRemaining < deactivateAt)
             {
                 gm.SetActive(false);
                 animationdone = false;

@@ -4,28 +4,28 @@ using TMPro;
 
 public class CountDown : MonoBehaviour
 {
-    [SerializeField] public float startTime = 120f;
-    [HideInInspector] public float timeRemaining;
+    [SerializeField] public float CountdownTime = 10f;
+    public float TimeRemaining { get; private set; }
+    public float CurrentTime { get => CountdownTime - TimeRemaining; }
 
     [SerializeField] public TextMeshProUGUI timeText;
 
-    public bool TimerIsRunning
-    {
-        get;
-        set;
-    } = false;
+    public bool TimerIsRunning { get; set; } = false;
+    public bool StopTimerVisually { get; set; }
 
     private void Awake()
     {
-        timeRemaining = startTime;
+        TimeRemaining = CountdownTime;
     }
 
     private void Update()
     {
         if (TimerIsRunning)
         {
-            timeRemaining -= Time.deltaTime;
-            timeText.text = FormatTime(timeRemaining);
+            TimeRemaining -= Time.deltaTime;
+
+            if (!StopTimerVisually)
+                timeText.text = FormatTime(TimeRemaining);
         }
     }
 
@@ -39,7 +39,7 @@ public class CountDown : MonoBehaviour
 
     public float ExponentialScale()
     {
-        float t = 1.0f - (timeRemaining / startTime);
+        float t = 1.0f - (TimeRemaining / CountdownTime);
         float exponentialTime = t * t;
 
         return Mathf.Lerp(0, 1, exponentialTime);

@@ -9,7 +9,8 @@ using System.Collections;
 public class ShootManager : MonoBehaviour
 {
     [SerializeField] private GameManagerMono _gameManager;
-    [SerializeField] private float speedMod = 1;
+    [SerializeField] private float _speedMod = 0.5f;
+    [SerializeField] private float _maxScore = 100;
 
     [SerializeField] private Transform _leftPlayer;
     [SerializeField] private Transform _rightPlayer;
@@ -20,7 +21,8 @@ public class ShootManager : MonoBehaviour
     [SerializeField] private GameObject _shootPlane;
     [SerializeField] private CountDown _countDown;
 
-
+    [SerializeField] private AnimationCurve _scoreCurve;
+    
     private Animator _leftPlayerAnimator;
     private Animator _rightPlayerAnimator;
     public MeshRenderer LeftPlayerShootVFX;
@@ -42,6 +44,8 @@ public class ShootManager : MonoBehaviour
     public float WinningShootTime { get; private set; }
     public float ShootTimeLeft { get; private set; }
     public float ShootTimeRight { get; private set; }
+    public float ScoreLeft { get; private set; }
+    public float ScoreRight { get; private set; }
 
     private bool _leftHasShot = false;
     private bool _rightHasShot = false;
@@ -88,15 +92,20 @@ public class ShootManager : MonoBehaviour
         {
             DoMove(Time.deltaTime);
         }
+
+        if (WinningShootTime != 0 && WinningShootTime + 1 < _countDown.CurrentTime)
+        {
+            // Debug.Log("Round over");
+        }
     }
 
     private void DoMove(float deltaTime)
     {
-        _leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod * -1 ;
-        _rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * speedMod;
+        _leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod * -1 ;
+        _rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod;
         
-        _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* speedMod;
-        _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* speedMod;
+        _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
+        _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
 
         _leftPlayerAnimator.SetInteger("state", 1);
         _rightPlayerAnimator.SetInteger("state", 1);
@@ -108,20 +117,25 @@ public class ShootManager : MonoBehaviour
         TurnAround(_rightPlayer);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
-        _countDown.TimerIsRunning = false;
 
-        ShootTimeRight = Time.time - StartTime;
+        _rightHasShot = true;
+        ShootTimeRight = _countDown.CurrentTime;
         _rightTimeText.gameObject.SetActive(true);
         _rightTimeText.text = _countDown.FormatTime(ShootTimeRight);
-        if (WinningShootTime == 0) WinningShootTime = ShootTimeRight;
-        _rightHasShot = true;
+
+        if (WinningShootTime == 0)
+        {
+            _countDown.StopTimerVisually = true;
+            WinningShootTime = ShootTimeRight;
+            ScoreRight = _scoreCurve.Evaluate(ShootTimeLeft / _countDown.CountdownTime) * 100;
+            Debug.Log("Right got " + ScoreRight + " points!");
+        }
 
         _rightPlayerAnimator.SetInteger("state", 2);
         _leftPlayerAnimator.SetInteger("state", 3);
 
         _rightPlayerFireProjectile.shoot();
         StartCoroutine(FlashShootVFX(false));
-        
     }
 
     public void ShootLeft()
@@ -129,13 +143,20 @@ public class ShootManager : MonoBehaviour
         TurnAround(_leftPlayer);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
-        _countDown.TimerIsRunning = false;
 
-        ShootTimeLeft = Time.time - StartTime;
+        _leftHasShot = true;
+        ShootTimeLeft = _countDown.CurrentTime;
         _leftTimeText.gameObject.SetActive(true);
         _leftTimeText.text = _countDown.FormatTime(ShootTimeLeft);
-        if (WinningShootTime == 0) WinningShootTime = ShootTimeLeft;
-        _leftHasShot = true;
+
+        if (WinningShootTime == 0)
+        {
+            _countDown.StopTimerVisually = true;
+            WinningShootTime = ShootTimeLeft;
+            ScoreLeft = _scoreCurve.Evaluate(ShootTimeLeft / _countDown.CountdownTime) * 100;
+            Debug.Log("Left got " + ScoreLeft + " points!");
+        }
+
 
         _leftPlayerAnimator.SetInteger("state", 2);
         _rightPlayerAnimator.SetInteger("state", 3);
