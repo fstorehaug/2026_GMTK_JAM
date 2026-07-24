@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -67,7 +68,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnOnlineDuelPressed()
     {
-        RegisterPlayerWithDb playerDB = new();
+        RegisterPlayerWithDb playerDB = ServiceRegistration.ServiceProvider.GetRequiredService<RegisterPlayerWithDb>();
         playerDB.RegisterPlayer(_localSnailName);
 
         playerDB.registrationFail += OnRegisterFail;

@@ -1,6 +1,7 @@
 using System;
 using SpacetimeDB;
 using SpacetimeDB.Types;
+using UnityEngine;
 
 
 public class RegisterPlayerWithDb
@@ -40,16 +41,24 @@ public class ConnectionService
     public  Identity Identity { get; private set; }
     public  string Token { get; private set; }
 
-    public ConnectionService(Action callback)
+    private DbConnection _con;
+    public ConnectionService()
     {
-        DbConnection.Builder().WithUri(host)
+      
+    }
+
+    public void InitiateConnection(Action callback)
+    {
+        Connection = DbConnection.Builder().WithUri(host)
             .WithDatabaseName(dbName)
+            .OnConnectError(x => Debug.Log($"failed to connect: {x.Message}"))
+            .OnDisconnect((x, y) => Debug.Log($"Disconnected: {y?.Message}"))
             .OnConnect((conn, identity, token) =>
             {
-                Connection = conn;
+                _con = conn;
                 Identity = identity;
                 Token = token;
-
+                Debug.Log("Connected");
                 callback?.Invoke();
             }).Build();
     }
