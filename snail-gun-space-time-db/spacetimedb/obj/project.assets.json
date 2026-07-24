@@ -184,31 +184,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fstor\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\elias\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fstor\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\StdbModule.csproj",
+      "projectUniqueName": "C:\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\StdbModule.csproj",
       "projectName": "StdbModule",
-      "projectPath": "C:\\Users\\fstor\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\StdbModule.csproj",
-      "packagesPath": "C:\\Users\\fstor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fstor\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\obj\\",
+      "projectPath": "C:\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\StdbModule.csproj",
+      "packagesPath": "C:\\Users\\elias\\.nuget\\packages\\",
+      "outputPath": "C:\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
+      "crossTargeting": true,
       "configFilePaths": [
-        "C:\\Users\\fstor\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\elias\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

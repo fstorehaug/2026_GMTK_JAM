@@ -42,7 +42,7 @@ public static class ConnectionService
     static ConnectionService()
     {
          DbConnection.Builder().WithUri(host)
-            .WithDatabaseName("your_database_name")
+            .WithDatabaseName(dbName)
             .OnConnect((conn, identity, token) =>
             {
                 Connection = conn;
