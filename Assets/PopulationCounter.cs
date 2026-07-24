@@ -71,6 +71,7 @@ public class PopulationCounter : MonoBehaviour
         Population -= toSave;
         saved += toSave;
         populationText.text = Population.ToString();
+        savedText.text = saved.ToString();
     }
 
 

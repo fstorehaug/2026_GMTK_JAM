@@ -280,21 +280,12 @@ public class BoardValidator
 
     public List<Structure> ValidateBoard()
     {
-        var list = new List<Structure>();
+        var structures = new List<Structure>();
 
-        var largeRockets = FindLargeRocketsFill();
-        for (int i = 0; i < largeRockets; i++ )
-        {
-            list.Add(Effect.LargeRocket);
-        }
+        structures.AddRange( FindLargeRocketsFill());
+        structures.AddRange(FindSmallRocketsFill()); 
 
-        var smalRockets = FindSmallRocketsFill();
-        for (int i = 0; i < largeRockets; i++ )
-        {
-            list.Add(Effect.SmallRocket);
-        }
-
-        return list;
+        return structures;
     }
 
     public bool OuterEdges(TileCoordinate coordinate, List<int> outerEdges)
@@ -557,8 +548,8 @@ public class Structure
         _subTiles = subTiles;
     }
 
-    private List<SubTile> _subTiles;
-    private Effect _effect;
+    public List<SubTile> _subTiles;
+    public Effect _effect;
 }
 
 public enum Effect

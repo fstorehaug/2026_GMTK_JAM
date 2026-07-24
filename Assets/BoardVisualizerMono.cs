@@ -51,7 +51,6 @@ public class BoardVisualizerMono : MonoBehaviour
                             UpdateVisualState();
                             DoScoring();
                         }
-
                     }
                 }
             }
@@ -94,23 +93,29 @@ public class BoardVisualizerMono : MonoBehaviour
                 }
             }
         }
+
+        if (Mouse.current != null && Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            if (populationCounter.PayToRandomizeBoard())
+            {
+                _board.GenerateState();
+                UpdateVisualState();
+                DoScoring();
+            }
+        }
     }
 
     public void DoScoring()
     {
         var list = _boardValidator.ValidateBoard();
+        if (list.Count == 0)
+            return;
 
-        foreach (var effect in list)
-        {
-            populationCounter.SavePeople(effect);
-        }
+        UpdateVisualState();
 
-        foreach (var boardValidatorDirtyTile in _boardValidator.dirtyTiles.Keys)
+        foreach (var structure in list)
         {
-            if (_boardValidator.dirtyTiles[boardValidatorDirtyTile])
-            {
-                _board._tiles[boardValidatorDirtyTile].RandomizeTile();
-            }
+            populationCounter.SavePeople(structure._effect);
         }
     }
 
@@ -126,34 +131,40 @@ public class BoardVisualizerMono : MonoBehaviour
     }
 
 public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordinate)
+{
+    if (_board._tiles[coordinate].Empty)
     {
-        if (_board.InBounds(coordinate.Up()) && _board._tiles[coordinate.Up()].Empty)
-        {
-            swapCoordinate = coordinate.Up();
-            return true;
-        }
-
-        if (_board.InBounds(coordinate.Down()) && _board._tiles[coordinate.Down()].Empty)
-        {
-            swapCoordinate = coordinate.Down();
-            return true;
-        }
-
-        if (_board.InBounds(coordinate.Left()) && _board._tiles[coordinate.Left()].Empty)
-        {
-            swapCoordinate = coordinate.Left();
-            return true;
-        }
-
-        if (_board.InBounds(coordinate.Right()) && _board._tiles[coordinate.Right()].Empty)
-        {
-            swapCoordinate = coordinate.Right();
-            return true;
-        }
-
-        swapCoordinate = new TileCoordinate(-1, -1);
+        swapCoordinate = new TileCoordinate(-10, -10);
         return false;
     }
+
+    if (_board.InBounds(coordinate.Up()) && _board._tiles[coordinate.Up()].Empty)
+    {
+        swapCoordinate = coordinate.Up();
+        return true;
+    }
+
+    if (_board.InBounds(coordinate.Down()) && _board._tiles[coordinate.Down()].Empty)
+    {
+        swapCoordinate = coordinate.Down();
+        return true;
+    }
+
+    if (_board.InBounds(coordinate.Left()) && _board._tiles[coordinate.Left()].Empty)
+    {
+        swapCoordinate = coordinate.Left();
+        return true;
+    }
+
+    if (_board.InBounds(coordinate.Right()) && _board._tiles[coordinate.Right()].Empty)
+    {
+        swapCoordinate = coordinate.Right();
+        return true;
+    }
+
+    swapCoordinate = new TileCoordinate(-10, -10);
+    return false;
+}
 
     public void UpdateVisualState()
     {
