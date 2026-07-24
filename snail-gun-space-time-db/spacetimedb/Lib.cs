@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.Design;
+using System.Reflection.Metadata;
+using System.Security.Cryptography.X509Certificates;
 using SpacetimeDB;
 
 public static partial class Module
@@ -12,116 +16,161 @@ public static partial class Module
         public string SnailName;
     }
 
-    [SpacetimeDB.Table(Accessor = "Tournament", Public = true)]
-    public partial struct Tournament
+    [SpacetimeDB.Table(Accessor = "Winstreak", Public = true)]
+    public partial struct WinStreak
     {
-        [SpacetimeDB.AutoInc]
-        [SpacetimeDB.PrimaryKey]
+        [SpacetimeDB.AutoInc] [SpacetimeDB.PrimaryKey]
         public ulong Id;
 
-        public string TournamentName;
-        public int MaxParticipants;
+        [SpacetimeDB.Index.BTree] public Identity PlayerIdentity;
 
-        [SpacetimeDB.Index.BTree]
-        public int Progress; // 0 - lobby, 1 - started, 2 - ended
-
-        public Identity Winner;
-    }
-
-    [SpacetimeDB.Table(Accessor = "TournamentParticipant", Public = true)]
-    public partial struct TournamentParticipant
-    {
-        [SpacetimeDB.PrimaryKey]
-        public Identity PlayerId;
-
-        [SpacetimeDB.Index.BTree]
-        public ulong TournamentId;
+        public int CurrentWinStreak;
+        public int MaxWinStreak;
     }
 
     [SpacetimeDB.Table(Accessor = "Match", Public = true)]
     public partial struct Match
     {
         [SpacetimeDB.AutoInc]
-        [SpacetimeDB.PrimaryKey]
+        [SpacetimeDB.PrimaryKey] 
         public ulong Id;
 
-        [SpacetimeDB.Index.BTree]
-        public ulong TournamentId;
-        public int Round;
+        public Identity? LeftPlayer;
+        public Identity? RightPlayer;
 
-        public Identity? Player1;
-        public Identity? Player2;
-
-        public float? Player1Time;
-        public float? Player2Time;
-
+        //state 0: MatchMaking, state 1: preapareing, state 2:started, state 3: finished
+        public int State;
         public Identity? Winner;
 
-        public ulong NextMatchId;
+        public float? TimeInMilSecondPlayerLeft;
+        public float? TimeInMilSecondsPlayerRight;
+
+        public bool LeftPlayerReady;
+        public bool RightPlayerReady;
     }
 
-
     [SpacetimeDB.Reducer]
-    public static void JoinOrCreateTournamentLobby(ReducerContext ctx, string preferredName)
+    public static void Shoot(ReducerContext ctx, float timeInMilSeconds)
     {
-        var existingRegistration = ctx.Db.TournamentParticipant.PlayerId.Find(ctx.Sender);
-        if (existingRegistration != null)
+        var match = ctx.Db.Match.Iter().Single(x => x.State == 2 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
+        if (match.LeftPlayer == ctx.Sender)
         {
-            throw new Exception("AlreadyInATournament");
+            match.TimeInMilSecondPlayerLeft = timeInMilSeconds;
+        } 
+
+        if (match.RightPlayer == ctx.Sender)
+        {
+            match.TimeInMilSecondsPlayerRight = timeInMilSeconds;
+        } 
+
+        if (match.TimeInMilSecondsPlayerRight == null || match.TimeInMilSecondPlayerLeft == null)
+            return;
+        
+        match.State = 3;
+        var rightWif = match.TimeInMilSecondsPlayerRight < 10000;
+        var leftWif = match.TimeInMilSecondPlayerLeft < 10000;
+
+        if (rightWif && leftWif)
+        {
+            var winStreakLeft = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.LeftPlayer).Single();
+            winStreakLeft.CurrentWinStreak = 0;
+            ctx.Db.Winstreak.Id.Update(winStreakLeft);
+
+            var winStreakRight = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.RightPlayer).Single();
+            winStreakRight.CurrentWinStreak = 0;
+            ctx.Db.Winstreak.Id.Update(winStreakRight);
+            return;
         }
 
-        Tournament? bestTargetLobby = null;
-        int highestPlayerCountFound = -1;
+        var leftWin = (match.TimeInMilSecondsPlayerRight > match.TimeInMilSecondPlayerLeft) && !leftWif;
 
-        foreach (var lobby in ctx.Db.Tournament.Iter())
+        if (leftWin)
         {
-            if (lobby.Progress == 0)
-            {
-                int currentCount = ctx.Db.TournamentParticipant.Iter()
-                    .Count(p => p.TournamentId == lobby.Id);
+            match.Winner = match.LeftPlayer;
 
-                if (currentCount < lobby.MaxParticipants && currentCount > highestPlayerCountFound)
+            var winStreakLeft = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.LeftPlayer).Single();
+            winStreakLeft.CurrentWinStreak++;
+            if (winStreakLeft.CurrentWinStreak > winStreakLeft.MaxWinStreak)
+            {
+                winStreakLeft.MaxWinStreak = winStreakLeft.CurrentWinStreak;
+            }
+            ctx.Db.Winstreak.Id.Update(winStreakLeft);
+
+            var winStreakRight = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.RightPlayer).Single();
+            winStreakRight.CurrentWinStreak = 0;
+            ctx.Db.Winstreak.Id.Update(winStreakRight);
+
+        }
+        else
+        {
+            match.Winner = match.RightPlayer;
+
+            var winStreakLeft = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.LeftPlayer).Single();
+            winStreakLeft.CurrentWinStreak = 0;
+            ctx.Db.Winstreak.Id.Update(winStreakLeft);
+
+            var winStreakRight = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.RightPlayer).Single();
+            winStreakRight.CurrentWinStreak++;
+            if (winStreakRight.CurrentWinStreak > winStreakRight.MaxWinStreak)
+            {
+                winStreakRight.MaxWinStreak = winStreakRight.CurrentWinStreak;
+            }
+            ctx.Db.Winstreak.Id.Update(winStreakRight);
+        }
+    }
+
+    [SpacetimeDB.Reducer]
+    public static void MatchMaking(ReducerContext ctx)
+    {
+        var openMatches = ctx.Db.Match.Iter().Where(a => a.State == 0);
+
+        if (!openMatches.Any())
+        {
+            ctx.Db.Match.Insert(new Match
+            {
+                LeftPlayer = ctx.Sender,
+                RightPlayer = null, 
+                State = 0
+            });
+            return;
+        }
+
+        foreach (var match in openMatches)
+        {
+            var updatedMatch = match;
+
+            if (!updatedMatch.LeftPlayer.HasValue)
+            {
+                updatedMatch.LeftPlayer = ctx.Sender;
+
+                if (updatedMatch.RightPlayer.HasValue)
                 {
-                    highestPlayerCountFound = currentCount;
-                    bestTargetLobby = lobby;
+                    updatedMatch.State = 1;
                 }
+
+                ctx.Db.Match.Id.Update(updatedMatch);
+                return; 
+            }
+            else if (!updatedMatch.RightPlayer.HasValue)
+            {
+                updatedMatch.RightPlayer = ctx.Sender;
+
+                if (updatedMatch.LeftPlayer.HasValue)
+                {
+                    updatedMatch.State = 1;
+                }
+
+                ctx.Db.Match.Id.Update(updatedMatch);
+                return; 
             }
         }
 
-        if (bestTargetLobby == null)
+        ctx.Db.Match.Insert(new Match
         {
-            var newLobby = new Tournament
-            {
-                TournamentName = string.IsNullOrEmpty(preferredName) ? "SnailGunBulletRound" : preferredName,
-                MaxParticipants = 64,
-                Progress = 0,
-                Winner = null
-            };
-
-            bestTargetLobby = ctx.Db.Tournament.Insert(newLobby);
-        }
-
-        ctx.Db.TournamentParticipant.Insert(new TournamentParticipant
-        {
-            PlayerId = ctx.Sender,
-            TournamentId = bestTargetLobby.Value.Id
+            LeftPlayer = ctx.Sender,
+            RightPlayer = null,
+            State = 0
         });
-
-        int finalCount = ctx.Db.TournamentParticipant.Iter().Count(p => p.TournamentId == bestTargetLobby.Value.Id);
-        if (finalCount >= bestTargetLobby.Value.MaxParticipants)
-        {
-            var activeMatch = bestTargetLobby.Value;
-            activeMatch.Progress = 1; // Transition state from "Lobby" (0) to "Started" (1)
-            ctx.Db.Tournament.Id.Update(activeMatch);
-        }
-    }
-
-
-    [SpacetimeDB.Reducer]
-    public static void CreateTournament(ReducerContext ctx, string tournamentName, int maxParticipants)
-    {
-        ctx.Db.Tournament.Insert(
-            new Tournament() { MaxParticipants = maxParticipants, TournamentName = tournamentName });
     }
 
     [SpacetimeDB.Reducer]
@@ -137,6 +186,7 @@ public static partial class Module
         if (existingPlayer == null)
         {
             ctx.Db.Player.Insert(new Player { Identity = ctx.Sender, SnailName = requestedName });
+            ctx.Db.Winstreak.Insert(new WinStreak(){CurrentWinStreak = 0, MaxWinStreak = 0, PlayerIdentity = ctx.Sender});
         }
     }
     
