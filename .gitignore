@@ -50,6 +50,7 @@ build/
 ExportedObj/
 .consulo/
 *.csproj
+!*StdbModule.csproj
 *.unityproj
 *.sln
 *.slnx
