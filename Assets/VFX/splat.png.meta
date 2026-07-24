@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c4af4a455e22101408e975b048282de3
+guid: 40b2763feda62dc43a3c8d2e0c37ccf8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shootLine_0
+      name: splat_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,14 +112,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10d2d7d3716e3824ab2d28cbe48a394a
-      internalID: 907972870
+      spriteID: dcf3c852552b7bc48bc627bdd156c80e
+      internalID: -750991175
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shootLine_1
+      name: splat_1
       rect:
         serializedVersion: 2
         x: 256
@@ -134,14 +134,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92f64c821ad080f429bbe90c51a975cb
-      internalID: -1534074453
+      spriteID: 5e0611dbc4733954b82d4d3b1ffab0a9
+      internalID: -1713392789
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shootLine_2
+      name: splat_2
       rect:
         serializedVersion: 2
         x: 512
@@ -156,30 +156,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f0f932ec17560d4584f77f7f6ec85f3
-      internalID: 1134039964
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: shootLine_3
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e8cba52297772644b90440b71ddfef3c
-      internalID: -107940887
+      spriteID: 96e632b4050a6d543b0345a1c78c812a
+      internalID: -1031307978
       vertices: []
       indices: 
       edges: []
@@ -188,7 +166,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4e3dd13a4e76bcc4496af76ec772ffd2
+    spriteID: f07a1789ef64ac64588aa95c3db2984d
     internalID: 0
     vertices: []
     indices: 
@@ -198,12 +176,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":5.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      shootLine_0: 907972870
-      shootLine_1: -1534074453
-      shootLine_2: 1134039964
-      shootLine_3: -107940887
+      splat_0: -750991175
+      splat_1: -1713392789
+      splat_2: -1031307978
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
