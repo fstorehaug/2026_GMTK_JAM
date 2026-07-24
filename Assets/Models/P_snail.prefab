@@ -205,7 +205,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2870708509710909283}
-  - component: {fileID: 6139739563270322461}
   - component: {fileID: 1689513226393634043}
   m_Layer: 0
   m_Name: P_snail
@@ -235,20 +234,6 @@ Transform:
   - {fileID: 8787028215455559989}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6139739563270322461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959296771271356247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f1a9fde867e9f44876d6ac86df0017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
-  projectile: {fileID: 2079639681023958443, guid: 59c113e51ddd2994db02d48e2f9ff7a0, type: 3}
-  speed: 20
 --- !u!95 &1689513226393634043
 Animator:
   serializedVersion: 7
@@ -579,7 +564,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 248680384, guid: 0a2e6a53668ccee448a9a06fe12d4406, type: 3}
-  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
+  m_Color: {r: 0.8301887, g: 0.32555977, b: 0.19188325, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

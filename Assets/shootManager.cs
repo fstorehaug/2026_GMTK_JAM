@@ -152,9 +152,11 @@ public class ShootManager : MonoBehaviour
             LeftPlayerSplat.SetActive(true);
         }
         else
+        {
             LeftPlayerShootVFX.SetActive(true);
             LeftPlayerShootLine.SetActive(true);
             RightPlayerSplat.SetActive(true);
+        }
 
         
     }
