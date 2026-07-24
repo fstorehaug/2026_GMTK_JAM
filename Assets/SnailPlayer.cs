@@ -64,7 +64,7 @@ public class SnailPlayer : MonoBehaviour
 
     }
 
-    public void SetDamagedVisuals(int i)
+    public void updateVisuals(int i)
     {
         switch (i)
         {

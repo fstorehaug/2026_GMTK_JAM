@@ -3,60 +3,31 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class TournamentState:MonoBehaviour
+public static class TournamentState
 {
-
-    public List<TournamentPlayer> players;
+    public static int LeftPlayerID = 0;
+    public static int RightPlayerID = 1;
+    public static List<TournamentPlayer> players { get; private set; }
     // Static reference readable by any script, but writable only by this class
-    public static TournamentState Instance { get; private set; }
 
-    private void Awake()
+    static TournamentState()
     {
-        // Enforce the Singleton pattern
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        players= new List<TournamentPlayer>() {new TournamentPlayer("Snailio"), new TournamentPlayer("Snailis")};
 
-        Instance = this;
-
-        // Optional: Keeps the manager alive when changing scenes
-        DontDestroyOnLoad(gameObject);
     }
 
-    // Example global method
-    public void UpdateScore(int amount)
-    {
-        Debug.Log($"Score updated by {amount}");
-    }
-
-    public void AddPlayer(string name)
-    {
-        players.Add(new TournamentPlayer());
-        players[players.Count - 1].name = name;
-
-        /** appearance code
-        string tmpStr = "";
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        tmpStr += chars[Random.Shared.Next(chars.Length)];
-        tmpStr += chars[Random.Shared.Next(chars.Length)];
-        tmpStr += chars[Random.Shared.Next(chars.Length)];
-        
-        players[players.Count - 1].appearance = tmpStr;
-        **/
-    }
-    public void updatePlayerScore (int playerNumber, float addedScore)
+ 
+    public static void updatePlayerScore (int playerNumber, float addedScore)
     {
         players[playerNumber].totalScore += addedScore;
     }
 
-    public void incrementPlayerShot(int playerNumber)
+    public static void incrementPlayerShot(int playerNumber)
     {
         players[playerNumber].timesShot += 1;
     }
 
-    public void updatePlayerAppearance(int playerNumber, string appearance)
+    public static void updatePlayerAppearance(int playerNumber, string appearance)
     {
         players[playerNumber].appearance =appearance;
     }

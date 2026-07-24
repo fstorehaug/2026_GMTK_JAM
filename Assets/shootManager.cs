@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using Random = System.Random;
 using TMPro;
 using System.Collections;
+using Unity.VectorGraphics;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 public class ShootManager : MonoBehaviour
 {
@@ -44,14 +47,22 @@ public class ShootManager : MonoBehaviour
     private bool _leftHasShot = false;
     private bool _rightHasShot = false;
 
+    public void Awake()
+    {
+       // _tournamentState = FindAnyObjectByType<TournamentState>();
+    }
     public void Start()
     {
+        
         _gameManager.GunBattleGo += OnGunBattleGo;
         _leftTimeText.gameObject.SetActive(false);
         _rightTimeText.gameObject.SetActive(false);
 
         MyAudioManager.playAudio(4);
-        MyAudioManager.fade(4,1,1f);
+        MyAudioManager.fade(4,1,1);
+
+        _leftPlayerScript.updateVisuals(TournamentState.players[0].timesShot);
+        _rightPlayerScript.updateVisuals(TournamentState.players[1].timesShot);
     }
 
     public void OnGunBattleGo()
@@ -86,6 +97,15 @@ public class ShootManager : MonoBehaviour
         {
             // Debug.Log("Round over");
         }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            // 2. Get the name of the currently active scene
+            string currentSceneName = SceneManager.GetActiveScene().name;
+
+            // 3. Pass that name into the LoadScene method
+            SceneManager.LoadScene(currentSceneName);
+        }
     }
 
     private void DoMove(float deltaTime)
@@ -102,6 +122,7 @@ public class ShootManager : MonoBehaviour
 
     private void ShootRight()
     {
+        TournamentState.incrementPlayerShot(TournamentState.LeftPlayerID);
         _rightPlayerScript.TurnAround(180);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
@@ -126,6 +147,7 @@ public class ShootManager : MonoBehaviour
 
     public void ShootLeft()
     {
+        TournamentState.incrementPlayerShot(TournamentState.RightPlayerID);
         _leftPlayerScript.TurnAround(180);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
