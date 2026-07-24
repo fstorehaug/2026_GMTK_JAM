@@ -12,6 +12,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = wasi
 build_property.RootNamespace = StdbModule
-build_property.ProjectDir = C:\Users\fstor\2026_GMTK_JAM\snail-gun-space-time-db\spacetimedb\
+build_property.ProjectDir = C:\2026_GMTK_JAM\snail-gun-space-time-db\spacetimedb\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
