@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "+WsnwUzDZ9g=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\fstor\\2026_GMTK_JAM\\snail-gun-space-time-db\\spacetimedb\\StdbModule.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fstor\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.29\\microsoft.net.illink.tasks.8.0.29.nupkg.sha512",
+    "C:\\Users\\fstor\\.nuget\\packages\\spacetimedb.bsatn.runtime\\2.6.1\\spacetimedb.bsatn.runtime.2.6.1.nupkg.sha512",
+    "C:\\Users\\fstor\\.nuget\\packages\\spacetimedb.runtime\\2.6.1\\spacetimedb.runtime.2.6.1.nupkg.sha512"
+  ],
+  "logs": []
+}
