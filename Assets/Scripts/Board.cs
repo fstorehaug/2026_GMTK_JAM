@@ -6,6 +6,8 @@ public class Board
 {
     public int GridSize { get; private set; }
     public Dictionary<TileCoordinate, Tile> _tiles { get; private set; } = new();
+
+    private TileCoordinate _emptyStartTile = new TileCoordinate(1, 1);
     public Board(int gridSize)
     {
         this.GridSize = gridSize;
@@ -19,24 +21,17 @@ public class Board
         }
     }
 
-    public void GernrateState()
+    public void GenerateState()
     {
         foreach (var tilesValue in _tiles.Values)
         {
-            foreach (var tilesValueSubTile in tilesValue.SubTiles)
-            {
-                if (Random.value > .5f)
-                {
-                    tilesValueSubTile.State = TileState.Active;
-                }
-                else
-                {
-                    tilesValueSubTile.State = TileState.Inactive;
-                }
-            }
+            tilesValue.RandomizeTile();
         }
 
-        foreach (var subTile in _tiles[new TileCoordinate(1, 1)].SubTiles)
+        var emptyTile = _tiles[_emptyStartTile];
+        emptyTile.Empty = true;
+
+        foreach (var subTile in _tiles[_emptyStartTile].SubTiles)
         {
             subTile.State = TileState.Empty;
         }
@@ -50,7 +45,13 @@ public class Board
 
     public void SwapTiles(TileCoordinate coordinateOne, TileCoordinate coordinateTwo)
     {
-        (_tiles[coordinateOne], _tiles[coordinateTwo]) = (_tiles[coordinateTwo], _tiles[coordinateOne]);
+        for (int i = 0; i < 8; i++)
+        {
+            (_tiles[coordinateOne].SubTiles[i].State, _tiles[coordinateTwo].SubTiles[i].State) = 
+                (_tiles[coordinateTwo].SubTiles[i].State, _tiles[coordinateOne].SubTiles[i].State);
+        }
+
+        (_tiles[coordinateOne].Empty, _tiles[coordinateTwo].Empty) = (_tiles[coordinateTwo].Empty, _tiles[coordinateOne].Empty);
     }
 
     public void RotateTileLeft(TileCoordinate coordinate)
@@ -60,7 +61,7 @@ public class Board
 
         for (int i = 0; i < 8; i++)
         {
-            stateCopy[i] = tile.SubTiles[(i + 2) % 7].State;
+            stateCopy[i] = tile.SubTiles[(i + 2) % 8].State;
         }
 
         for (int i = 0; i < 8; i++)
@@ -76,7 +77,7 @@ public class Board
 
         for (int i = 0; i < 8; i++)
         {
-            stateCopy[i] = tile.SubTiles[(i + 6) % 7].State;
+            stateCopy[i] = tile.SubTiles[(i + 6) % 8].State;
         }
 
         for (int i = 0; i < 8; i++)
@@ -142,13 +143,13 @@ public class Board
 
 public class Tile
 {
-    private TileCoordinate _coordinate;
+    public TileCoordinate Coordinate { get; private set; }
     public SubTile[] SubTiles;
-    public bool empty = false;
+    public bool Empty = false;
 
     public Tile(TileCoordinate coordinate)
     {
-        _coordinate = coordinate;
+        Coordinate = coordinate;
         SubTiles = new SubTile[8];
 
         for (int i = 0; i < 8; i++)
@@ -202,6 +203,24 @@ public static class TileCoordinateExtensions
 
 }
 
+public static class TileExtensions
+{
+    public static void RandomizeTile(this Tile tile)
+    {
+        foreach (var tileSubTile in tile.SubTiles)
+        {
+            if (Random.value > .5f)
+            {
+                tileSubTile.State = TileState.Active;
+            }
+            else
+            {
+                tileSubTile.State = TileState.Inactive;
+            }
+        }
+    }
+} 
+
 //public static class SubTileCoordinateExtensions()
 //{
     
@@ -235,8 +254,8 @@ public class BoardValidator
     private static readonly List<int> LargeRocketCenterTopInnerEdges = new List<int>() { 0, 2 };
     private static readonly List<int> LargeRocketCenterBottomOuterEdges = new List<int> { 3, 2, 1, 0, 7, 6 };
 
-    private static readonly List<int> SmallRocketRight = new() { 7, 0, 1 };
-    private static readonly List<int> SmallRocketLeft = new() { 4, 3, 2 };
+    private static readonly List<int> SmallRocketRight = new() { 6, 7, 0};
+    private static readonly List<int> SmallRocketLeft = new() { 1, 2, 3};
 
     private static readonly List<int> SmallRocketCenterTop = new List<int>() { 0, 1 };
     private static readonly List<int> SmallRocketCenterBottom = new List<int>() { 3, 4, 5, 6 };
@@ -259,17 +278,17 @@ public class BoardValidator
         _board = board;
     }
 
-    public List<Effect> ValidateBoard()
+    public List<Structure> ValidateBoard()
     {
-        var list = new List<Effect>();
+        var list = new List<Structure>();
 
-        var largeRockets = FindLargeRocketEdge();
+        var largeRockets = FindLargeRocketsFill();
         for (int i = 0; i < largeRockets; i++ )
         {
             list.Add(Effect.LargeRocket);
         }
 
-        var smalRockets = FindSmallRocketEdge();
+        var smalRockets = FindSmallRocketsFill();
         for (int i = 0; i < largeRockets; i++ )
         {
             list.Add(Effect.SmallRocket);
@@ -305,126 +324,242 @@ public class BoardValidator
     }
     public bool SubTilesActive(TileCoordinate coordinate, List<int> subTilesIndecies)
     {
-        return _board.InBounds(coordinate) && subTilesIndecies.All(
-            subTileIndex => _board._tiles[coordinate].SubTiles[subTileIndex].State == TileState.Active
-        );
-    }
-    public void SetEmpty(TileCoordinate coordinate, List<int> subtileIncecies)
-    {
-        foreach (var subTileIndex in subtileIncecies)
+        if (!_board.InBounds(coordinate))
         {
-            _board._tiles[coordinate].SubTiles[subTileIndex].State = TileState.Empty;
+            return false;
         }
+
+        bool all = true;
+
+        foreach (var subTileIndex in subTilesIndecies)
+        {
+            if (_board._tiles[coordinate].SubTiles[subTileIndex].State != TileState.Active)
+            {
+                all = false;
+                break;
+            }
+        }
+
+        return all;
+    }
+    public List<SubTile> SetInactive(TileCoordinate coordinate, List<int> subTileIndexes)
+    {
+        var list = new List<SubTile>();
+
+        foreach (var subTileIndex in subTileIndexes)
+        {
+            _board._tiles[coordinate].SubTiles[subTileIndex].State = TileState.Inactive;
+            list.Add(_board._tiles[coordinate].SubTiles[subTileIndex]);
+        }
+
+        return list;
     }
 
     //######LARGE ROCKETS#############
 
-    public int FindLargeRocketEdge()
+    public List<Structure> FindLargeRocketsFill()
     {
-        int rockets = 0;
+        var structuresCompleted = new List<Structure>();
 
         foreach (var coordinate in _board._tiles.Keys)
         {
-            if (_board._tiles[coordinate].SubTiles[0].State == TileState.Active)
+            if (!SubTilesActive(coordinate, LargeRocketRight))
             {
-                if (!InnerEdges(coordinate, LargeRocketCenterTopInnerEdges))
-                    continue;
-                if (!OuterEdges(coordinate.Down(), LargeRocketCenterBottomOuterEdges))
-                    continue;
-
-                rockets++;
-
-                SetEmpty(coordinate, LargeRocketCenterTop);
-                SetEmpty(coordinate, LargeRocketCenterBottom);
-
-                dirtyTiles.Add(coordinate, true);
-                dirtyTiles.Add(coordinate.Down(), true);
+                continue;
             }
+
+            if (!SubTilesActive(coordinate.Left(), LargeRocketLeft))
+            {
+                continue;
+            }
+
+            if (!SubTilesActive(coordinate.Down(), LargeRocketBottomRight))
+            {
+                continue;
+            }
+
+            if (!SubTilesActive(coordinate.Down().Left(), LargeRocketBottomLeft))
+            {
+                continue;
+            }
+
+            var rocketPieces = new List<SubTile>();
+
+            rocketPieces.AddRange(SetInactive(coordinate, LargeRocketRight));
+            rocketPieces.AddRange(SetInactive(coordinate.Left(), LargeRocketLeft));
+            rocketPieces.AddRange(SetInactive(coordinate.Down(), LargeRocketBottomRight));
+            rocketPieces.AddRange(SetInactive(coordinate.Down().Left(), LargeRocketBottomLeft));
+
+            structuresCompleted.Add(new Structure(rocketPieces, Effect.LargeRocket));
         }
 
-        foreach (var coordinate in _board._tiles.Keys)
-        {
-            if (_board._tiles[coordinate].SubTiles[7].State == TileState.Active)
-            {
-                if (!InnerEdges(coordinate, LargeRocketRightTopInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate.Down(), LargeRocketRightBottomInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate.Down().Left(), LargeRocketLeftBottomInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate.Left(), LargeRocketLeftTopInnerEdges))
-                    continue;
-
-                rockets++;
-                SetEmpty(coordinate, LargeRocketRight);
-                SetEmpty(coordinate.Left(), LargeRocketLeft);
-                SetEmpty(coordinate.Down(), LargeRocketBottomRight);
-                SetEmpty(coordinate.Down().Left(), LargeRocketBottomLeft);
-
-                dirtyTiles.Add(coordinate, true);
-                dirtyTiles.Add(coordinate.Left(), true);
-                dirtyTiles.Add(coordinate.Down(), true);
-                dirtyTiles.Add(coordinate.Down().Left(), true);
-            }
-        }
-
-        return rockets;
+        return structuresCompleted;
     }
+
+
+    //public int FindLargeRocketEdge()
+    //{
+    //    int rockets = 0;
+
+    //    foreach (var coordinate in _board._tiles.Keys)
+    //    {
+    //        if (_board._tiles[coordinate].SubTiles[0].State == TileState.Active)
+    //        {
+    //            if (!InnerEdges(coordinate, LargeRocketCenterTopInnerEdges))
+    //                continue;
+    //            if (!OuterEdges(coordinate.Down(), LargeRocketCenterBottomOuterEdges))
+    //                continue;
+
+    //            rockets++;
+
+    //            SetInactive(coordinate, LargeRocketCenterTop);
+    //            SetInactive(coordinate, LargeRocketCenterBottom);
+
+    //            dirtyTiles.Add(coordinate, true);
+    //            dirtyTiles.Add(coordinate.Down(), true);
+    //        }
+    //    }
+
+    //    foreach (var coordinate in _board._tiles.Keys)
+    //    {
+    //        if (_board._tiles[coordinate].SubTiles[7].State == TileState.Active)
+    //        {
+    //            if (!InnerEdges(coordinate, LargeRocketRightTopInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate.Down(), LargeRocketRightBottomInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate.Down().Left(), LargeRocketLeftBottomInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate.Left(), LargeRocketLeftTopInnerEdges))
+    //                continue;
+
+    //            rockets++;
+    //            SetInactive(coordinate, LargeRocketRight);
+    //            SetInactive(coordinate.Left(), LargeRocketLeft);
+    //            SetInactive(coordinate.Down(), LargeRocketBottomRight);
+    //            SetInactive(coordinate.Down().Left(), LargeRocketBottomLeft);
+
+    //            dirtyTiles.Add(coordinate, true);
+    //            dirtyTiles.Add(coordinate.Left(), true);
+    //            dirtyTiles.Add(coordinate.Down(), true);
+    //            dirtyTiles.Add(coordinate.Down().Left(), true);
+    //        }
+    //    }
+
+    //    return rockets;
+    //}
 
     //############SMAL ROCKETS################
 
-    public int FindSmallRocketEdge()
+    public List<Structure> FindSmallRocketsFill()
     {
-        int rockets = 0;
+        var structuresCompleted = new List<Structure>();
 
         foreach (var coordinate in _board._tiles.Keys)
         {
-            if (_board._tiles[coordinate].SubTiles[0].State == TileState.Active)
+            if (!SubTilesActive(coordinate, SmallRocketRight))
             {
-                if (!InnerEdges(coordinate, SmallRocketCenterTopInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate, SmallRocketCenterBottomInnerEdges))
-                    continue;
-                if (!OuterEdges(coordinate.Down(), SmallRocketCenterBottomOuterEdges))
-                    continue;
-
-                rockets++;
-
-                SetEmpty(coordinate, SmallRocketCenterTop);
-                SetEmpty(coordinate, SmallRocketCenterBottom);
-
-                dirtyTiles.Add(coordinate, true);
-                dirtyTiles.Add(coordinate.Down(), true);
+                continue;
             }
-        }
 
+            if (!SubTilesActive(coordinate.Left(), SmallRocketLeft))
+            {
+                continue;
+            }
+
+            var rocketPieces = new List<SubTile>();
+
+            rocketPieces.AddRange( SetInactive(coordinate, SmallRocketRight));
+            rocketPieces.AddRange(SetInactive(coordinate.Left(), SmallRocketLeft));
+            structuresCompleted.Add(new Structure(rocketPieces, Effect.SmallRocket));
+        }
+        
         foreach (var coordinate in _board._tiles.Keys)
         {
-            if (_board._tiles[coordinate].SubTiles[7].State == TileState.Active)
+            if (!SubTilesActive(coordinate, SmallRocketCenterTop))
             {
-                if (!InnerEdges(coordinate, SmallRocketRightInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate, SmallRocketRightOuterEdges))
-                    continue;
-                if (!InnerEdges(coordinate.Left(), SmallRocketLeftInnerEdges))
-                    continue;
-                if (!InnerEdges(coordinate.Left(), SmallRocketLeftOuterEdges))
-                    continue;
-
-                rockets++;
-                SetEmpty(coordinate, SmallRocketRight);
-                SetEmpty(coordinate.Left(), SmallRocketLeft);
-
-                dirtyTiles.Add(coordinate, true);
-                dirtyTiles.Add(coordinate.Left(), true);
+                continue;
             }
+
+            if (!SubTilesActive(coordinate.Down(), SmallRocketCenterBottom))
+            {
+                continue;
+            }
+
+            var rocketPieces = new List<SubTile>();
+
+            rocketPieces.AddRange( SetInactive(coordinate, SmallRocketCenterTop));
+            rocketPieces.AddRange(SetInactive(coordinate.Down(), SmallRocketCenterBottom));
+
+            structuresCompleted.Add(new Structure(rocketPieces, Effect.SmallRocket));
         }
 
-        return rockets;
+        return structuresCompleted;
     }
+
+    //public int FindSmallRocketEdge()
+    //{
+    //    int rockets = 0;
+
+    //    foreach (var coordinate in _board._tiles.Keys)
+    //    {
+    //        if (_board._tiles[coordinate].SubTiles[0].State == TileState.Active)
+    //        {
+    //            if (!InnerEdges(coordinate, SmallRocketCenterTopInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate, SmallRocketCenterBottomInnerEdges))
+    //                continue;
+    //            if (!OuterEdges(coordinate.Down(), SmallRocketCenterBottomOuterEdges))
+    //                continue;
+
+    //            rockets++;
+
+    //            SetInactive(coordinate, SmallRocketCenterTop);
+    //            SetInactive(coordinate, SmallRocketCenterBottom);
+
+    //            dirtyTiles.Add(coordinate, true);
+    //            dirtyTiles.Add(coordinate.Down(), true);
+    //        }
+    //    }
+
+    //    foreach (var coordinate in _board._tiles.Keys)
+    //    {
+    //        if (_board._tiles[coordinate].SubTiles[7].State == TileState.Active)
+    //        {
+    //            if (!InnerEdges(coordinate, SmallRocketRightInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate, SmallRocketRightOuterEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate.Left(), SmallRocketLeftInnerEdges))
+    //                continue;
+    //            if (!InnerEdges(coordinate.Left(), SmallRocketLeftOuterEdges))
+    //                continue;
+
+    //            rockets++;
+    //            SetInactive(coordinate, SmallRocketRight);
+    //            SetInactive(coordinate.Left(), SmallRocketLeft);
+
+    //            dirtyTiles.Add(coordinate, true);
+    //            dirtyTiles.Add(coordinate.Left(), true);
+    //        }
+    //    }
+
+    //    return rockets;
+    //}
 
 }
 
+public class Structure
+{
+    public Structure(List<SubTile> subTiles, Effect effect)
+    {
+        _effect = effect;
+        _subTiles = subTiles;
+    }
+
+    private List<SubTile> _subTiles;
+    private Effect _effect;
+}
 
 public enum Effect
 {

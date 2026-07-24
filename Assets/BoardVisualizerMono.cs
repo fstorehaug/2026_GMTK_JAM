@@ -1,25 +1,158 @@
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BoardVisualizerMono : MonoBehaviour
 {
     [SerializeField] private TriangleVisualizer trianglePrefab;
     [SerializeField] private int BoardSize = 3;
     [SerializeField] private float tilePositionOffset;
+    [SerializeField] private PopulationCounter populationCounter;
+
+
+    private Camera _camera;
 
     private Board _board;
+    private BoardValidator _boardValidator;
     private List<TriangleVisualizer> _tiangles = new();
 
     void Start()
     {
+        _camera = Camera.main;
         _board = new Board(BoardSize);
-        foreach (var Coordinate in _board._tiles.Keys)
+        _boardValidator = new BoardValidator(_board);
+        foreach (var coordinate in _board._tiles.Keys)
         {
-           var tileGo = GenerateTile(_board._tiles[Coordinate]);
-           tileGo.transform.position = new Vector3(Coordinate.X, Coordinate.Y, 0) * tilePositionOffset;
+           var tileGo = GenerateTile(_board._tiles[coordinate]);
+           tileGo.transform.position = new Vector3(coordinate.X, coordinate.Y, 0) * tilePositionOffset;
         }
-        _board.GernrateState();
+        _board.GenerateState();
         UpdateVisualState();
+    }
+
+    public void Update()
+    {
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Ray ray = _camera.ScreenPointToRay(mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.TryGetComponent<TriangleVisualizer>(out var tileComp))
+                {
+                    if (TileCanMove(tileComp.Coordinate, out var swapCoordinate))
+                    {
+                        if (populationCounter.PayToMove())
+                        {
+                            _board.SwapTiles(tileComp.Coordinate, swapCoordinate);
+                            UpdateVisualState();
+                            DoScoring();
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if (Mouse.current != null && Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Ray ray = _camera.ScreenPointToRay(mousePosition);
+            
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.TryGetComponent<TriangleVisualizer>(out var tileComp))
+                {
+                    if (populationCounter.PayToRotate())
+                    {
+                        RotateTileRightCounterClockWise(tileComp.Coordinate);
+                        UpdateVisualState();
+                        DoScoring();
+                    }
+                }
+            }
+        }
+
+        if (Mouse.current != null && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Ray ray = _camera.ScreenPointToRay(mousePosition);
+            
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.TryGetComponent<TriangleVisualizer>(out var tileComp))
+                {
+                    if (populationCounter.PayToRotate())
+                    {
+                        RotateTileLeftClockWise(tileComp.Coordinate);
+                        UpdateVisualState();
+                        DoScoring();
+                    }
+                }
+            }
+        }
+    }
+
+    public void DoScoring()
+    {
+        var list = _boardValidator.ValidateBoard();
+
+        foreach (var effect in list)
+        {
+            populationCounter.SavePeople(effect);
+        }
+
+        foreach (var boardValidatorDirtyTile in _boardValidator.dirtyTiles.Keys)
+        {
+            if (_boardValidator.dirtyTiles[boardValidatorDirtyTile])
+            {
+                _board._tiles[boardValidatorDirtyTile].RandomizeTile();
+            }
+        }
+    }
+
+    public void RotateTileRightCounterClockWise(TileCoordinate coordinate)
+    {
+        _board.RotateTileRight(coordinate);
+        UpdateVisualState();
+    }
+    public void RotateTileLeftClockWise(TileCoordinate coordinate)
+    {
+        _board.RotateTileLeft(coordinate);
+        UpdateVisualState();
+    }
+
+public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordinate)
+    {
+        if (_board.InBounds(coordinate.Up()) && _board._tiles[coordinate.Up()].Empty)
+        {
+            swapCoordinate = coordinate.Up();
+            return true;
+        }
+
+        if (_board.InBounds(coordinate.Down()) && _board._tiles[coordinate.Down()].Empty)
+        {
+            swapCoordinate = coordinate.Down();
+            return true;
+        }
+
+        if (_board.InBounds(coordinate.Left()) && _board._tiles[coordinate.Left()].Empty)
+        {
+            swapCoordinate = coordinate.Left();
+            return true;
+        }
+
+        if (_board.InBounds(coordinate.Right()) && _board._tiles[coordinate.Right()].Empty)
+        {
+            swapCoordinate = coordinate.Right();
+            return true;
+        }
+
+        swapCoordinate = new TileCoordinate(-1, -1);
+        return false;
     }
 
     public void UpdateVisualState()
@@ -36,20 +169,23 @@ public class BoardVisualizerMono : MonoBehaviour
         tileGameObject.transform.SetParent(this.transform);
         for (int i = 0; i < 8; i++)
         {
+            int rotIndex = i;
+            if (i == 3) rotIndex = 7;
+            else if (i == 7) rotIndex = 3;
+
             var subTileVisual = Instantiate(trianglePrefab, tileGameObject.transform);
-            subTileVisual.Init(tile.SubTiles[i]);
+            subTileVisual.Init(tile.SubTiles[i], tile.Coordinate); //WIWOO TODO: Duplication of state
 
-            if (i % 2 == 0)
+            if (rotIndex % 2 == 0)
             {
-                subTileVisual.transform.Rotate(Vector3.forward, 45*i);
+                subTileVisual.transform.Rotate(Vector3.forward, 45 * rotIndex);
             }
-
-            if (i % 2 == 1)
+            else
             {
                 subTileVisual.transform.Rotate(Vector3.up, 180);
-                subTileVisual.transform.Rotate(Vector3.forward, 45* (i-1));
+                subTileVisual.transform.Rotate(Vector3.forward, 45 * (rotIndex - 1));
             }
-            
+
 
             _tiangles.Add(subTileVisual);
         }

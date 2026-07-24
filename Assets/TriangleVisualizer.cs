@@ -10,10 +10,12 @@ public class TriangleVisualizer : MonoBehaviour
     [SerializeField] private MeshRenderer _meshRenderer;
 
     private SubTile _subTile;
+    public TileCoordinate Coordinate { get; private set; } //TODO: duplication of state!!
 
-    public void Init(SubTile subTile)
+    public void Init(SubTile subTile, TileCoordinate coordinate)
     {
         _subTile = subTile;
+        Coordinate = coordinate;
     }
 
     public void UpdateState()
