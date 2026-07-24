@@ -34,7 +34,7 @@ public class CountDown : MonoBehaviour
         TimeSpan ts = TimeSpan.FromSeconds(timeToDisplay);
         string minus = timeToDisplay < 0 ? "-" : "";
 
-        return "<mspace=0.58em>" + minus + ts.ToString("mm\\:ss\\:fff");
+        return "<mspace=0.35em>" + minus + ts.ToString("mm\\:ss\\:fff");
     }
 
     public float ExponentialScale()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -29,15 +30,16 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            SetMenuState(!_isPaused);
-        }
+        // if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        // {
+        //     SetMenuState(!_isPaused);
+        // }
     }
 
     private void OnDuelPressed()
     {
         SetMenuState(false);
+        SceneManager.LoadScene("DuelScene");
     }
 
     private void OnSettingsPressed()
@@ -67,8 +69,5 @@ public class MenuManager : MonoBehaviour
             _mainMenuObj.SetActive(true);
             _settingsMenuObj.SetActive(false);
         }
-
-        Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = paused;
     }
 }
