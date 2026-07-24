@@ -12,8 +12,14 @@ public class SnailPlayer : MonoBehaviour
     public GameObject PlayerShootVFX;
     public GameObject PlayerShootLine;
     public GameObject PlayerSplat;
-
+    public SkinnedMeshRenderer BodyMaterial;
+    public SkinnedMeshRenderer ShellMaterial;
+    public GameObject bandaids;
     private Transform _playerTransform;
+
+    public Texture HealthyTexture_body;
+    public Texture DamagedTexture1_body;
+  
 
     [SerializeField] private AudioManager MyAudioManager;
 
@@ -32,7 +38,7 @@ public class SnailPlayer : MonoBehaviour
         StartCoroutine(FlashShootVFX());
     }
 
-    IEnumerator FlashShootVFX()
+    private IEnumerator FlashShootVFX()
     {
         MyAudioManager.playAudio(0);
         MyAudioManager.playAudio(2);
@@ -56,5 +62,18 @@ public class SnailPlayer : MonoBehaviour
         Quaternion extraRotation = Quaternion.Euler(0, 180, 0);
         _playerTransform.rotation = extraRotation * _playerTransform.rotation;
 
+    }
+
+    public void SetDamagedVisuals(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                BodyMaterial.material.SetTexture("_BaseMap", HealthyTexture_body);
+                break;
+            case 1:
+                BodyMaterial.material.SetTexture("_BaseMap", DamagedTexture1_body);
+                break;
+        }
     }
 }

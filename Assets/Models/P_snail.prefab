@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 4769515149807730815}
   - component: {fileID: 1130879454315801339}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2870708509710909283}
   - component: {fileID: 1689513226393634043}
+  - component: {fileID: 2671689921506871438}
   m_Layer: 0
   m_Name: P_snail
   m_TagString: Untagged
@@ -256,6 +257,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2671689921506871438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959296771271356247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
+  PlayerAnimator: {fileID: 1689513226393634043}
+  PlayerShootVFX: {fileID: 5457507300535854238}
+  PlayerShootLine: {fileID: 9013124692677517326}
+  PlayerSplat: {fileID: 5802808583651215917}
+  BodyMaterial: {fileID: 2017301890536870939}
+  ShellMaterial: {fileID: 1130879454315801339}
+  bandaids: {fileID: 0}
+  HealthyTexture_body: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
+  DamagedTexture1_body: {fileID: 2800000, guid: e4746e35f075ee34e9fe83b6377a9b7f, type: 3}
+  MyAudioManager: {fileID: 0}
 --- !u!1 &2073551142056893709
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,7 +936,7 @@ GameObject:
   - component: {fileID: 6219278296519960744}
   - component: {fileID: 2017301890536870939}
   m_Layer: 0
-  m_Name: Cube.001
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -959,7 +982,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: f9db660f50d8942479cd9321b7a07490, type: 3}
+  - {fileID: 2100000, guid: b4d0bd1ffb49c184ca6fae55ac2ae883, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

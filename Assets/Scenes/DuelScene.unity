@@ -198,11 +198,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &285180400 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5802808583651215917, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 965157869}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_snail_R
       objectReference: {fileID: 0}
+    - target: {fileID: 2671689921506871438, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+      propertyPath: MyAudioManager
+      value: 
+      objectReference: {fileID: 1793087707}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -825,26 +824,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1735658375}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
---- !u!1 &965157870 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9013124692677517326, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+--- !u!114 &965157870 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2671689921506871438, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 965157869}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &965157871 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5457507300535854238, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 965157869}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &965157872 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 965157869}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
 --- !u!1 &969807497
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,11 +974,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969807497}
   m_CullTransparentMesh: 1
---- !u!1 &1204778240 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5457507300535854238, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 1384356326}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1347050269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1090,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_snail_L
       objectReference: {fileID: 0}
+    - target: {fileID: 2671689921506871438, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+      propertyPath: MyAudioManager
+      value: 
+      objectReference: {fileID: 1793087707}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6689422
@@ -1146,21 +1137,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1762611737}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
---- !u!1 &1384356327 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9013124692677517326, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+--- !u!114 &1384356327 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2671689921506871438, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 1384356326}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1384356328 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 1384356326}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
 --- !u!1 &1385854567
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,53 +1287,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385854567}
   m_CullTransparentMesh: 1
---- !u!1 &1401154807 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5802808583651215917, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
-  m_PrefabInstance: {fileID: 1384356326}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1735658374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 965157869}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1735658375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965157872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
-  PlayerShootVFX: {fileID: 965157871}
-  PlayerShootLine: {fileID: 965157870}
-  PlayerSplat: {fileID: 285180400}
-  MyAudioManager: {fileID: 1793087707}
 --- !u!4 &1762611736 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 1384356326}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1762611737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384356328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
-  PlayerShootVFX: {fileID: 1204778240}
-  PlayerShootLine: {fileID: 1384356327}
-  PlayerSplat: {fileID: 1401154807}
-  MyAudioManager: {fileID: 1793087707}
 --- !u!1 &1793087706 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2856342582339749163, guid: f2c506f3048eb834e80759a19174d94e, type: 3}
@@ -1825,8 +1777,8 @@ MonoBehaviour:
   _maxScore: 100
   _leftPlayer: {fileID: 1762611736}
   _rightPlayer: {fileID: 1735658374}
-  _leftPlayerScript: {fileID: 1762611737}
-  _rightPlayerScript: {fileID: 1735658375}
+  _leftPlayerScript: {fileID: 1384356327}
+  _rightPlayerScript: {fileID: 965157870}
   _leftTimeText: {fileID: 969807499}
   _rightTimeText: {fileID: 429025846}
   _shootPlane: {fileID: 829626899}
