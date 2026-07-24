@@ -5,16 +5,19 @@ using SpacetimeDB.Types;
 
 public class RegisterPlayerWithDb
 {
-    public RegisterPlayerWithDb()
-    {
-    }
-
     public Action regitratinSucess;
     public Action registrationFail;
 
+    private ConnectionService _connectionService;
+
+    public RegisterPlayerWithDb(ConnectionService connectionService)
+    {
+        _connectionService = connectionService;
+    }
+
     public void RegisterPlayer(string playerName)
     {
-        ConnectionService.Connection.Reducers.OnCreateOrLoadPlayer += (ctx, name) =>
+        _connectionService.Connection.Reducers.OnCreateOrLoadPlayer += (ctx, name) =>
         {
             if (ctx.Event.Status is Status.Failed)
             {
@@ -24,30 +27,30 @@ public class RegisterPlayerWithDb
             regitratinSucess.Invoke();
         };
 
-        ConnectionService.Connection.Reducers.CreateOrLoadPlayer(playerName);
+        _connectionService.Connection.Reducers.CreateOrLoadPlayer(playerName);
     }
-
-
 }
 
-public static class ConnectionService
+public class ConnectionService
 {
-    static string host = "http://127.0.0.1:3000";
+    static string host = "https://maincloud.spacetimedb.com";
     static string dbName = "snailtrail";
 
-    public static DbConnection Connection { get; private set; }
-    public static Identity Identity { get; private set; }
-    public static string Token { get; private set; }
+    public  DbConnection Connection { get; private set; }
+    public  Identity Identity { get; private set; }
+    public  string Token { get; private set; }
 
-    static ConnectionService()
+    public ConnectionService(Action callback)
     {
-         DbConnection.Builder().WithUri(host)
+        DbConnection.Builder().WithUri(host)
             .WithDatabaseName(dbName)
             .OnConnect((conn, identity, token) =>
             {
                 Connection = conn;
                 Identity = identity;
                 Token = token;
+
+                callback?.Invoke();
             }).Build();
     }
 }
