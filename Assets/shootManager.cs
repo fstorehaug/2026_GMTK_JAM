@@ -14,7 +14,10 @@ public class ShootManager : MonoBehaviour
 
     [SerializeField] private Transform _leftPlayer;
     [SerializeField] private Transform _rightPlayer;
-    
+
+    [SerializeField] private SnailPlayer _leftPlayerScript;
+    [SerializeField] private SnailPlayer _rightPlayerScript;
+
     [SerializeField] private TextMeshProUGUI _leftTimeText;
     [SerializeField] private TextMeshProUGUI _rightTimeText;
 
@@ -22,15 +25,7 @@ public class ShootManager : MonoBehaviour
     [SerializeField] private CountDown _countDown;
 
     [SerializeField] private AnimationCurve _scoreCurve;
-    
-    private Animator _leftPlayerAnimator;
-    private Animator _rightPlayerAnimator;
-    public GameObject LeftPlayerShootVFX;
-    public GameObject RightPlayerShootVFX;
-    public GameObject LeftPlayerShootLine;
-    public GameObject RightPlayerShootLine;
-    public GameObject LeftPlayerSplat;
-    public GameObject RightPlayerSplat;
+
     [SerializeField] private AudioManager MyAudioManager;
 
 
@@ -54,10 +49,7 @@ public class ShootManager : MonoBehaviour
         _gameManager.GunBattleGo += OnGunBattleGo;
         _leftTimeText.gameObject.SetActive(false);
         _rightTimeText.gameObject.SetActive(false);
-        _rightPlayerAnimator = _rightPlayer.GetComponent<Animator>();
-        _leftPlayerAnimator = _leftPlayer.GetComponent<Animator>();
-        //_leftPlayerShootVFX = _leftPlayer.GetChild(4).GetComponent<MeshRenderer>();
-        //_rightPlayerShootVFX = _rightPlayer.GetChild(4).GetComponent<MeshRenderer>();
+
         MyAudioManager.playAudio(4);
         MyAudioManager.fade(4,1,1f);
     }
@@ -66,8 +58,8 @@ public class ShootManager : MonoBehaviour
     {
         StartTime = Time.time;
         _moving = true;
-        TurnAround(_leftPlayer);
-        TurnAround(_rightPlayer);
+        _leftPlayerScript.TurnAround(180);
+        _rightPlayerScript.TurnAround(180);
         MyAudioManager.playAudio(2);
     }
 
@@ -104,14 +96,13 @@ public class ShootManager : MonoBehaviour
         _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
         _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
 
-        _leftPlayerAnimator.SetInteger("state", 1);
-        _rightPlayerAnimator.SetInteger("state", 1);
-
+        _leftPlayerScript.Move();
+        _rightPlayerScript.Move();
     }
 
     private void ShootRight()
     {
-        TurnAround(_rightPlayer);
+        _rightPlayerScript.TurnAround(180);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
 
@@ -128,15 +119,14 @@ public class ShootManager : MonoBehaviour
             Debug.Log("Right got " + ScoreRight + " points!");
         }
 
-        _rightPlayerAnimator.SetInteger("state", 2);
-        _leftPlayerAnimator.SetInteger("state", 3);
+        _rightPlayerScript.Shoot();
+        _leftPlayerScript.GetShot();
 
-        StartCoroutine(FlashShootVFX(false));
     }
 
     public void ShootLeft()
     {
-        TurnAround(_leftPlayer);
+        _leftPlayerScript.TurnAround(180);
         _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
 
@@ -154,38 +144,8 @@ public class ShootManager : MonoBehaviour
         }
 
 
-        _leftPlayerAnimator.SetInteger("state", 2);
-        _rightPlayerAnimator.SetInteger("state", 3);
-
-        StartCoroutine(FlashShootVFX(true));
+        _leftPlayerScript.Shoot();
+        _rightPlayerScript.GetShot();
     }
 
-    IEnumerator FlashShootVFX(bool left)
-    {
-        MyAudioManager.playAudio(0);
-        MyAudioManager.playAudio(2);
-        MyAudioManager.stopAudio(4);
-        yield return new WaitForSeconds(0.05f);
-        if (left == false)
-        {
-            RightPlayerShootVFX.SetActive(true);
-            RightPlayerShootLine.SetActive(true);
-            LeftPlayerSplat.SetActive(true);
-        }
-        else
-        {
-            LeftPlayerShootVFX.SetActive(true);
-            LeftPlayerShootLine.SetActive(true);
-            RightPlayerSplat.SetActive(true);
-        }
-
-        
-    }
-
-    private void TurnAround(Transform shooterTransform)
-    {
-        var temp = shooterTransform.localScale;
-        temp.x = -temp.x;
-        shooterTransform.localScale = temp;
-    }
 }

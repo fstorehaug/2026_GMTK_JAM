@@ -796,19 +796,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99134165
+      value: 0.99134207
       objectReference: {fileID: 0}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.13130802
+      value: -0.13130483
       objectReference: {fileID: 0}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -825,7 +825,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1735658375}
   m_SourcePrefab: {fileID: 100100000, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
 --- !u!1 &965157870 stripped
 GameObject:
@@ -835,6 +838,11 @@ GameObject:
 --- !u!1 &965157871 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5457507300535854238, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+  m_PrefabInstance: {fileID: 965157869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &965157872 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 965157869}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &969807497
@@ -1138,11 +1146,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1762611737}
   m_SourcePrefab: {fileID: 100100000, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
 --- !u!1 &1384356327 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9013124692677517326, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
+  m_PrefabInstance: {fileID: 1384356326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1384356328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1959296771271356247, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 1384356326}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1385854567
@@ -1292,11 +1308,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 965157869}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1735658375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965157872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
+  PlayerShootVFX: {fileID: 965157871}
+  PlayerShootLine: {fileID: 965157870}
+  PlayerSplat: {fileID: 285180400}
+  MyAudioManager: {fileID: 1793087707}
 --- !u!4 &1762611736 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2870708509710909283, guid: 0ec981e761bcf4d45af034a0cf9c1a5a, type: 3}
   m_PrefabInstance: {fileID: 1384356326}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1762611737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384356328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831140557dce52d4dbef03ec17a39693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailPlayer
+  PlayerShootVFX: {fileID: 1204778240}
+  PlayerShootLine: {fileID: 1384356327}
+  PlayerSplat: {fileID: 1401154807}
+  MyAudioManager: {fileID: 1793087707}
 --- !u!1 &1793087706 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2856342582339749163, guid: f2c506f3048eb834e80759a19174d94e, type: 3}
@@ -1333,7 +1381,7 @@ AudioSource:
   m_GameObject: {fileID: 1793087706}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2550087709980880321, guid: d9b4fa4a5b6d94843951c1189562ae4a, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 0f5275c3197b66447a30237e46819085, type: 3}
   m_PlayOnAwake: 1
@@ -1430,7 +1478,7 @@ AudioSource:
   m_GameObject: {fileID: 1793087706}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7334724363105123208, guid: d9b4fa4a5b6d94843951c1189562ae4a, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -1527,7 +1575,7 @@ AudioSource:
   m_GameObject: {fileID: 1793087706}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7334724363105123208, guid: d9b4fa4a5b6d94843951c1189562ae4a, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: afd8c5a3afdf2374eae3cb8486e5044f, type: 3}
   m_PlayOnAwake: 0
@@ -1624,7 +1672,7 @@ AudioSource:
   m_GameObject: {fileID: 1793087706}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7334724363105123208, guid: d9b4fa4a5b6d94843951c1189562ae4a, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6aa6e9926c2c7aa4ba559627c1985a4f, type: 3}
   m_PlayOnAwake: 0
@@ -1777,6 +1825,8 @@ MonoBehaviour:
   _maxScore: 100
   _leftPlayer: {fileID: 1762611736}
   _rightPlayer: {fileID: 1735658374}
+  _leftPlayerScript: {fileID: 1762611737}
+  _rightPlayerScript: {fileID: 1735658375}
   _leftTimeText: {fileID: 969807499}
   _rightTimeText: {fileID: 429025846}
   _shootPlane: {fileID: 829626899}
@@ -1823,12 +1873,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  LeftPlayerShootVFX: {fileID: 1204778240}
-  RightPlayerShootVFX: {fileID: 965157871}
-  LeftPlayerShootLine: {fileID: 1384356327}
-  RightPlayerShootLine: {fileID: 965157870}
-  LeftPlayerSplat: {fileID: 1401154807}
-  RightPlayerSplat: {fileID: 285180400}
   MyAudioManager: {fileID: 1793087707}
 --- !u!114 &1807569261
 MonoBehaviour:
@@ -1957,6 +2001,10 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5569000019089079418, guid: f2c506f3048eb834e80759a19174d94e, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -7334724363105123208, guid: d9b4fa4a5b6d94843951c1189562ae4a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
