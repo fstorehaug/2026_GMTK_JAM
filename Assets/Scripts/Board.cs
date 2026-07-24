@@ -26,6 +26,7 @@ public class Board
         foreach (var tilesValue in _tiles.Values)
         {
             tilesValue.RandomizeTile();
+            tilesValue.Empty = false;
         }
 
         var emptyTile = _tiles[_emptyStartTile];
@@ -39,7 +40,9 @@ public class Board
 
     public bool InBounds(TileCoordinate coordinate)
     {
-        return coordinate.X >= 0 && coordinate.X < GridSize && coordinate.Y >= 0 &&
+        return coordinate.X >= 0 && 
+               coordinate.Y >= 0 &&
+               coordinate.X < GridSize && 
                coordinate.Y < GridSize;
     }
 
