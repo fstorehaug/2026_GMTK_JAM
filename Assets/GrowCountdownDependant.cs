@@ -9,7 +9,7 @@ public class GrowCountdownDependant : MonoBehaviour
 
     void Update()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * (1 + countDown.ExponentialScale()*maxScale), changeRate * Time.deltaTime);
+        //transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * (1 + countDown.ExponentialScale()*maxScale), changeRate * Time.deltaTime);
     }
 
   

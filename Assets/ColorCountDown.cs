@@ -20,8 +20,8 @@ public class ColorCountDown : MonoBehaviour
 
     void Update()
     {
-        float progress = countDown.ExponentialScale();
-        Color targetProgressColor = Color.Lerp(initialColor, targetColor, progress);
-        runtiMaterial.color = Color.Lerp(runtiMaterial.color, targetProgressColor, changeRate * Time.deltaTime);
+        //float progress = countDown.ExponentialScale();
+        //Color targetProgressColor = Color.Lerp(initialColor, targetColor, progress);
+        //runtiMaterial.color = Color.Lerp(runtiMaterial.color, targetProgressColor, changeRate * Time.deltaTime);
     }
 }

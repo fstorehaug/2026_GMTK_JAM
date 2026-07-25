@@ -16,18 +16,18 @@ public class SetActiveTime : MonoBehaviour
         if (animationdone)
             return;
 
-        if (countDown.TimeRemaining < activeAt)
-        {
-            if (countDown.TimeRemaining < deactivateAt)
-            {
-                gm.SetActive(false);
-                animationdone = false;
-                return;
-            }
+        //if (countDown.TimeRemaining < activeAt)
+        //{
+        //    if (countDown.TimeRemaining < deactivateAt)
+        //    {
+        //        gm.SetActive(false);
+        //        animationdone = false;
+        //        return;
+        //    }
 
-            if (gm.activeSelf == false)
-                gm.SetActive(true);
-        }
+        //    if (gm.activeSelf == false)
+        //        gm.SetActive(true);
+        //}
 
     }
 }

@@ -65,7 +65,7 @@ public class GameManagerMono : MonoBehaviour
                 {
                     started = true;
                     shootManager.OnGunBattleGo();
-                    countDown.TimerIsRunning = true;
+                    //countDown.TimerIsRunning = true;
                     startTime = Time.time;
                 }
             }
