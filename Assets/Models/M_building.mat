@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_rock
+  m_Name: M_building
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -174,7 +174,7 @@ Material:
     - _GlossyReflections: 0
     - _HeightTransition: 0
     - _LightingEnabled: 1
-    - _Metallic: 0.903
+    - _Metallic: 0.653
     - _Metallic0: 0
     - _Metallic1: 0
     - _Metallic2: 0
@@ -186,7 +186,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SampleGI: 0
-    - _Smoothness: 0.59
+    - _Smoothness: 0
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -204,9 +204,9 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.53207535, g: 0.53207535, b: 0.53207535, a: 1}
+    - _BaseColor: {r: 0, g: 0.6301887, b: 0.37661248, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.53207535, g: 0.53207535, b: 0.53207535, a: 1}
+    - _Color: {r: 0, g: 0.6301887, b: 0.37661245, a: 1}
     - _EmissionColor: {r: 0.04150939, g: 0.04150939, b: 0.04150939, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

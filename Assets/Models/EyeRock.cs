@@ -22,7 +22,8 @@ public class EyeRock : MonoBehaviour
     private void OnEnable()
     {
         // Start the loop when the object is active
-        actionCoroutine = StartCoroutine(DoActionAtRandomIntervals());
+        //uncomment for random blinks
+        //actionCoroutine = StartCoroutine(DoActionAtRandomIntervals());
     }
 
     private void OnDisable()
@@ -50,8 +51,11 @@ public class EyeRock : MonoBehaviour
 private IEnumerator Blink(float animTime)
     {
         _isBlinking = true;
+
+        
         float elapsedTime = 0f;
         float progress = 0f;
+        /** blink down
 
         while (elapsedTime < animTime)
         {
@@ -62,6 +66,7 @@ private IEnumerator Blink(float animTime)
         }
 
         yield return new WaitForSeconds(0.1f);
+        **/
 
         elapsedTime = 0f;
         progress = 0f;

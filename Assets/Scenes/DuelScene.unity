@@ -281,7 +281,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -184, y: 51.2}
+  m_AnchoredPosition: {x: -184, y: 51.19995}
   m_SizeDelta: {x: 429.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265653588
@@ -1655,7 +1655,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 285.2, y: 51.2}
+  m_AnchoredPosition: {x: 285.2, y: 51.19995}
   m_SizeDelta: {x: 455.6, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567418039
@@ -2183,6 +2183,63 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &1795978419
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1788264071677115863, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_Name
+      value: The Seeing Hills
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5231819
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
 --- !u!1 &1807569257
 GameObject:
   m_ObjectHideFlags: 0
@@ -2216,6 +2273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   singlePlayer: 0
   countDown: {fileID: 1807569261}
+  shootManager: {fileID: 0}
   started: 0
   secondsBeforeDissappearCountdown: 3
 --- !u!4 &1807569259
@@ -2255,7 +2313,6 @@ MonoBehaviour:
   _leftTimeText: {fileID: 969807499}
   _rightTimeText: {fileID: 429025846}
   _shootPlane: {fileID: 829626899}
-  _countDown: {fileID: 1807569261}
   _scoreCurve:
     serializedVersion: 2
     m_Curve:
@@ -2311,7 +2368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f0f5a1f98bced4fae5c44a07c1961c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountDown
-  CountdownTime: 10
   timeText: {fileID: 1385854569}
 --- !u!1 &1945441560
 GameObject:
@@ -2462,6 +2518,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Duel Bacground 01
       objectReference: {fileID: 0}
+    - target: {fileID: 1788264071677115863, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3778627141178438997, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
       propertyPath: countDown
       value: 
@@ -2539,3 +2599,4 @@ SceneRoots:
   - {fileID: 7989543265543804727}
   - {fileID: 8714312964394768261}
   - {fileID: 120379102}
+  - {fileID: 1795978419}
