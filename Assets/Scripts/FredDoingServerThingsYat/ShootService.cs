@@ -13,13 +13,13 @@ public class ShootService
         _connectionService = connectionService;
     }
 
-    public void SHOOT(float timeInMiliseconds)
+    public void SHOOT(float timeInMiliseconds, ulong matchId)
     {
         _connectionService.Connection.Reducers.OnShoot += Reducers_OnShoot;
-        _connectionService.Connection.Reducers.Shoot(timeInMiliseconds);
+        _connectionService.Connection.Reducers.Shoot(timeInMiliseconds, matchId);
     }
 
-    private void Reducers_OnShoot(SpacetimeDB.Types.ReducerEventContext ctx, float timeInMilSeconds)
+    private void Reducers_OnShoot(SpacetimeDB.Types.ReducerEventContext ctx, float timeInMilSeconds, ulong matchId)
     {
         if (ctx.Event.Status is Status.Failed)
         {

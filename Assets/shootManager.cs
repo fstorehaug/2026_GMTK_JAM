@@ -33,6 +33,7 @@ public class ShootManager : MonoBehaviour
     [SerializeField] private AudioManager MyAudioManager;
 
     private ShootService _ShootService;
+    private MatchMaking _matchService;
 
     private bool _moving = false;
     // For moving up the slope at an angle.
@@ -55,6 +56,7 @@ public class ShootManager : MonoBehaviour
     public void Start()
     {
         _ShootService = ServiceRegistration.ServiceProvider.GetRequiredService<ShootService>();
+        _matchService = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
         
         _gameManager.GunBattleGo += OnGunBattleGo;
         _leftTimeText.gameObject.SetActive(false);
@@ -138,7 +140,7 @@ public class ShootManager : MonoBehaviour
         _leftPlayerScript.TurnAround(180);
         ShootTimeLeft = _countDown.CurrentTime;
 
-        _ShootService.SHOOT(ShootTimeLeft);
+        _ShootService.SHOOT(ShootTimeLeft, _matchService.CurrentMatchId);
         
         _leftHasShot = true;
         _leftTimeText.gameObject.SetActive(true);

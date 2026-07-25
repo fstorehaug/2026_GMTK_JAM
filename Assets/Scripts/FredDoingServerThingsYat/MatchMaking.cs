@@ -13,6 +13,8 @@ public class MatchMaking
     public Action<Match> onMatchMakingSuccess;
     public Action<Match> onMathcUpdate;
 
+    public ulong CurrentMatchId;
+
     public MatchMaking(ConnectionService connectionService)
     {
         _connectionService = connectionService;
@@ -48,6 +50,7 @@ public class MatchMaking
         var match = openMatchers.First(x => x.LeftPlayer == _connectionService.Connection.Identity || x.RightPlayer == _connectionService.Connection.Identity);
 
         onMatchMakingSuccess?.Invoke(match);
+        CurrentMatchId = match.Id;
 
         ctx.Db.Match.OnUpdate += (context, row, newRow) =>
         {
