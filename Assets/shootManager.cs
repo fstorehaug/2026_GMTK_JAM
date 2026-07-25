@@ -58,7 +58,6 @@ public class ShootManager : MonoBehaviour
         _ShootService = ServiceRegistration.ServiceProvider.GetRequiredService<ShootService>();
         _matchService = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
         
-        _gameManager.GunBattleGo += OnGunBattleGo;
         _leftTimeText.gameObject.SetActive(false);
         _rightTimeText.gameObject.SetActive(false);
 

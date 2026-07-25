@@ -16,7 +16,6 @@ public class SnailPlayer : MonoBehaviour
     public MeshRenderer ShellMaterial;
     public GameObject bandaid1;
     public GameObject bandaid2;
-    private Transform _playerTransform;
 
     public Texture HealthyTexture_body;
     public Texture DamagedTexture1_body;
@@ -24,12 +23,9 @@ public class SnailPlayer : MonoBehaviour
     public Texture DamagedTexture1_shell;
 
 
+
     [SerializeField] private AudioManager MyAudioManager;
 
-    private void Start()
-    {
-        _playerTransform = GetComponent<Transform>();
-    }
     public void Move()
     {
         PlayerAnimator.SetInteger("state", 1);
@@ -70,7 +66,7 @@ public class SnailPlayer : MonoBehaviour
     {
         
         Quaternion extraRotation = Quaternion.Euler(0, 180, 0);
-        _playerTransform.rotation = extraRotation * _playerTransform.rotation;
+        transform.rotation = extraRotation * transform.rotation;
 
     }
 
