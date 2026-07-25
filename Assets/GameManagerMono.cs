@@ -38,6 +38,7 @@ public class GameManagerMono : MonoBehaviour
         if (obj.LeftPlayerReady && obj.RightPlayerReady)
         {
             started = true;
+            startTime = Time.time;
         }
     }
 

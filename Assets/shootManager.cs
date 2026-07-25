@@ -141,6 +141,7 @@ public class ShootManager : MonoBehaviour
         _ShootService.SHOOT(ShootTimeLeft, _matchService.CurrentMatchId);
         
         _leftHasShot = true;
+        _countDown.StopTimerVisually = true;
         _leftTimeText.gameObject.SetActive(true);
         _leftTimeText.text = _countDown.FormatTime(ShootTimeLeft);
         _countDown.timeText.gameObject.SetActive(true);
