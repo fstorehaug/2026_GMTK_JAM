@@ -16,7 +16,7 @@ public class OtherSettings : MonoBehaviour
     private double _currentRefreshRate;
     private int _currentResolutionIndex;
 
-    public void Start()
+    public void OnEnable()
     {
         LoadWindowModeDropdown();
         LoadResolutionDropdown();
