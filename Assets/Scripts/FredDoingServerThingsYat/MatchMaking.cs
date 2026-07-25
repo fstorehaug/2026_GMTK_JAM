@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SpacetimeDB;
 using SpacetimeDB.Types;
 using TMPro.EditorUtilities;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using Action = System.Action;
 
