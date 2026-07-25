@@ -22,6 +22,7 @@ public class MatchMakingMono : MonoBehaviour
         public bool leftPlayer;
         public Identity identity;
         public string name;
+        public float? ShootTimeInMiliseconds;
     }
 
     void Start()
@@ -40,17 +41,38 @@ public class MatchMakingMono : MonoBehaviour
     {
         _loaclPlayerName.text = _connectionService.Connection.Db.Player.Iter()
             .Single(x => x.Identity == _connectionService.Identity).SnailName;
-        
+
+        string opponentName;
+        Identity oppIdentity;
+        bool opponentLeft;
+
         if (match.LeftPlayer == _connectionService.Identity)
         {
-            _RemotePlayerName.text = _connectionService.Connection.Db.Player.Iter()
-                .Single(x => x.Identity == match.RightPlayer).SnailName;
+            var oppoentn = _connectionService.Connection.Db.Player.Iter()
+                .Single(x => x.Identity == match.RightPlayer);
+            
+            opponentLeft = false;
+            opponentName = oppoentn.SnailName;
+            oppIdentity = oppoentn.Identity;
         }
         else
         {
-            _RemotePlayerName.text = _connectionService.Connection.Db.Player.Iter()
-                .Single(x => x.Identity == match.LeftPlayer).SnailName;
+            var oppoentn = _connectionService.Connection.Db.Player.Iter()
+                .Single(x => x.Identity == match.LeftPlayer);
+            opponentLeft = false;
+            opponentName = oppoentn.SnailName;
+            oppIdentity = oppoentn.Identity;
         }
+
+        _RemotePlayerName.text = opponentName;
+
+        _opponentData = new OpponentData()
+        {
+            identity = oppIdentity,
+            leftPlayer = opponentLeft,
+            name = opponentName,
+            ShootTimeInMiliseconds = null
+        };
 
         //player is ready.
     }
@@ -89,6 +111,31 @@ public class MatchMakingMono : MonoBehaviour
         {
             _gameManagerMono.GunBattleGo?.Invoke();
             _gameManagerMono.started = true;
+        }
+
+        if (_opponentData.ShootTimeInMiliseconds == null)
+        {
+            if (_opponentData.leftPlayer)
+            {
+                if (match.TimeInMilSecondPlayerLeft != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondPlayerLeft;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
+            else
+            {
+                if (match.TimeInMilSecondsPlayerRight != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondPlayerLeft;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
+
+            if (_opponentData.ShootTimeInMiliseconds != null)
+            {
+                //TODO: Do State update opponent shot.
+            }
         }
 
     }

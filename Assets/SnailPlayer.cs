@@ -34,11 +34,18 @@ public class SnailPlayer : MonoBehaviour
     {
         PlayerAnimator.SetInteger("state", 1);
     }
-    public void Shoot()
+    public void Shoot(float time)
     {
         PlayerAnimator.SetInteger("state", 2);
-     
-        StartCoroutine(FlashShootVFX());
+
+        if (time > 10000)
+        {
+            StartCoroutine(FlashShootVFX());
+        }
+        else
+        {
+            //TODO: do whif sound, "click" no shot. 
+        }
     }
 
     private IEnumerator FlashShootVFX()

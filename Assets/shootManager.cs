@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Random = System.Random;
 using TMPro;
 using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 using Unity.VectorGraphics;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -31,7 +32,7 @@ public class ShootManager : MonoBehaviour
 
     [SerializeField] private AudioManager MyAudioManager;
 
-
+    private ShootService _ShootService;
 
     private bool _moving = false;
     // For moving up the slope at an angle.
@@ -53,6 +54,7 @@ public class ShootManager : MonoBehaviour
     }
     public void Start()
     {
+        _ShootService = ServiceRegistration.ServiceProvider.GetRequiredService<ShootService>();
         
         _gameManager.GunBattleGo += OnGunBattleGo;
         _leftTimeText.gameObject.SetActive(false);
@@ -81,22 +83,12 @@ public class ShootManager : MonoBehaviour
             ShootLeft();
             _moving = false;
         }
-  
-        if (!_rightHasShot && Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
-        {
-            ShootRight();
-            _moving = false;
-        }
 
         if (_moving)
         {
             DoMove(Time.deltaTime);
         }
 
-        if (WinningShootTime != 0 && WinningShootTime + 1 < _countDown.CurrentTime)
-        {
-            // Debug.Log("Round over");
-        }
 
 #if UNITY_EDITOR
         if (Keyboard.current.rKey.wasPressedThisFrame)
@@ -122,54 +114,48 @@ public class ShootManager : MonoBehaviour
         _rightPlayerScript.Move();
     }
 
-    private void ShootRight()
+    private void ShootRightRemotePlayer(float time)
     {
-        TournamentState.incrementPlayerShot(TournamentState.LeftPlayerID);
         _rightPlayerScript.TurnAround(180);
-        _shootPlane.SetActive(true);
         _countDown.timeText.gameObject.SetActive(true);
-
-        _rightHasShot = true;
-        ShootTimeRight = _countDown.CurrentTime;
-        _rightTimeText.gameObject.SetActive(true);
+        ShootTimeRight = time;
+        
         _rightTimeText.text = _countDown.FormatTime(ShootTimeRight);
+        _rightHasShot = true;
+        _rightTimeText.gameObject.SetActive(true);
 
-        if (WinningShootTime == 0)
+        if (time > 10000)
         {
-            _countDown.StopTimerVisually = true;
-            WinningShootTime = ShootTimeRight;
-            ScoreRight = _scoreCurve.Evaluate(ShootTimeLeft / _countDown.CountdownTime) * 100;
-            Debug.Log("Right got " + ScoreRight + " points!");
+            _shootPlane.SetActive(true);
+            _leftPlayerScript.GetShot();
         }
-
-        _rightPlayerScript.Shoot();
-        _leftPlayerScript.GetShot();
-
+        
+        _rightPlayerScript.Shoot(time);
     }
 
     public void ShootLeft()
     {
-        TournamentState.incrementPlayerShot(TournamentState.RightPlayerID);
         _leftPlayerScript.TurnAround(180);
-        _shootPlane.SetActive(true);
-        _countDown.timeText.gameObject.SetActive(true);
-
-        _leftHasShot = true;
         ShootTimeLeft = _countDown.CurrentTime;
+
+        _ShootService.SHOOT(ShootTimeLeft);
+        
+        _leftHasShot = true;
         _leftTimeText.gameObject.SetActive(true);
         _leftTimeText.text = _countDown.FormatTime(ShootTimeLeft);
+        _countDown.timeText.gameObject.SetActive(true);
 
-        if (WinningShootTime == 0)
+        if (ShootTimeLeft > 10000)
         {
-            _countDown.StopTimerVisually = true;
-            WinningShootTime = ShootTimeLeft;
-            ScoreLeft = _scoreCurve.Evaluate(ShootTimeLeft / _countDown.CountdownTime) * 100;
-            Debug.Log("Left got " + ScoreLeft + " points!");
+            _shootPlane.SetActive(true);
+            _rightPlayerScript.GetShot();
         }
 
-
-        _leftPlayerScript.Shoot();
-        _rightPlayerScript.GetShot();
+        _leftPlayerScript.Shoot(ShootTimeLeft);
     }
 
+    public void OpponentShootTimeFromServer(float opponentDataShootTimeInMiliseconds)
+    {
+        ShootRightRemotePlayer(opponentDataShootTimeInMiliseconds);
+    }
 }

@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _loaclPlayerName: {fileID: 1567418039}
   _RemotePlayerName: {fileID: 265653588}
-  _StatusText: {fileID: 0}
+  _StatusText: {fileID: 1538676936}
   _gameManagerMono: {fileID: 1807569258}
   _shootMAnager: {fileID: 1807569260}
 --- !u!4 &120379102
@@ -1496,7 +1496,7 @@ GameObject:
   - component: {fileID: 1538676937}
   - component: {fileID: 1538676936}
   m_Layer: 5
-  m_Name: PlayerName (1)
+  m_Name: Status
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2216,6 +2216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   singlePlayer: 0
   countDown: {fileID: 1807569261}
+  started: 0
   secondsBeforeDissappearCountdown: 3
 --- !u!4 &1807569259
 Transform:
