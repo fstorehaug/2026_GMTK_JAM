@@ -34,7 +34,7 @@ public class SnailPlayer : MonoBehaviour
     {
         PlayerAnimator.SetInteger("state", 2);
 
-        if (time > 10000)
+        if (time > 10)
         {
             StartCoroutine(FlashShootVFX());
         }
