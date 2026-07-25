@@ -28,6 +28,7 @@ public class MatchMaking
 
         if (match != null)
         {
+            CurrentMatchId = match.Id;
             onMatchMakingSuccess.Invoke(match);
             _connectionService.Connection.Db.Match.OnUpdate += (context, row, newRow) =>
             {

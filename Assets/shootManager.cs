@@ -39,7 +39,6 @@ public class ShootManager : MonoBehaviour
     // For moving up the slope at an angle.
     private float _linearScaling = 0.206f;
 
-    public float StartTime { get; private set; }
     public float WinningShootTime { get; private set; }
     public float ShootTimeLeft { get; private set; }
     public float ShootTimeRight { get; private set; }
@@ -70,7 +69,7 @@ public class ShootManager : MonoBehaviour
 
     public void OnGunBattleGo()
     {
-        StartTime = Time.time;
+        _countDown.TimerIsRunning = true;
         _moving = true;
         _leftPlayerScript.TurnAround(180);
         _rightPlayerScript.TurnAround(180);
