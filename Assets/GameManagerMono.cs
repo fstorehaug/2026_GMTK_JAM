@@ -31,6 +31,8 @@ public class GameManagerMono : MonoBehaviour
         _matchMaking.onMathcUpdate += OnMathcUpdate;
 
         _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+
+        countDown.timeText.gameObject.SetActive(true);
     }
 
     private void OnMathcUpdate(Match obj)

@@ -26,7 +26,6 @@ public class ShootManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _rightTimeText;
 
     [SerializeField] private GameObject _shootPlane;
-    [SerializeField] private CountDown _countDown;
 
     [SerializeField] private AnimationCurve _scoreCurve;
 
@@ -48,9 +47,16 @@ public class ShootManager : MonoBehaviour
     private bool _leftHasShot = false;
     private bool _rightHasShot = false;
 
+    private CountDownData _countDownData;
+
     public void Awake()
     {
-       // _tournamentState = FindAnyObjectByType<TournamentState>();
+        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
+        {
+            _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+        };
+
+        // _tournamentState = FindAnyObjectByType<TournamentState>();
     }
     public void Start()
     {
@@ -69,7 +75,7 @@ public class ShootManager : MonoBehaviour
 
     public void OnGunBattleGo()
     {
-        _countDown.TimerIsRunning = true;
+        _countDownData.TimerIsRunning = true;
         _moving = true;
         _leftPlayerScript.TurnAround(180);
         _rightPlayerScript.TurnAround(180);
@@ -116,11 +122,12 @@ public class ShootManager : MonoBehaviour
 
     private void ShootRightRemotePlayer(float time)
     {
+        _countDownData.TimerVisible = true;
+
         _rightPlayerScript.TurnAround(180);
-        _countDown.timeText.gameObject.SetActive(true);
         ShootTimeRight = time;
         
-        _rightTimeText.text = _countDown.FormatTime(ShootTimeRight);
+        _rightTimeText.text = CountDownData.FormatTime(ShootTimeRight);
         _rightHasShot = true;
         _rightTimeText.gameObject.SetActive(true);
 
@@ -135,16 +142,18 @@ public class ShootManager : MonoBehaviour
 
     public void ShootLeft()
     {
+        _countDownData.TimerVisible = true;
+
         _leftPlayerScript.TurnAround(180);
-        ShootTimeLeft = _countDown.CurrentTime;
+        ShootTimeLeft = _countDownData.TimeSinceStrat;
 
         _ShootService.SHOOT(ShootTimeLeft, _matchService.CurrentMatchId);
         
         _leftHasShot = true;
-        _countDown.StopTimerVisually = true;
+        _countDownData.StopTimerVisually = true;
         _leftTimeText.gameObject.SetActive(true);
-        _leftTimeText.text = _countDown.FormatTime(ShootTimeLeft);
-        _countDown.timeText.gameObject.SetActive(true);
+        _leftTimeText.text = CountDownData.FormatTime(ShootTimeLeft);
+
 
         if (ShootTimeLeft > 10000)
         {

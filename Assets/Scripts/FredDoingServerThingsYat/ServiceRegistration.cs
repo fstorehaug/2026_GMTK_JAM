@@ -16,6 +16,11 @@ public static class ServiceRegistration
             .AddSingleton<ConnectionService>()
             .AddSingleton<RegisterPlayerWithDb>();
 
+        
+        services
+            .AddSingleton<ScopeService>()
+            .AddScoped<CountDownData>();
+
         return services.BuildServiceProvider();
     }
 

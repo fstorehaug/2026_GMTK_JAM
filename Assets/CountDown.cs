@@ -1,35 +1,21 @@
 using System;
+using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using UnityEngine;
-using TMPro;
+using TMPro;using TMPro.EditorUtilities;
 
-public class CountDown : MonoBehaviour
+public record CountDownData
 {
-    [SerializeField] public float CountdownTime = 10f;
-    public float TimeRemaining { get; private set; }
-    public float CurrentTime { get => CountdownTime - TimeRemaining; }
+    public const float STARTTIME = 10;
 
-    [SerializeField] public TextMeshProUGUI timeText;
+    public float TimeRemaining = STARTTIME;
+    public bool TimerIsRunning = false;
+    public bool StopTimerVisually = false;
+    public bool TimerVisible = true;
 
-    public bool TimerIsRunning { get; set; } = false;
-    public bool StopTimerVisually { get; set; }
+    public float TimeSinceStrat => STARTTIME - TimeRemaining;
 
-    private void Awake()
-    {
-        TimeRemaining = CountdownTime;
-    }
-
-    private void Update()
-    {
-        if (TimerIsRunning)
-        {
-            TimeRemaining -= Time.deltaTime;
-
-            if (!StopTimerVisually)
-                timeText.text = FormatTime(TimeRemaining);
-        }
-    }
-
-    public string FormatTime(float timeToDisplay)
+    public static string FormatTime(float timeToDisplay)
     {
         TimeSpan ts = TimeSpan.FromSeconds(timeToDisplay);
         string minus = timeToDisplay < 0 ? "-" : "";
@@ -39,9 +25,61 @@ public class CountDown : MonoBehaviour
 
     public float ExponentialScale()
     {
-        float t = 1.0f - (TimeRemaining / CountdownTime);
+        float t = 1.0f - (TimeRemaining / CountDownData.STARTTIME);
         float exponentialTime = t * t;
 
         return Mathf.Lerp(0, 1, exponentialTime);
     }
+}
+
+public class ScopeService
+{
+    public Action OnRenewScope;
+
+    public void RenewScope()
+    {
+        ServiceRegistration.ServiceProvider.CreateScope();
+        OnRenewScope?.Invoke();
+    }
+}
+
+
+public class CountDown : MonoBehaviour
+{
+    [SerializeField] public TextMeshProUGUI timeText;
+    private CountDownData _countDownData;
+
+    private void Awake()
+    {
+        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
+        {
+            _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+
+        };
+    }
+
+    private void Update()
+    {
+        if (_countDownData.TimerVisible && !timeText.gameObject.activeSelf)
+        {
+            timeText.gameObject.SetActive(true);
+        }
+
+        if (!_countDownData.TimerVisible && timeText.gameObject.activeSelf)
+        {
+            timeText.gameObject.SetActive(false);
+        }
+
+        if (_countDownData.TimerIsRunning)
+        {
+            _countDownData.TimeRemaining -= Time.deltaTime;
+        }
+
+        if (!_countDownData.StopTimerVisually)
+        {
+            timeText.text = CountDownData.FormatTime(_countDownData.TimeRemaining);
+        }
+    }
+
 }

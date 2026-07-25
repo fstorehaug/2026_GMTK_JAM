@@ -1,9 +1,19 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using SpacetimeDB;
 using SpacetimeDB.Types;
 using TMPro.EditorUtilities;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using Action = System.Action;
+
+
+public class MatchData
+{
+
+}
+
 
 public class MatchMaking
 {
@@ -37,6 +47,8 @@ public class MatchMaking
                     onMathcUpdate?.Invoke(newRow);
                 }
             };
+
+            ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
             return;
         }
 
@@ -50,6 +62,7 @@ public class MatchMaking
         var openMatchers = matchiter.Where(x => x.State != 3).ToList();
         var match = openMatchers.First(x => x.LeftPlayer == _connectionService.Connection.Identity || x.RightPlayer == _connectionService.Connection.Identity);
 
+        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
         onMatchMakingSuccess?.Invoke(match);
         CurrentMatchId = match.Id;
 
