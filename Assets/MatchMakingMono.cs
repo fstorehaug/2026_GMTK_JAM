@@ -47,6 +47,11 @@ public class MatchMakingMono : MonoBehaviour
         }
 
         _connectionService.Connection.Reducers.PlayerIsReady(match.Id);
+
+        if (match.State == 2)
+        {
+            OnMatchUpdated(match);
+        }
     }
 
     public OpponentData SetupOpponentName(Match match)
