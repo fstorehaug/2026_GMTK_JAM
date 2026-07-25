@@ -30,6 +30,13 @@ public class BoardVisualizerMono : MonoBehaviour
         }
         _board.GenerateState();
         UpdateVisualState();
+        CenterBoard();
+    }
+
+    private void CenterBoard()
+    {
+        this.gameObject.transform.localScale = Vector3.one * .5f;
+        this.gameObject.transform.position = new Vector3(-1, -4, -90);
     }
 
     public void Update()
@@ -67,13 +74,15 @@ public class BoardVisualizerMono : MonoBehaviour
                 {
                     if (populationCounter.CanPayToRotate())
                     {
-                        //RotateTileRightClockWise(tileComp.Coordinate);
-                        if (RotateSubTileRightClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
-                        {
-                            populationCounter.PayToRotate();
-                            UpdateVisualState();
+                        RotateTileRightClockWise(tileComp.Coordinate);
+                        UpdateVisualState();
+                        populationCounter.PayToRotate();
+                        //if (RotateSubTileRightClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
+                        //{
+                        //    populationCounter.PayToRotate();
+                        //    UpdateVisualState();
 
-                        }
+                        //}
                         DoScoring();
                     }
                 }
@@ -91,14 +100,16 @@ public class BoardVisualizerMono : MonoBehaviour
                 {
                     if (populationCounter.CanPayToRotate())
                     {
-                        //RotateTileLeftCounterClockWise(tileComp.Coordinate);
-                        if (RotateSubTileLeftCounterClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
-                        {
-                            populationCounter.PayToRotate();
-                            UpdateVisualState();
+                        RotateTileLeftCounterClockWise(tileComp.Coordinate);
+                        populationCounter.PayToRotate();
+                        UpdateVisualState();
+                        //if (RotateSubTileLeftCounterClockWise(tileComp.Coordinate, tileComp.SubTile.PositionInTile))
+                        //{
+                        //    populationCounter.PayToRotate();
+                        //    UpdateVisualState();
 
-                        }
-                        ;
+                        //}
+                        
                         DoScoring();
                     }
                 }
