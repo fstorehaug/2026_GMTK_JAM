@@ -71,15 +71,21 @@ public class CountDown : MonoBehaviour
             timeText.gameObject.SetActive(false);
         }
 
-        if (_countDownData.TimerIsRunning)
-        {
-            _countDownData.TimeRemaining -= Time.deltaTime;
-        }
-
         if (!_countDownData.StopTimerVisually)
         {
             timeText.text = CountDownData.FormatTime(_countDownData.TimeRemaining);
         }
+
+        if (!_countDownData.TimerIsRunning)
+            return;
+        
+        _countDownData.TimeRemaining -= Time.deltaTime;
+        
+        if (_countDownData.TimeRemaining < 7)
+        {
+            _countDownData.TimerVisible = false;
+        }
+
     }
 
 }
