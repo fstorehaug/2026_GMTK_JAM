@@ -56,6 +56,7 @@ public class ShootManager : MonoBehaviour
             _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
         };
 
+        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
         // _tournamentState = FindAnyObjectByType<TournamentState>();
     }
     public void Start()
@@ -75,6 +76,7 @@ public class ShootManager : MonoBehaviour
 
     public void OnGunBattleGo()
     {
+        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
         _countDownData.TimerIsRunning = true;
         _moving = true;
         _leftPlayerScript.TurnAround(180);
