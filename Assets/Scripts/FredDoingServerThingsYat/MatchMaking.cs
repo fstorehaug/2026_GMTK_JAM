@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using SpacetimeDB;
 using SpacetimeDB.Types;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using Action = System.Action;
 

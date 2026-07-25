@@ -2,7 +2,6 @@ using SpacetimeDB;
 using SpacetimeDB.Types;
 using System;
 using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
