@@ -72,8 +72,8 @@ public static partial class Module
         }
         
         match.State = 3;
-        var rightWif = match.TimeInMilSecondsPlayerRight < 10000;
-        var leftWif = match.TimeInMilSecondPlayerLeft < 10000;
+        var rightWif = match.TimeInMilSecondsPlayerRight < 10;
+        var leftWif = match.TimeInMilSecondPlayerLeft < 10;
 
         if (rightWif && leftWif)
         {

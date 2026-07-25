@@ -1,14 +1,9 @@
 using System;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Random = System.Random;
 using TMPro;
-using System.Collections;
 using Microsoft.Extensions.DependencyInjection;
-using Unity.VectorGraphics;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 public class ShootManager : MonoBehaviour
 {
@@ -133,7 +128,7 @@ public class ShootManager : MonoBehaviour
         _rightHasShot = true;
         _rightTimeText.gameObject.SetActive(true);
 
-        if (time > 10000)
+        if (time > 10)
         {
             _shootPlane.SetActive(true);
             _leftPlayerScript.GetShot();
@@ -157,7 +152,7 @@ public class ShootManager : MonoBehaviour
         _leftTimeText.text = CountDownData.FormatTime(ShootTimeLeft);
 
 
-        if (ShootTimeLeft > 10000)
+        if (ShootTimeLeft > 10)
         {
             _shootPlane.SetActive(true);
             _rightPlayerScript.GetShot();
