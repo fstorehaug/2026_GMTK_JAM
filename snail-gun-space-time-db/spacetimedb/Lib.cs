@@ -205,5 +205,13 @@ public static partial class Module
         {
             match.RightPlayerReady = true;
         }
+
+        if (match.RightPlayerReady && match.LeftPlayerReady)
+        {
+            match.State = 2;
+        }
+
+        ctx.Db.Match.Id.Update(match);
+        
     }
 }
