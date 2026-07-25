@@ -51,9 +51,10 @@ public static partial class Module
     }
 
     [SpacetimeDB.Reducer]
-    public static void Shoot(ReducerContext ctx, float timeInMilSeconds)
+    public static void Shoot(ReducerContext ctx, float timeInMilSeconds, ulong matchId)
     {
-        var match = ctx.Db.Match.Iter().Single(x => x.State == 2 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
+        var match = ctx.Db.Match.Iter().Single(x => x.Id == matchId);
+        
         if (match.LeftPlayer == ctx.Sender)
         {
             match.TimeInMilSecondPlayerLeft = timeInMilSeconds;
@@ -62,10 +63,13 @@ public static partial class Module
         if (match.RightPlayer == ctx.Sender)
         {
             match.TimeInMilSecondsPlayerRight = timeInMilSeconds;
-        } 
+        }
 
         if (match.TimeInMilSecondsPlayerRight == null || match.TimeInMilSecondPlayerLeft == null)
+        {
+            ctx.Db.Match.Id.Update(match);
             return;
+        }
         
         match.State = 3;
         var rightWif = match.TimeInMilSecondsPlayerRight < 10000;
@@ -80,6 +84,7 @@ public static partial class Module
             var winStreakRight = ctx.Db.Winstreak.PlayerIdentity.Filter((Identity)match.RightPlayer).Single();
             winStreakRight.CurrentWinStreak = 0;
             ctx.Db.Winstreak.Id.Update(winStreakRight);
+            ctx.Db.Match.Id.Update(match);
             return;
         }
 
@@ -118,6 +123,8 @@ public static partial class Module
             }
             ctx.Db.Winstreak.Id.Update(winStreakRight);
         }
+
+        ctx.Db.Match.Id.Update(match);
     }
 
     [SpacetimeDB.Reducer]

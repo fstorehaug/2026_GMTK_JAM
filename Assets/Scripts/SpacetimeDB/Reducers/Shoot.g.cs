@@ -12,12 +12,12 @@ namespace SpacetimeDB.Types
 {
     public sealed partial class RemoteReducers : RemoteBase
     {
-        public delegate void ShootHandler(ReducerEventContext ctx, float timeInMilSeconds);
+        public delegate void ShootHandler(ReducerEventContext ctx, float timeInMilSeconds, ulong matchId);
         public event ShootHandler? OnShoot;
 
-        public void Shoot(float timeInMilSeconds)
+        public void Shoot(float timeInMilSeconds, ulong matchId)
         {
-            conn.InternalCallReducer(new Reducer.Shoot(timeInMilSeconds));
+            conn.InternalCallReducer(new Reducer.Shoot(timeInMilSeconds, matchId));
         }
 
         public bool InvokeShoot(ReducerEventContext ctx, Reducer.Shoot args)
@@ -36,7 +36,8 @@ namespace SpacetimeDB.Types
             }
             OnShoot(
                 ctx,
-                args.TimeInMilSeconds
+                args.TimeInMilSeconds,
+                args.MatchId
             );
             return true;
         }
@@ -50,10 +51,16 @@ namespace SpacetimeDB.Types
         {
             [DataMember(Name = "time_in_mil_seconds")]
             public float TimeInMilSeconds;
+            [DataMember(Name = "match_id")]
+            public ulong MatchId;
 
-            public Shoot(float TimeInMilSeconds)
+            public Shoot(
+                float TimeInMilSeconds,
+                ulong MatchId
+            )
             {
                 this.TimeInMilSeconds = TimeInMilSeconds;
+                this.MatchId = MatchId;
             }
 
             public Shoot()

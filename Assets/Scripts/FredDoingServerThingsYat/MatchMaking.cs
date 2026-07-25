@@ -29,7 +29,7 @@ public class MatchMaking
             onMatchMakingSuccess.Invoke(match);
             _connectionService.Connection.Db.Match.OnUpdate += (context, row, newRow) =>
             {
-                if (row.Id == match.Id)
+                if (newRow.Id == match.Id)
                 {
                     onMathcUpdate?.Invoke(newRow);
                 }
