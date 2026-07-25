@@ -95,15 +95,15 @@ public class ShootManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_leftHasShot && Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            ShootLeft();
-            _moving = false;
-        }
-
         if (_moving)
         {
             DoMove(Time.deltaTime);
+        }
+        //TODO: this code is fine - admire it.
+        if (_countDownData.TimerIsRunning && !_leftHasShot && Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            ShootLeft();
+            _moving = false;
         }
 
 
@@ -142,7 +142,8 @@ public class ShootManager : MonoBehaviour
         _rightHasShot = true;
         _rightTimeText.gameObject.SetActive(true);
         _shootPlane.SetActive(true);
-        
+        _moving = false;
+
         if (time > 10)
         {
             _leftPlayerScript.GetShot();
@@ -180,6 +181,25 @@ public class ShootManager : MonoBehaviour
     }
     public void ServerMatchFinised()
     {
-        throw new NotImplementedException();
+        
+    }
+
+    public void HandleLocalPlayerShotLogic(float? LocalPlayerShootTimeServer)
+    {
+        _leftHasShot = true;
+        if (LocalPlayerShootTimeServer > 10)
+        {
+            if (LocalPlayerShootTimeServer + 4 > _countDownData.TimeSinceStrat)
+            {
+                _ShootService.SHOOT(0, _matchService.CurrentMatchId);
+            }
+        }
+        else
+        {
+            if (LocalPlayerShootTimeServer + 20 > _countDownData.TimeSinceStrat)
+            {
+                _ShootService.SHOOT(0, _matchService.CurrentMatchId);
+            }
+        }
     }
 }

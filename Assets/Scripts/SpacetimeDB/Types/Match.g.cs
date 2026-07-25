@@ -24,7 +24,7 @@ namespace SpacetimeDB.Types
         [DataMember(Name = "winner")]
         public SpacetimeDB.Identity? Winner;
         [DataMember(Name = "time_in_mil_second_player_left")]
-        public float? TimeInMilSecondPlayerLeft;
+        public float? TimeInMilSecondsPlayerLeft;
         [DataMember(Name = "time_in_mil_seconds_player_right")]
         public float? TimeInMilSecondsPlayerRight;
         [DataMember(Name = "left_player_ready")]
@@ -38,7 +38,7 @@ namespace SpacetimeDB.Types
             SpacetimeDB.Identity? RightPlayer,
             int State,
             SpacetimeDB.Identity? Winner,
-            float? TimeInMilSecondPlayerLeft,
+            float? timeInMilSecondsPlayerLeft,
             float? TimeInMilSecondsPlayerRight,
             bool LeftPlayerReady,
             bool RightPlayerReady
@@ -49,7 +49,7 @@ namespace SpacetimeDB.Types
             this.RightPlayer = RightPlayer;
             this.State = State;
             this.Winner = Winner;
-            this.TimeInMilSecondPlayerLeft = TimeInMilSecondPlayerLeft;
+            this.TimeInMilSecondsPlayerLeft = timeInMilSecondsPlayerLeft;
             this.TimeInMilSecondsPlayerRight = TimeInMilSecondsPlayerRight;
             this.LeftPlayerReady = LeftPlayerReady;
             this.RightPlayerReady = RightPlayerReady;

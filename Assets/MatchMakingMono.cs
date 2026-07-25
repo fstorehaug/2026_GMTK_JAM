@@ -80,7 +80,7 @@ public class MatchMakingMono : MonoBehaviour
 
                 var opponent = _connectionService.Connection.Db.Player.Iter()
                     .Single(x => x.Identity == match.LeftPlayer);
-                opponentLeft = false;
+                opponentLeft = true;
                 opponentName = opponent.SnailName;
                 oppIdentity = opponent.Identity;
             }
@@ -135,13 +135,23 @@ public class MatchMakingMono : MonoBehaviour
             _gameManagerMono.started = true;
         }
 
+        if (_opponentData.leftPlayer && match.TimeInMilSecondsPlayerRight != null && match.TimeInMilSecondsPlayerLeft == null)
+        {
+            _shootMAnager.HandleLocalPlayerShotLogic(match.TimeInMilSecondsPlayerRight);
+        }
+
+        if (_opponentData.leftPlayer && match.TimeInMilSecondsPlayerLeft != null && match.TimeInMilSecondsPlayerRight == null)
+        {
+            _shootMAnager.HandleLocalPlayerShotLogic(match.TimeInMilSecondsPlayerLeft);
+        }
+
         if (_opponentData.ShootTimeInMiliseconds == null)
         {
             if (_opponentData.leftPlayer)
             {
-                if (match.TimeInMilSecondPlayerLeft != null)
+                if (match.TimeInMilSecondsPlayerLeft != null)
                 {
-                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondPlayerLeft;
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerLeft;
                     _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
                 }
             }
@@ -149,7 +159,7 @@ public class MatchMakingMono : MonoBehaviour
             {
                 if (match.TimeInMilSecondsPlayerRight != null)
                 {
-                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondPlayerLeft;
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerRight;
                     _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
                 }
             }
