@@ -127,10 +127,10 @@ public class ShootManager : MonoBehaviour
         _rightTimeText.text = CountDownData.FormatTime(ShootTimeRight);
         _rightHasShot = true;
         _rightTimeText.gameObject.SetActive(true);
-
+        _shootPlane.SetActive(true);
+        
         if (time > 10)
         {
-            _shootPlane.SetActive(true);
             _leftPlayerScript.GetShot();
         }
         
@@ -150,11 +150,10 @@ public class ShootManager : MonoBehaviour
         _countDownData.StopTimerVisually = true;
         _leftTimeText.gameObject.SetActive(true);
         _leftTimeText.text = CountDownData.FormatTime(ShootTimeLeft);
-
-
+        _shootPlane.SetActive(true);
+        
         if (ShootTimeLeft > 10)
         {
-            _shootPlane.SetActive(true);
             _rightPlayerScript.GetShot();
         }
 
