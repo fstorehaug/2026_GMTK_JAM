@@ -1,6 +1,8 @@
-using System;
 using SpacetimeDB;
 using SpacetimeDB.Types;
+using System;
+using Unity.VisualScripting.Antlr3.Runtime;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
@@ -38,10 +40,9 @@ public class ConnectionService
     static string dbName = "snailtrail";
 
     public  DbConnection Connection { get; private set; }
-    public  Identity Identity { get; private set; }
-    public  string Token { get; private set; }
 
-    private DbConnection _con;
+    const string AuthTokenKey = "SpacetimeDB.AuthToken";
+
     public ConnectionService()
     {
       
@@ -49,17 +50,29 @@ public class ConnectionService
 
     public void InitiateConnection(Action callback)
     {
-        Connection = DbConnection.Builder().WithUri(host)
-            .WithDatabaseName(dbName)
+        var token = PlayerPrefs.GetString(AuthTokenKey, null);
+
+        var connectionBuilder = DbConnection.Builder()
+            .WithUri(host)
+            .WithDatabaseName(dbName);
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            connectionBuilder.WithToken(token);
+        }
+
+        connectionBuilder.OnConnect((conn, identity, token) =>
+        {
+            PlayerPrefs.SetString(AuthTokenKey, token);
+            PlayerPrefs.Save();
+            callback?.Invoke();
+            Connection.SubscriptionBuilder().SubscribeToAllTables();
+
+        });
+
+        Connection = connectionBuilder
             .OnConnectError(x => Debug.Log($"failed to connect: {x.Message}"))
             .OnDisconnect((x, y) => Debug.Log($"Disconnected: {y?.Message}"))
-            .OnConnect((conn, identity, token) =>
-            {
-                _con = conn;
-                Identity = identity;
-                Token = token;
-                Debug.Log("Connected");
-                callback?.Invoke();
-            }).Build();
+            .Build();
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using SpacetimeDB;
@@ -17,7 +16,7 @@ public class MatchMakingMono : MonoBehaviour
     private ConnectionService _connectionService;
     private OpponentData _opponentData;
 
-    struct OpponentData
+    public struct OpponentData
     {
         public bool leftPlayer;
         public Identity identity;
@@ -40,41 +39,57 @@ public class MatchMakingMono : MonoBehaviour
     public void OnMatchFound(Match match)
     {
         _loaclPlayerName.text = _connectionService.Connection.Db.Player.Iter()
-            .Single(x => x.Identity == _connectionService.Identity).SnailName;
+            .First(x => x.Identity == _connectionService.Connection.Identity).SnailName;
 
-        string opponentName;
-        Identity oppIdentity;
-        bool opponentLeft;
-
-        if (match.LeftPlayer == _connectionService.Identity)
+        if (match.LeftPlayer != null && match.RightPlayer != null)
         {
-            var oppoentn = _connectionService.Connection.Db.Player.Iter()
-                .Single(x => x.Identity == match.RightPlayer);
-            
-            opponentLeft = false;
-            opponentName = oppoentn.SnailName;
-            oppIdentity = oppoentn.Identity;
+            _opponentData = SetupOpponentName(match);
+        }
+
+        _connectionService.Connection.Reducers.PlayerIsReady();
+    }
+
+    public OpponentData SetupOpponentName(Match match)
+    {
+        string opponentName = "";
+        Identity oppIdentity = new Identity();
+        bool opponentLeft = false;
+
+        if (match.LeftPlayer == _connectionService.Connection.Identity)
+        {
+            if (match.RightPlayer != null)
+            {
+                var opponent = _connectionService.Connection.Db.Player.Iter()
+                    .Single(x => x.Identity == match.RightPlayer);
+
+                opponentLeft = false;
+                opponentName = opponent.SnailName;
+                oppIdentity = opponent.Identity;
+
+            }
         }
         else
         {
-            var oppoentn = _connectionService.Connection.Db.Player.Iter()
-                .Single(x => x.Identity == match.LeftPlayer);
-            opponentLeft = false;
-            opponentName = oppoentn.SnailName;
-            oppIdentity = oppoentn.Identity;
+            if (match.LeftPlayer != null)
+            {
+
+                var opponent = _connectionService.Connection.Db.Player.Iter()
+                    .Single(x => x.Identity == match.LeftPlayer);
+                opponentLeft = false;
+                opponentName = opponent.SnailName;
+                oppIdentity = opponent.Identity;
+            }
         }
 
         _RemotePlayerName.text = opponentName;
 
-        _opponentData = new OpponentData()
+        return  new OpponentData()
         {
             identity = oppIdentity,
             leftPlayer = opponentLeft,
             name = opponentName,
             ShootTimeInMiliseconds = null
         };
-
-        _connectionService.Connection.Reducers.PlayerIsReady();
     }
 
     public void OnMatchUpdated(Match match)
@@ -146,6 +161,7 @@ public class MatchMakingMono : MonoBehaviour
     private void StatePreparingForMatch(Match match)
     {
         _StatusText.text = "OpponentFound";
+        SetupOpponentName(match);
     }
 
     private void StateLookingForMatch(Match match)
