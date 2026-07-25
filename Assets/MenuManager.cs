@@ -7,22 +7,36 @@ using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private bool _isPaused;
+    enum MenuPage
+    {
+        Main,
+        Duel,
+        Leaderboard,
+        Settings,
+    }
 
     [SerializeField] private GameObject _menuContainer;
-    [SerializeField] private GameObject _mainMenuObj;
-    [SerializeField] private GameObject _duelMenuObj;
-    [SerializeField] private GameObject _settingsMenuObj;
+    [SerializeField] private GameObject _mainMenuPage;
+    [SerializeField] private GameObject _duelPage;
+    [SerializeField] private GameObject _leaderboardPage;
+    [SerializeField] private GameObject _settingsPage;
 
+    // Main menu page
     [SerializeField] private Button _startDuelingButton;
+    [SerializeField] private Button _leaderboardButton;
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _exitButton;
 
+    // Duel page
     [SerializeField] private Button _localDuelButton;
     [SerializeField] private Button _onlineDuelButton;
     [SerializeField] private Button _backDuelingButton;
     [SerializeField] private TMP_InputField _snailNameTextField;
 
+    // Leaderboard page
+    [SerializeField] private Button _backLeaderboardButton;
+
+    // Settings page
     [SerializeField] private Button _backSettingsButton;
 
     private string _localSnailName;
@@ -30,6 +44,7 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         _startDuelingButton.onClick.AddListener(OnDuelPressed);
+        _leaderboardButton.onClick.AddListener(OnLeaderboardPressed);
         _settingsButton.onClick.AddListener(OnSettingsPressed);
         _exitButton.onClick.AddListener(OnExitPressed);
 
@@ -41,9 +56,11 @@ public class MenuManager : MonoBehaviour
         _localSnailName = PlayerPrefs.GetString("LocalSnailName", "Anonymous Snail");
         _snailNameTextField.SetTextWithoutNotify(_localSnailName);
 
+        _backLeaderboardButton.onClick.AddListener(BackToMainMenu);
+
         _backSettingsButton.onClick.AddListener(BackToMainMenu);
 
-        SetMenuState(true);
+        SetMenuState(MenuPage.Main);
     }
 
     private void Update()
@@ -56,9 +73,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnDuelPressed()
     {
-        _mainMenuObj.SetActive(false);
-        _settingsMenuObj.SetActive(false);
-        _duelMenuObj.SetActive(true);
+        SetMenuState(MenuPage.Duel);
     }
 
     private void OnLocalDuelPressed()
@@ -93,11 +108,19 @@ public class MenuManager : MonoBehaviour
         PlayerPrefs.SetString("LocalSnailName", _localSnailName);
     }
 
+    private void OnLeaderboardPressed()
+    {
+        SetMenuState(MenuPage.Leaderboard);
+    }
+
     private void OnSettingsPressed()
     {
-        _mainMenuObj.SetActive(false);
-        _settingsMenuObj.SetActive(true);
-        _duelMenuObj.SetActive(false);
+        SetMenuState(MenuPage.Settings);
+    }
+
+    private void OnFullscreenToggle(bool value)
+    {
+        Screen.fullScreen = value;
     }
 
     private void OnExitPressed()
@@ -107,21 +130,14 @@ public class MenuManager : MonoBehaviour
 
     private void BackToMainMenu()
     {
-        _mainMenuObj.SetActive(true);
-        _settingsMenuObj.SetActive(false);
-        _duelMenuObj.SetActive(false);
+        SetMenuState(MenuPage.Main);
     }
 
-    private void SetMenuState(bool paused)
+    private void SetMenuState(MenuPage page)
     {
-        _isPaused = paused;
-        _menuContainer.SetActive(paused);
-
-        if (paused)
-        {
-            _mainMenuObj.SetActive(true);
-            _settingsMenuObj.SetActive(false);
-            _duelMenuObj.SetActive(false);
-        }
+        _mainMenuPage.SetActive(page == MenuPage.Main);
+        _duelPage.SetActive(page == MenuPage.Duel);
+        _leaderboardPage.SetActive(page == MenuPage.Leaderboard);
+        _settingsPage.SetActive(page == MenuPage.Settings);
     }
 }
