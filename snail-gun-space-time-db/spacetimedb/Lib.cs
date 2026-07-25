@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 using SpacetimeDB;
 
 public static partial class Module
@@ -191,9 +192,10 @@ public static partial class Module
     }
 
     [SpacetimeDB.Reducer]
-    public static void PlayerIsReady(ReducerContext ctx)
+    public static void PlayerIsReady(ReducerContext ctx, ulong matchId)
     {
-        var match = ctx.Db.Match.Iter().First(x => x.State != 3 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
+        var match = ctx.Db.Match.Iter().Single(x => x.Id == matchId);
+        
         if (match.LeftPlayer == ctx.Sender)
         {
             match.LeftPlayerReady = true;

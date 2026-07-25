@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53f0ad1e9047e5c359630ad3755bfda17085221b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e43b1b736ad8e052a84d6b65dd0decbaa60db10")]
 [assembly: System.Reflection.AssemblyProductAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -12,12 +12,12 @@ namespace SpacetimeDB.Types
 {
     public sealed partial class RemoteReducers : RemoteBase
     {
-        public delegate void PlayerIsReadyHandler(ReducerEventContext ctx);
+        public delegate void PlayerIsReadyHandler(ReducerEventContext ctx, ulong matchId);
         public event PlayerIsReadyHandler? OnPlayerIsReady;
 
-        public void PlayerIsReady()
+        public void PlayerIsReady(ulong matchId)
         {
-            conn.InternalCallReducer(new Reducer.PlayerIsReady());
+            conn.InternalCallReducer(new Reducer.PlayerIsReady(matchId));
         }
 
         public bool InvokePlayerIsReady(ReducerEventContext ctx, Reducer.PlayerIsReady args)
@@ -35,7 +35,8 @@ namespace SpacetimeDB.Types
                 return false;
             }
             OnPlayerIsReady(
-                ctx
+                ctx,
+                args.MatchId
             );
             return true;
         }
@@ -47,6 +48,18 @@ namespace SpacetimeDB.Types
         [DataContract]
         public sealed partial class PlayerIsReady : Reducer, IReducerArgs
         {
+            [DataMember(Name = "match_id")]
+            public ulong MatchId;
+
+            public PlayerIsReady(ulong MatchId)
+            {
+                this.MatchId = MatchId;
+            }
+
+            public PlayerIsReady()
+            {
+            }
+
             string IReducerArgs.ReducerName => "player_is_ready";
         }
     }
