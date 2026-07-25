@@ -247,6 +247,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &142225539 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4133250840232739160, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+  m_PrefabInstance: {fileID: 1795978419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ce6da7fade8d147a7c9b6e6b62fb93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Buildings
 --- !u!1 &265653586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1179,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969807497}
   m_CullTransparentMesh: 1
+--- !u!114 &1087081874 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8293319958985222037, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
+  m_PrefabInstance: {fileID: 8714312964394768261}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9395a4ac87330184dbed73b44b3591d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DuelBackground
 --- !u!1 &1347050269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,7 +1832,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2195,6 +2217,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: The Seeing Hills
       objectReference: {fileID: 0}
+    - target: {fileID: 1788264071677115863, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -2356,6 +2382,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   MyAudioManager: {fileID: 1793087707}
+  backgrounds:
+  - {fileID: 1087081874}
+  - {fileID: 142225539}
 --- !u!114 &1807569261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2517,10 +2546,6 @@ PrefabInstance:
     - target: {fileID: 1788264071677115863, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
       propertyPath: m_Name
       value: Duel Bacground 01
-      objectReference: {fileID: 0}
-    - target: {fileID: 1788264071677115863, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3778627141178438997, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
       propertyPath: countDown

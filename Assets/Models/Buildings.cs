@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Buildings : MonoBehaviour
+public class Buildings : BackgroundManager
 {
 
     [SerializeField] private float _minInterval = 1f;
@@ -38,10 +38,11 @@ public class Buildings : MonoBehaviour
 
     private Coroutine actionCoroutine;
 
-    public void Start()
+    public override void BeginAnimations()
     {
         StartCoroutine("MoveUp", _moveTime);
     }
+    
     private IEnumerator DoActionAtRandomIntervals()
     {
         while (true)

@@ -642,6 +642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6282405513680489240}
+  - component: {fileID: 4133250840232739160}
   m_Layer: 0
   m_Name: The Seeing Hills
   m_TagString: Untagged
@@ -693,6 +694,41 @@ Transform:
   - {fileID: 2578317050060170294}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4133250840232739160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788264071677115863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ce6da7fade8d147a7c9b6e6b62fb93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Buildings
+  _minInterval: 1
+  _maxInterval: 5
+  _moveTime: 15
+  building1: {fileID: 1995582433719774293}
+  building2: {fileID: 1796980423569427576}
+  building3: {fileID: 2515936919961778383}
+  building4: {fileID: 8867578335780641208}
+  building5: {fileID: 343732222788845671}
+  laserbeam1: {fileID: 7735199976674038100}
+  laserbeam2: {fileID: 2924120932087308854}
+  laserbeam3: {fileID: 8725758443778206397}
+  laserbeam4: {fileID: 6101650394798027855}
+  laserbeam5: {fileID: 5181752297888839373}
+  splat1: {fileID: 4539439938529526578}
+  splat2: {fileID: 481242185549682579}
+  splat3: {fileID: 5657338906160231418}
+  splat4: {fileID: 7931898403709542060}
+  splat5: {fileID: 404778054315400610}
+  eye1: {fileID: 2184122459546077710}
+  eye2: {fileID: 1884927593827745820}
+  eye3: {fileID: 5851523496200523207}
+  eye4: {fileID: 3024407687006460934}
+  eye5: {fileID: 3695065239106283779}
 --- !u!1 &1931249672999885138
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,7 +5584,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6912764254303948756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87ce6da7fade8d147a7c9b6e6b62fb93, type: 3}
   m_Name: 

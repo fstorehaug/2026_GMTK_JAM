@@ -26,6 +26,9 @@ public class ShootManager : MonoBehaviour
 
     [SerializeField] private AudioManager MyAudioManager;
 
+    [SerializeField] private BackgroundManager[] backgrounds;
+
+
     private ShootService _ShootService;
     private MatchMaking _matchService;
 
@@ -42,6 +45,8 @@ public class ShootManager : MonoBehaviour
     private bool _leftHasShot = false;
     private bool _rightHasShot = false;
 
+    private int randomMapIndex;
+
     private CountDownData _countDownData;
 
     public void Awake()
@@ -52,7 +57,15 @@ public class ShootManager : MonoBehaviour
         };
 
         _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
-        // _tournamentState = FindAnyObjectByType<TournamentState>();
+
+        
+        foreach (BackgroundManager g in backgrounds)
+        {
+            g.gameObject.SetActive(false);
+        }
+        randomMapIndex = UnityEngine.Random.RandomRange(0, backgrounds.Length);
+        backgrounds[randomMapIndex].gameObject.SetActive(true);
+        
     }
     public void Start()
     {
@@ -77,6 +90,7 @@ public class ShootManager : MonoBehaviour
         _leftPlayerScript.TurnAround(180);
         _rightPlayerScript.TurnAround(180);
         MyAudioManager.playAudio(2);
+        backgrounds[randomMapIndex].BeginAnimations();
     }
 
     private void Update()

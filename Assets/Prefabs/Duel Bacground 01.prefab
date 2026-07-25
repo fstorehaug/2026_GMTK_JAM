@@ -75,13 +75,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6282405513680489240}
+  - component: {fileID: 8293319958985222037}
   m_Layer: 0
   m_Name: Duel Bacground 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6282405513680489240
 Transform:
   m_ObjectHideFlags: 0
@@ -108,6 +109,18 @@ Transform:
   - {fileID: 9216753314211327678}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8293319958985222037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788264071677115863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9395a4ac87330184dbed73b44b3591d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DuelBackground
 --- !u!1 &1931249672999885138
 GameObject:
   m_ObjectHideFlags: 0
