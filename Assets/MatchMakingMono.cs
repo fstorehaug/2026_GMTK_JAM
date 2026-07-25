@@ -131,7 +131,7 @@ public class MatchMakingMono : MonoBehaviour
         _StatusText.text = "MatchStarted";
         if (!_gameManagerMono.started)
         {
-            _gameManagerMono.GunBattleGo?.Invoke();
+            _shootMAnager.OnGunBattleGo();
             _gameManagerMono.started = true;
         }
 

@@ -10,8 +10,8 @@ public class GameManagerMono : MonoBehaviour
     [SerializeField]
     private bool singlePlayer = false;
 
-    [HideInInspector] public Action GunBattleGo;
     [SerializeField] private CountDown countDown;
+    [SerializeField] private ShootManager shootManager;
 
     public bool started = false;
     private bool timergone = false;
@@ -61,7 +61,7 @@ public class GameManagerMono : MonoBehaviour
                 if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
                 {
                     started = true;
-                    GunBattleGo?.Invoke();
+                    shootManager.OnGunBattleGo();
                     countDown.TimerIsRunning = true;
                     startTime = Time.time;
                 }
