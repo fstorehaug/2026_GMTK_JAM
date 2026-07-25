@@ -1,46 +1,76 @@
 using System;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using SpacetimeDB.Types;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GameManagerMono : MonoBehaviour
 {
+    [SerializeField]
+    private bool singlePlayer = false;
 
     [HideInInspector] public Action GunBattleGo;
-
     [SerializeField] private CountDown countDown;
 
-    private bool started = false;
+    public bool started = false;
     private bool timergone = false;
 
     public float secondsBeforeDissappearCountdown = 3;
 
     private float startTime;
 
+    private MatchMaking _matchMaking;
+    private ConnectionService _connectionService;
+
+    public void Start()
+    {
+        _matchMaking = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
+        _matchMaking.onMathcUpdate += OnMathcUpdate;
+
+        _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+    }
+
+    private void OnMathcUpdate(Match obj)
+    {
+        if (obj.LeftPlayerReady && obj.RightPlayerReady)
+        {
+            started = true;
+        }
+    }
+
     private void Update()
     {
         if (started == true)
         {
-        if (Time.time - startTime > secondsBeforeDissappearCountdown)
-        {
-            if (timergone)
-                return;
+            if (Time.time - startTime > secondsBeforeDissappearCountdown)
+            {
+                    if (timergone)
+                        return;
 
-            countDown.timeText.gameObject.SetActive(false);
-            timergone = true;
-        }
+                    countDown.timeText.gameObject.SetActive(false);
+                    timergone = true;
+            }
 
         } else
         {
-
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-           
-
-            started = true;
-            GunBattleGo?.Invoke();
-            countDown.TimerIsRunning = true;
-            startTime = Time.time;
-        }
+            if (singlePlayer)
+            {
+                if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    started = true;
+                    GunBattleGo?.Invoke();
+                    countDown.TimerIsRunning = true;
+                    startTime = Time.time;
+                }
+            }
+            else
+            {
+                if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                   //TODO: redducerReady
+                }
+            }
         }
 
 

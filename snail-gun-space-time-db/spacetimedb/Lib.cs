@@ -189,6 +189,19 @@ public static partial class Module
             ctx.Db.Winstreak.Insert(new WinStreak(){CurrentWinStreak = 0, MaxWinStreak = 0, PlayerIdentity = ctx.Sender});
         }
     }
-    
-   
+
+    [SpacetimeDB.Reducer]
+    public static void PlayerIsReady(ReducerContext ctx)
+    {
+        var match = ctx.Db.Match.Iter().Single(x => x.State == 2 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
+        if (match.LeftPlayer == ctx.Sender)
+        {
+            match.LeftPlayerReady = true;
+        }
+        
+        if (match.RightPlayer == ctx.Sender)
+        {
+            match.RightPlayerReady = true;
+        }
+    }
 }

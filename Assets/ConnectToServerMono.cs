@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using UnityEngine;
 
-public class ConnectToServer : MonoBehaviour
+public class ConnectToServerMono : MonoBehaviour
 {
     private ConnectionService _connectionService;
 

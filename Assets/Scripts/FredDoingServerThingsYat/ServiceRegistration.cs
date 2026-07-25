@@ -11,6 +11,8 @@ public static class ServiceRegistration
         var services = new ServiceCollection();
 
         services
+            .AddTransient<ShootService>()
+            .AddSingleton<MatchMaking>()
             .AddSingleton<ConnectionService>()
             .AddSingleton<RegisterPlayerWithDb>();
 

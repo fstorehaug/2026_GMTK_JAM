@@ -98,6 +98,7 @@ public class ShootManager : MonoBehaviour
             // Debug.Log("Round over");
         }
 
+#if UNITY_EDITOR
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             // 2. Get the name of the currently active scene
@@ -106,6 +107,7 @@ public class ShootManager : MonoBehaviour
             // 3. Pass that name into the LoadScene method
             SceneManager.LoadScene(currentSceneName);
         }
+#endif
     }
 
     private void DoMove(float deltaTime)
