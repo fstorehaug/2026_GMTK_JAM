@@ -23,6 +23,8 @@ public class GameManagerMono : MonoBehaviour
     private MatchMaking _matchMaking;
     private ConnectionService _connectionService;
 
+    private bool matchFinished = false;
+
     public void Start()
     {
         _matchMaking = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
@@ -66,13 +68,17 @@ public class GameManagerMono : MonoBehaviour
             }
             else
             {
-                if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+                if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame && matchFinished == true)
                 {
-                   //TODO: redducerReady
+                   _matchMaking.MakeaDaMactch();
+                   matchFinished = false;
                 }
             }
         }
+    }
 
-
+    public void ServerMatchFinished()
+    {
+        matchFinished = true;
     }
 }

@@ -74,7 +74,7 @@ public class MatchMakingMono : MonoBehaviour
             ShootTimeInMiliseconds = null
         };
 
-        //player is ready.
+        _connectionService.Connection.Reducers.PlayerIsReady();
     }
 
     public void OnMatchUpdated(Match match)
@@ -102,6 +102,8 @@ public class MatchMakingMono : MonoBehaviour
     private void StateMatchFinished(Match match)
     {
         _StatusText.text = "MatchFinished";
+        _gameManagerMono.ServerMatchFinished();
+        _shootMAnager.ServerMatchFinised();
     }
 
     private void StateMatchReadyLetsGo(Match match)
@@ -134,10 +136,11 @@ public class MatchMakingMono : MonoBehaviour
 
             if (_opponentData.ShootTimeInMiliseconds != null)
             {
-                //TODO: Do State update opponent shot.
+                //TODO: Do State update opponent shot. mabye dont need??
+                //TODO: issue is one player never shoots.
+                //TODO: Do a local check to see if the local paleyer shot - if not Shoot with a time of 0;
             }
         }
-
     }
 
     private void StatePreparingForMatch(Match match)

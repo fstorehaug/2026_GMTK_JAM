@@ -621,6 +621,7 @@ namespace SpacetimeDB.Types
             {
                 Reducer.CreateOrLoadPlayer args => Reducers.InvokeCreateOrLoadPlayer(eventContext, args),
                 Reducer.MatchMaking args => Reducers.InvokeMatchMaking(eventContext, args),
+                Reducer.PlayerIsReady args => Reducers.InvokePlayerIsReady(eventContext, args),
                 Reducer.Shoot args => Reducers.InvokeShoot(eventContext, args),
                 _ => throw new ArgumentOutOfRangeException("Reducer", $"Unknown reducer {reducer}")
             };

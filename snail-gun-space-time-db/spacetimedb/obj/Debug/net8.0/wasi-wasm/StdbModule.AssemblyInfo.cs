@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3638adb15d987cdd197601f03e4406ea03543d2a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf97d21ab726128a505b7701c2df991911f45bc1")]
 [assembly: System.Reflection.AssemblyProductAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StdbModule")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -158,4 +158,8 @@ public class ShootManager : MonoBehaviour
     {
         ShootRightRemotePlayer(opponentDataShootTimeInMiliseconds);
     }
+    public void ServerMatchFinised()
+    {
+        throw new NotImplementedException();
+    }
 }
