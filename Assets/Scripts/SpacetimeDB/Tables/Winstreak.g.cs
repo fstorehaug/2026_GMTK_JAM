@@ -15,7 +15,7 @@ namespace SpacetimeDB.Types
     {
         public sealed class WinstreakHandle : RemoteTableHandle<EventContext, WinStreak>
         {
-            public override string RemoteTableName => "winstreak";
+            protected override string RemoteTableName => "winstreak";
 
             public sealed class IdUniqueIndex : UniqueIndexBase<ulong>
             {

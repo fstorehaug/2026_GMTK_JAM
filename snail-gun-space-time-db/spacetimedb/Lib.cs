@@ -193,7 +193,7 @@ public static partial class Module
     [SpacetimeDB.Reducer]
     public static void PlayerIsReady(ReducerContext ctx)
     {
-        var match = ctx.Db.Match.Iter().Single(x => x.State == 2 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
+        var match = ctx.Db.Match.Iter().First(x => x.State != 3 && (x.LeftPlayer == ctx.Sender || x.RightPlayer == ctx.Sender));
         if (match.LeftPlayer == ctx.Sender)
         {
             match.LeftPlayerReady = true;

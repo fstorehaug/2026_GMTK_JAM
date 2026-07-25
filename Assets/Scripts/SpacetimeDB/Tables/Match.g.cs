@@ -15,7 +15,7 @@ namespace SpacetimeDB.Types
     {
         public sealed class MatchHandle : RemoteTableHandle<EventContext, Match>
         {
-            public override string RemoteTableName => "match";
+            protected override string RemoteTableName => "match";
 
             public sealed class IdUniqueIndex : UniqueIndexBase<ulong>
             {

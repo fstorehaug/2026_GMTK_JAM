@@ -26,6 +26,6 @@ public class ShootService
             Debug.Log("Jaevelig daarlig aa ikke klare aa skyte i er spill om skyting");
         } 
 
-        OnShootSuccess.Invoke(); //TODO: do we need to do something, i think matchmaking does the rest
+        OnShootSuccess?.Invoke(); //TODO: do we need to do something, i think matchmaking does the rest
     }
 }
