@@ -13,20 +13,6 @@ public enum MatchUIState
 public class MatchUIManager : MonoBehaviour
 {
     public MatchUIState UIState;
-    // private MatchUIState _uIState;
-    // public MatchUIState UIState
-    // {
-    //     get => _uIState;
-    //     set
-    //     {
-    //         if (value == _uIState) return;
-
-    //         _uIState = value;
-            
-    //         _waitingUI.SetActive
-
-    //     }
-    // }
 
     [SerializeField] private GameObject _waitingUI;
     [SerializeField] private GameObject _versusUI;
@@ -48,7 +34,7 @@ public class MatchUIManager : MonoBehaviour
     [SerializeField] private Button _roundOverMainMenuButton;
 
     private float _timeVersusShown;
-    private float _timeToShowVersus = 3f;
+    private float _timeToShowVersus = 2f;
 
     private void Awake()
     {
@@ -58,7 +44,7 @@ public class MatchUIManager : MonoBehaviour
         _roundOverMainMenuButton.onClick.AddListener(OnMainMenuPressed);
     }
 
-    void Update()
+    private void Update()
     {
         if (_versusUI.activeSelf && Time.timeSinceLevelLoad > _timeVersusShown + _timeToShowVersus)
             _versusUI.SetActive(false);
@@ -66,7 +52,9 @@ public class MatchUIManager : MonoBehaviour
 
     private void OnFindNewDuelPressed()
     {
-        SceneManager.LoadScene("DuelScene");
+        // TODO: Find a new match
+
+        // SceneManager.LoadScene("DuelScene");
     }
 
     private void OnMainMenuPressed()
@@ -103,11 +91,13 @@ public class MatchUIManager : MonoBehaviour
 
     public void SetLeftShootTime(string time)
     {
+        _leftSnailShotUI.SetActive(true);
         _leftSnailTimeText.text = time;
     }
 
     public void SetRightShootTime(string time)
     {
+        _rightSnailShotUI.SetActive(true);
         _rightSnailTimeText.text = time;
     }
 }
