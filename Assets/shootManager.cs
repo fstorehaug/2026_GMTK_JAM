@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using Microsoft.Extensions.DependencyInjection;
-using SpacetimeDB.Types;
 using UnityEngine.SceneManagement;
 
 public class ShootManager : MonoBehaviour

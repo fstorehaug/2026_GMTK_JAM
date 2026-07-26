@@ -68,6 +68,9 @@ public class CountDown : MonoBehaviour
 
     private void Update()
     {
+        if (_countDownData == null)
+            _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
+
         if (_countDownData.TimerVisible && !timeText.gameObject.activeSelf)
         {
             timeText.gameObject.SetActive(true);
