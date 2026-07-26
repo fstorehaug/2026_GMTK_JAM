@@ -45,7 +45,6 @@ public class MatchMakingMono : MonoBehaviour
             .First(x => x.Identity == _connectionService.Connection.Identity).SnailName;
 
         _loaclPlayerName.text = loaclPlayerName;
-        _matchUIManager.SetLeftSnailName(loaclPlayerName);
 
         if (match.LeftPlayer != null && match.RightPlayer != null)
         {
@@ -93,7 +92,6 @@ public class MatchMakingMono : MonoBehaviour
         }
 
         _RemotePlayerName.text = opponentName;
-        _matchUIManager.SetRightSnailName(opponentName);
 
         return  new OpponentData()
         {
