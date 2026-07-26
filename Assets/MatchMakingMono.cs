@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SpacetimeDB;
 using SpacetimeDB.Types;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MatchMakingMono : MonoBehaviour
@@ -38,6 +39,14 @@ public class MatchMakingMono : MonoBehaviour
         _matchMaking.onMatchMakingFailed += () => { Debug.Log("Rohrough, faar ikke laav aa spille"); };
         _matchMaking.onMatchMakingSuccess += OnMatchFound;
         _matchMaking.onMathcUpdate += OnMatchUpdatedForwerd;
+
+        if (_connectionService.Connection.Db.Player.Identity.Find((Identity)_connectionService.Connection.Identity) == null)
+        {
+            //TODO: should give feedback. and toss to menu.
+            Application.Quit();
+            return;
+        }
+
         _matchMaking.MakeaDaMactch();
 
     }
