@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 public enum MatchUIState
 {
@@ -54,7 +55,8 @@ public class MatchUIManager : MonoBehaviour
     {
         // TODO: Find a new match
 
-        // SceneManager.LoadScene("DuelScene");
+        SceneManager.LoadScene("DuelScene");
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
     }
 
     private void OnMainMenuPressed()
