@@ -33,7 +33,7 @@ public class MatchMaking
     {
         var matchiter = _connectionService.Connection.Db.Match.Iter();
         var openMatchers = matchiter.Where(x => x.State != 3).ToList();
-        var match = openMatchers.FirstOrDefault(x => x.LeftPlayer == _connectionService.Connection.Identity || x.RightPlayer == _connectionService.Connection.Identity);
+        var match = openMatchers.FirstOrDefault(x => (x.LeftPlayer == _connectionService.Connection.Identity && x.TimeInMilSecondsPlayerLeft == null) || (x.RightPlayer == _connectionService.Connection.Identity && x.TimeInMilSecondsPlayerRight == null));
 
         if (match != null)
         {
