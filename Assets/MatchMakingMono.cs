@@ -37,9 +37,14 @@ public class MatchMakingMono : MonoBehaviour
 
         _matchMaking.onMatchMakingFailed += () => { Debug.Log("Rohrough, faar ikke laav aa spille"); };
         _matchMaking.onMatchMakingSuccess += OnMatchFound;
-        _matchMaking.onMathcUpdate += OnMatchUpdated;
+        _matchMaking.onMathcUpdate += OnMatchUpdatedForwerd;
         _matchMaking.MakeaDaMactch();
 
+    }
+
+    private void OnMatchUpdatedForwerd(Match obj)
+    {
+        OnMatchUpdated(obj, obj.State);
     }
 
     public void OnMatchFound(Match match)
