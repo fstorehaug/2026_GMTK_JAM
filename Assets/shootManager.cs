@@ -161,7 +161,7 @@ public class ShootManager : MonoBehaviour
 
         _rightPlayerScript.Shoot(time);
 
-        if (ShootTimeLeft > 0 & ShootTimeRight > 0)
+        if (_leftHasShot && _rightHasShot)
         {
             _matchMakingMono.StateMatchFinished(_matchService.CurrentMatch);
         }
@@ -190,7 +190,7 @@ public class ShootManager : MonoBehaviour
 
         _leftPlayerScript.Shoot(ShootTimeLeft);
 
-        if (ShootTimeLeft > 0 & ShootTimeRight > 0)
+        if (_leftHasShot && _rightHasShot)
         {
             _matchMakingMono.StateMatchFinished(_matchService.CurrentMatch);
         }
