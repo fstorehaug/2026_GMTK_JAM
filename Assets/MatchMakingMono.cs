@@ -21,7 +21,7 @@ public class MatchMakingMono : MonoBehaviour
         public bool leftPlayer;
         public Identity identity;
         public string name;
-        public float? ShootTimeInMiliseconds;
+        public Match ShootTimeInMiliseconds;
     }
 
     void Start()
@@ -121,9 +121,29 @@ public class MatchMakingMono : MonoBehaviour
 
     private void StateMatchFinished(Match match)
     {
-        _StatusText.text = "MatchFinished";
-        _gameManagerMono.ServerMatchFinished();
-        _shootMAnager.ServerMatchFinised();
+        if (_opponentData.ShootTimeInMiliseconds == null)
+        {
+            if (_opponentData.leftPlayer)
+            {
+                if (match.TimeInMilSecondsPlayerLeft != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerLeft;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
+            else
+            {
+                if (match.TimeInMilSecondsPlayerRight != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerRight;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
+
+            _StatusText.text = "MatchFinished";
+            _gameManagerMono.ServerMatchFinished();
+            _shootMAnager.ServerMatchFinised(_opponentData.ShootTimeInMiliseconds);
+        }
     }
 
     private void StateMatchReadyLetsGo(Match match)

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using Microsoft.Extensions.DependencyInjection;
+using SpacetimeDB.Types;
 using UnityEngine.SceneManagement;
 
 public class ShootManager : MonoBehaviour
@@ -175,13 +176,14 @@ public class ShootManager : MonoBehaviour
         _leftPlayerScript.Shoot(ShootTimeLeft);
     }
 
-    public void OpponentShootTimeFromServer(float opponentDataShootTimeInMiliseconds)
+    public void OpponentShootTimeFromServer(float opponentDataShootTimeInSeconds)
     {
-        ShootRightRemotePlayer(opponentDataShootTimeInMiliseconds);
+        ShootRightRemotePlayer(opponentDataShootTimeInSeconds);
     }
-    public void ServerMatchFinised()
+    public void ServerMatchFinised(float? remoteShootTime)
     {
-        
+        if (_rightHasShot == false && remoteShootTime != null)
+            ShootRightRemotePlayer((float)remoteShootTime);
     }
 
     public void HandleLocalPlayerShotLogic(float? LocalPlayerShootTimeServer)
