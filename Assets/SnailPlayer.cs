@@ -40,7 +40,7 @@ public class SnailPlayer : MonoBehaviour
         }
         else
         {
-            //TODO: do whif sound, "click" no shot. 
+            TooSoon();
         }
     }
 

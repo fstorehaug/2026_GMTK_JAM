@@ -157,10 +157,9 @@ public class ShootManager : MonoBehaviour
         if (time > 10)
         {
             _leftPlayerScript.GetShot();
-            _rightPlayerScript.Shoot(time);
         }
-        else
-            _rightPlayerScript.TooSoon();
+
+        _rightPlayerScript.Shoot(time);
 
         if (ShootTimeLeft > 0 & ShootTimeRight > 0)
         {
@@ -187,10 +186,9 @@ public class ShootManager : MonoBehaviour
         if (ShootTimeLeft > 10)
         {
             _rightPlayerScript.GetShot();
-            _leftPlayerScript.Shoot(ShootTimeLeft);
         }
-        else
-            _leftPlayerScript.TooSoon();
+
+        _leftPlayerScript.Shoot(ShootTimeLeft);
 
         if (ShootTimeLeft > 0 & ShootTimeRight > 0)
         {
