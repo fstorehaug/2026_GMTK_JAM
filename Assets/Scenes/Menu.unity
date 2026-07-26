@@ -14760,16 +14760,16 @@ MonoBehaviour:
   m_text: 'Rules:
 
     The duel will start with a countdown starting at 10 seconds,
-    the timer will dissapear after 3 seconds and you have to keep your internal clock
+    the timer will disappear after 3 seconds and you have to keep your internal clock
     sharp to get a good shot.
 
 
-    You want to shoot before your oponent does, but
-    not before the countdown is done, or else you''ll get a missfire.
+    You want to shoot before your opponent does,
+    but not before the countdown is done, or else you''ll get a misfire.
 
 
     <size=30>(We
-    may not have gotten online to work propperly before the deadline, sorry)
+    may not have gotten online to work properly before the deadline, sorry)
 
     (Also
     the first snail name you join with online can''t be changed sorry)'
