@@ -155,9 +155,11 @@ public class ShootManager : MonoBehaviour
         if (time > 10)
         {
             _leftPlayerScript.GetShot();
+            _rightPlayerScript.Shoot(time);
         }
+        else
+            _rightPlayerScript.TooSoon();
         
-        _rightPlayerScript.Shoot(time);
     }
 
     public void ShootLeft()
@@ -174,13 +176,15 @@ public class ShootManager : MonoBehaviour
         _leftTimeText.gameObject.SetActive(true);
         _leftTimeText.text = CountDownData.FormatTime(ShootTimeLeft);
         _shootPlane.SetActive(true);
-        
+
         if (ShootTimeLeft > 10)
         {
             _rightPlayerScript.GetShot();
+            _leftPlayerScript.Shoot(ShootTimeLeft);
         }
-
-        _leftPlayerScript.Shoot(ShootTimeLeft);
+        else
+            _leftPlayerScript.TooSoon();
+        
     }
 
     public void OpponentShootTimeFromServer(float opponentDataShootTimeInSeconds)

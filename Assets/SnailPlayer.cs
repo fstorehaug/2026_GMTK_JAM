@@ -15,6 +15,7 @@ public class SnailPlayer : MonoBehaviour
     public MeshRenderer ShellMaterial;
     public GameObject bandaid1;
     public GameObject bandaid2;
+    public SkinnedMeshRenderer tooSoon;
 
     public Texture HealthyTexture_body;
     public Texture DamagedTexture1_body;
@@ -69,6 +70,29 @@ public class SnailPlayer : MonoBehaviour
 
     }
 
+    public void TooSoon()
+    {
+        MyAudioManager.playAudio(5);
+        tooSoon.gameObject.SetActive(true);
+        StartCoroutine(TooSoonAnim());
+    }
+
+    private IEnumerator TooSoonAnim()
+    {
+        float elapsedTime = 0f;
+        float progress = 0f;
+        float animTime = 2f;
+
+        while (elapsedTime < animTime)
+        {
+            elapsedTime += Time.deltaTime;
+            progress = elapsedTime / animTime;
+
+            tooSoon.SetBlendShapeWeight(0, progress * 100f);
+            yield return null;
+        }
+
+    }
     public void updateVisuals(int i)
     {
         switch (i)

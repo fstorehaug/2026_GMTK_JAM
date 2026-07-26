@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSourceDie;
     public AudioSource audioSourceWin;
     public AudioSource audioSourceMusic;
+    public AudioSource audioSourceTooSoon;
 
     public void playAudio(int i)
     {
@@ -29,6 +30,9 @@ public class AudioManager : MonoBehaviour
                 break;
             case 4:
                 audioSourceMusic.Play();
+                break;
+            case 5:
+                audioSourceTooSoon.Play();
                 break;
         }
     }
