@@ -63,9 +63,14 @@ public class ShootManager : MonoBehaviour
         {
             g.gameObject.SetActive(false);
         }
+        
         randomMapIndex = UnityEngine.Random.RandomRange(0, backgrounds.Length);
         backgrounds[randomMapIndex].gameObject.SetActive(true);
         
+        /** use this to test specific stage in duelscene scene
+        backgrounds[1].gameObject.SetActive(true);
+        backgrounds[1].BeginAnimations();
+        **/
     }
     public void Start()
     {

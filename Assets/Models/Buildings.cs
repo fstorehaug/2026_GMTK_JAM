@@ -115,7 +115,7 @@ public class Buildings : BackgroundManager
 
         elapsedTime = 0f;
 
-        while (elapsedTime < 1.4f)
+        while (elapsedTime < 1.3f)
         {
             elapsedTime += Time.deltaTime;
             progress = elapsedTime / animTime;
