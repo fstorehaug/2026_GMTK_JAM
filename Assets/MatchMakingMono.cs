@@ -129,6 +129,7 @@ public class MatchMakingMono : MonoBehaviour
 
     public void StateMatchFinished(Match match)
     {
+        _matchMaking = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
         _matchMaking.CurrentMatch = _connectionService.Connection.Db.Match.Id.Find(match.Id);
 
         if (_opponentData.ShootTimeInMiliseconds == null)
