@@ -21,6 +21,8 @@ public class LocalShootManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _leftTimeText;
     [SerializeField] private TextMeshProUGUI _rightTimeText;
 
+    [SerializeField] private TextMeshProUGUI _spaceToReadyText;
+
     [SerializeField] private GameObject _shootPlane;
 
     [SerializeField] private AnimationCurve _scoreCurve;
@@ -97,6 +99,8 @@ public class LocalShootManager : MonoBehaviour
         _rightPlayerScript.TurnAround(180);
         MyAudioManager.playAudio(2);
         backgrounds[randomMapIndex].BeginAnimations();
+
+        _spaceToReadyText.gameObject.SetActive(false);
     }
 
     private void Update()
