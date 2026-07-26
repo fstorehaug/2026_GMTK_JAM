@@ -16,7 +16,7 @@ public class ConnectToServerMono : MonoBehaviour
 
     private void Awake()
     {
-        _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+        _connectionService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
         DontDestroyOnLoad(this);
         _onConnectCallback += () =>
         {

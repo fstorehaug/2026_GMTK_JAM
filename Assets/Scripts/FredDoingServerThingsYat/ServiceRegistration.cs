@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class ServiceRegistration
 {
-    public static ServiceProvider ServiceProvider = RegisterServices();
+    public static IServiceScope ServiceProvider = RegisterServices().CreateScope();
 
     public static ServiceProvider RegisterServices()
     {

@@ -27,10 +27,10 @@ public class GameManagerMono : MonoBehaviour
 
     public void Start()
     {
-        _matchMaking = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
+        _matchMaking = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
         _matchMaking.onMathcUpdate += OnMathcUpdate;
 
-        _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+        _connectionService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
 
         countDown.timeText.gameObject.SetActive(true);
     }

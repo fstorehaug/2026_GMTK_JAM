@@ -27,8 +27,8 @@ public class MatchMakingMono : MonoBehaviour
 
     void Start()
     {
-        var matchMaking = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
-        _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+        var matchMaking = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
+        _connectionService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
         _StatusText.text = "Waiting For Match";
 
         _matchUIManager.SetUIState(MatchUIState.Waiting);

@@ -7,11 +7,18 @@ using TMPro;
 public record CountDownData
 {
     public const float STARTTIME = 10;
+    public CountDownData()
+    {
+        TimeRemaining = STARTTIME;
+        TimerIsRunning = false;
+        StopTimerVisually = false;
+        TimerVisible = true;
+    }
 
-    public float TimeRemaining = STARTTIME;
-    public bool TimerIsRunning = false;
-    public bool StopTimerVisually = false;
-    public bool TimerVisible = true;
+    public float TimeRemaining;
+    public bool TimerIsRunning;
+    public bool StopTimerVisually;
+    public bool TimerVisible;
 
     public float TimeSinceStrat => STARTTIME - TimeRemaining;
 
@@ -38,7 +45,7 @@ public class ScopeService
 
     public void RenewScope()
     {
-        ServiceRegistration.ServiceProvider.CreateScope();
+        ServiceRegistration.ServiceProvider = ServiceRegistration.ServiceProvider.ServiceProvider.CreateScope();
         OnRenewScope?.Invoke();
     }
 }
@@ -51,10 +58,10 @@ public class CountDown : MonoBehaviour
 
     private void Awake()
     {
-        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
-        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
+        _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
         {
-            _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+            _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
 
         };
     }

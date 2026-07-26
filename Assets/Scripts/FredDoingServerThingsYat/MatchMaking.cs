@@ -46,7 +46,7 @@ public class MatchMaking
                 }
             };
 
-            ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
+            ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
             return;
         }
 
@@ -60,7 +60,7 @@ public class MatchMaking
         var openMatchers = matchiter.Where(x => x.State != 3).ToList();
         var match = openMatchers.First(x => x.LeftPlayer == _connectionService.Connection.Identity || x.RightPlayer == _connectionService.Connection.Identity);
 
-        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
         onMatchMakingSuccess?.Invoke(match);
         CurrentMatchId = match.Id;
 

@@ -23,7 +23,7 @@ public class LeaderboardLoader : MonoBehaviour
 
         _leaderboardList.Clear();
 
-        _cService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
+        _cService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
         var winstreakList = _cService.Connection.Db.Winstreak.Iter().OrderByDescending(x => x.MaxWinStreak).Take(50).ToList();
         _cService.Connection.Db.Winstreak.OnUpdate += UpdateLeaderboard;
 

@@ -83,7 +83,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnOnlineDuelPressed()
     {
-        RegisterPlayerWithDb playerDB = ServiceRegistration.ServiceProvider.GetRequiredService<RegisterPlayerWithDb>();
+        RegisterPlayerWithDb playerDB = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<RegisterPlayerWithDb>();
         playerDB.RegisterPlayer(_localSnailName);
 
         playerDB.registrationFail += OnRegisterFail;

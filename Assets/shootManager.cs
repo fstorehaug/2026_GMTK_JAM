@@ -52,12 +52,12 @@ public class ShootManager : MonoBehaviour
 
     public void Awake()
     {
-        ServiceRegistration.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().OnRenewScope += () =>
         {
-            _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+            _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
         };
 
-        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+        _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
 
         
         foreach (BackgroundManager g in backgrounds)
@@ -77,8 +77,8 @@ public class ShootManager : MonoBehaviour
     }
     public void Start()
     {
-        _ShootService = ServiceRegistration.ServiceProvider.GetRequiredService<ShootService>();
-        _matchService = ServiceRegistration.ServiceProvider.GetRequiredService<MatchMaking>();
+        _ShootService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ShootService>();
+        _matchService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
         
         _leftTimeText.gameObject.SetActive(false);
         _rightTimeText.gameObject.SetActive(false);
@@ -92,7 +92,7 @@ public class ShootManager : MonoBehaviour
 
     public void OnGunBattleGo()
     {
-        _countDownData = ServiceRegistration.ServiceProvider.GetRequiredService<CountDownData>();
+        _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
         _countDownData.TimerIsRunning = true;
         _moving = true;
         _leftPlayerScript.TurnAround(180);
