@@ -2359,6 +2359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalShootManager
   _gameManager: {fileID: 1807569262}
+  _matchUIManager: {fileID: 1960878704}
   _speedMod: 0.5
   _maxScore: 100
   _leftPlayer: {fileID: 1762611736}

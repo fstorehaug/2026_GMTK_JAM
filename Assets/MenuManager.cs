@@ -78,6 +78,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnLocalDuelPressed()
     {
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
         SceneManager.LoadScene("LocalDuelScene");
     }
 

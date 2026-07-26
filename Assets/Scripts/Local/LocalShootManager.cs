@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class LocalShootManager : MonoBehaviour
 {
     [SerializeField] private LocalGameManagerMono _gameManager;
+    [SerializeField] private MatchUIManager _matchUIManager;
     [SerializeField] private float _speedMod = 0.5f;
     [SerializeField] private float _maxScore = 100;
 
@@ -29,7 +30,8 @@ public class LocalShootManager : MonoBehaviour
     [SerializeField] private BackgroundManager[] backgrounds;
 
 
-    private bool _moving = false;
+    private bool _leftMoving = false;
+    private bool _rightMoving = false;
     // For moving up the slope at an angle.
     private float _linearScaling = 0.206f;
 
@@ -89,7 +91,8 @@ public class LocalShootManager : MonoBehaviour
     {
         _countDownData = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<CountDownData>();
         _countDownData.TimerIsRunning = true;
-        _moving = true;
+        _leftMoving = true;
+        _rightMoving = true;
         _leftPlayerScript.TurnAround(180);
         _rightPlayerScript.TurnAround(180);
         MyAudioManager.playAudio(2);
@@ -98,10 +101,7 @@ public class LocalShootManager : MonoBehaviour
 
     private void Update()
     {
-        if (_moving)
-        {
-            DoMove(Time.deltaTime);
-        }
+        DoMove(Time.deltaTime);
 
         if (_countDownData.TimerIsRunning && !_leftHasShot && Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
         {
@@ -113,6 +113,10 @@ public class LocalShootManager : MonoBehaviour
             ShootRight();
         }
 
+        if (_leftHasShot && _rightHasShot)
+        {
+            _matchUIManager.SetUIState(MatchUIState.RoundOver);
+        }
 
 #if UNITY_EDITOR
         if (Keyboard.current.rKey.wasPressedThisFrame)
@@ -128,20 +132,25 @@ public class LocalShootManager : MonoBehaviour
 
     private void DoMove(float deltaTime)
     {
-        _leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod * -1 ;
-        _rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod;
-        
-        _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
-        _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
+        if (_leftMoving)
+        {
+            _leftPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod * -1 ;
+            _leftPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
+            _leftPlayerScript.Move();
+        }
 
-        _leftPlayerScript.Move();
-        _rightPlayerScript.Move();
+        if (_rightMoving)
+        {
+            _rightPlayer.position += new Vector3(deltaTime * UnityEngine.Random.value,0 ,0) * _speedMod;
+            _rightPlayer.position += new Vector3(0, deltaTime * UnityEngine.Random.value,0)* _linearScaling* _speedMod;
+            _rightPlayerScript.Move();
+        }
     }
 
     public void ShootLeft()
     {
         _countDownData.TimerVisible = true;
-        _moving = false;
+        _leftMoving = false;
 
         ShootTimeLeft = _countDownData.TimeSinceStrat;
         
@@ -154,12 +163,13 @@ public class LocalShootManager : MonoBehaviour
 
         _leftPlayerScript.TurnAround(180);
 
-        _shootPlane.SetActive(true);
 
-        if (ShootTimeLeft > 10)
+        if (ShootTimeLeft >= 10)
         {
             _rightPlayerScript.GetShot();
             _leftPlayerScript.Shoot(ShootTimeLeft);
+            _shootPlane.SetActive(true);
+            _rightMoving = false;
         }
         else
             _leftPlayerScript.TooSoon();
@@ -169,7 +179,7 @@ public class LocalShootManager : MonoBehaviour
     public void ShootRight()
     {
         _countDownData.TimerVisible = true;
-        _moving = false;
+        _rightMoving = false;
 
         ShootTimeRight = _countDownData.TimeSinceStrat;
         
@@ -182,12 +192,13 @@ public class LocalShootManager : MonoBehaviour
 
         _rightPlayerScript.TurnAround(180);
 
-        _shootPlane.SetActive(true);
 
-        if (ShootTimeRight > 10)
+        if (ShootTimeRight >= 10)
         {
             _leftPlayerScript.GetShot();
             _rightPlayerScript.Shoot(ShootTimeRight);
+            _shootPlane.SetActive(true);
+            _leftMoving = false;
         }
         else
             _rightPlayerScript.TooSoon();
