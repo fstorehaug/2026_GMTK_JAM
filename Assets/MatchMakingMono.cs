@@ -12,6 +12,7 @@ public class MatchMakingMono : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _StatusText;
     [SerializeField] private GameManagerMono _gameManagerMono;
     [SerializeField] private ShootManager _shootMAnager;
+    [SerializeField] private MatchUIManager _matchUIManager;
 
     private ConnectionService _connectionService;
     private OpponentData _opponentData;
@@ -30,6 +31,8 @@ public class MatchMakingMono : MonoBehaviour
         _connectionService = ServiceRegistration.ServiceProvider.GetRequiredService<ConnectionService>();
         _StatusText.text = "Waiting For Match";
 
+        _matchUIManager.SetUIState(MatchUIState.Waiting);
+
         matchMaking.onMatchMakingFailed += () => { Debug.Log("Rohrough, faar ikke laav aa spille"); };
         matchMaking.onMatchMakingSuccess += OnMatchFound;
         matchMaking.onMathcUpdate += OnMatchUpdated;
@@ -38,8 +41,11 @@ public class MatchMakingMono : MonoBehaviour
 
     public void OnMatchFound(Match match)
     {
-        _loaclPlayerName.text = _connectionService.Connection.Db.Player.Iter()
+        string loaclPlayerName = _connectionService.Connection.Db.Player.Iter()
             .First(x => x.Identity == _connectionService.Connection.Identity).SnailName;
+
+        _loaclPlayerName.text = loaclPlayerName;
+        _matchUIManager.SetLeftSnailName(loaclPlayerName);
 
         if (match.LeftPlayer != null && match.RightPlayer != null)
         {
@@ -70,7 +76,6 @@ public class MatchMakingMono : MonoBehaviour
                 opponentLeft = false;
                 opponentName = opponent.SnailName;
                 oppIdentity = opponent.Identity;
-
             }
         }
         else
@@ -83,10 +88,12 @@ public class MatchMakingMono : MonoBehaviour
                 opponentLeft = true;
                 opponentName = opponent.SnailName;
                 oppIdentity = opponent.Identity;
+
             }
         }
 
         _RemotePlayerName.text = opponentName;
+        _matchUIManager.SetRightSnailName(opponentName);
 
         return  new OpponentData()
         {
@@ -124,6 +131,8 @@ public class MatchMakingMono : MonoBehaviour
         _StatusText.text = "MatchFinished";
         _gameManagerMono.ServerMatchFinished();
         _shootMAnager.ServerMatchFinised();
+
+        _matchUIManager.SetUIState(MatchUIState.RoundOver);
     }
 
     private void StateMatchReadyLetsGo(Match match)
@@ -177,11 +186,15 @@ public class MatchMakingMono : MonoBehaviour
     {
         _StatusText.text = "OpponentFound";
         SetupOpponentName(match);
+
+        _matchUIManager.SetUIState(MatchUIState.Dueling);
     }
 
     private void StateLookingForMatch(Match match)
     {
         _StatusText.text = "Searching for opponent";
+
+        // Seems to not get called?
     }
 
 

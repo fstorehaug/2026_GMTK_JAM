@@ -1156,6 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5399467532207698629}
+  - component: {fileID: 673666410210591410}
   m_Layer: 5
   m_Name: In Match UI
   m_TagString: Untagged
@@ -1187,6 +1188,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &673666410210591410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5072501185976548120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b2d3e24d4b64e41a3e234554b32402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MatchUIManager
+  UIState: 0
+  _waitingUI: {fileID: 7164724106637851914}
+  _versusUI: {fileID: 455824100115594163}
+  _roundOverUI: {fileID: 835572569887051621}
+  _leftSnailShotUI: {fileID: 4342633894447309751}
+  _rightSnailShotUI: {fileID: 357929570104905116}
+  _versusNameLeft: {fileID: 229291702090521254}
+  _versusNameRight: {fileID: 1333996523559129306}
+  _leftSnailNameText: {fileID: 2956159949686076287}
+  _leftSnailTimeText: {fileID: 763331764087357689}
+  _rightSnailNameText: {fileID: 5388483971302326322}
+  _rightSnailTimeText: {fileID: 3190070198443982312}
+  _waitingMainMenuButton: {fileID: 4810745962104722471}
+  _findNewDuelButton: {fileID: 2036544111283447904}
+  _roundOverMainMenuButton: {fileID: 4604711035495836162}
 --- !u!1 &5213365489930718656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,7 +1762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7898674222406277651
 RectTransform:
   m_ObjectHideFlags: 0

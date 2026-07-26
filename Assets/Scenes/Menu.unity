@@ -12761,6 +12761,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Duel Bacground 01
       objectReference: {fileID: 0}
+    - target: {fileID: 1788264071677115863, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6282405513680489240, guid: 1fea0b2e85941f947ae46a388af6b8e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
