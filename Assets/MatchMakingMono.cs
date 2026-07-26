@@ -15,6 +15,7 @@ public class MatchMakingMono : MonoBehaviour
     [SerializeField] private MatchUIManager _matchUIManager;
 
     private ConnectionService _connectionService;
+    private MatchMaking _matchMaking;
     private OpponentData _opponentData;
 
 
@@ -28,16 +29,16 @@ public class MatchMakingMono : MonoBehaviour
 
     void Start()
     {
-        var matchMaking = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
+        _matchMaking = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<MatchMaking>();
         _connectionService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
         _StatusText.text = "Waiting For Match";
 
         _matchUIManager.SetUIState(MatchUIState.Waiting);
 
-        matchMaking.onMatchMakingFailed += () => { Debug.Log("Rohrough, faar ikke laav aa spille"); };
-        matchMaking.onMatchMakingSuccess += OnMatchFound;
-        matchMaking.onMathcUpdate += OnMatchUpdated;
-        matchMaking.MakeaDaMactch();
+        _matchMaking.onMatchMakingFailed += () => { Debug.Log("Rohrough, faar ikke laav aa spille"); };
+        _matchMaking.onMatchMakingSuccess += OnMatchFound;
+        _matchMaking.onMathcUpdate += OnMatchUpdated;
+        _matchMaking.MakeaDaMactch();
 
     }
 
@@ -128,21 +129,23 @@ public class MatchMakingMono : MonoBehaviour
 
     public void StateMatchFinished(Match match)
     {
+        _matchMaking.CurrentMatch = _connectionService.Connection.Db.Match.Id.Find(match.Id);
+
         if (_opponentData.ShootTimeInMiliseconds == null)
         {
             if (_opponentData.leftPlayer)
             {
-                if (match.TimeInMilSecondsPlayerLeft != null)
+                if (_matchMaking.CurrentMatch.TimeInMilSecondsPlayerLeft != null)
                 {
-                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerLeft;
+                    _opponentData.ShootTimeInMiliseconds = _matchMaking.CurrentMatch.TimeInMilSecondsPlayerLeft;
                     _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
                 }
             }
             else
             {
-                if (match.TimeInMilSecondsPlayerRight != null)
+                if (_matchMaking.CurrentMatch.TimeInMilSecondsPlayerRight != null)
                 {
-                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerRight;
+                    _opponentData.ShootTimeInMiliseconds = _matchMaking.CurrentMatch.TimeInMilSecondsPlayerRight;
                     _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
                 }
             }
