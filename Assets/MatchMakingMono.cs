@@ -17,6 +17,7 @@ public class MatchMakingMono : MonoBehaviour
     private ConnectionService _connectionService;
     private OpponentData _opponentData;
 
+
     public struct OpponentData
     {
         public bool leftPlayer;
@@ -37,6 +38,7 @@ public class MatchMakingMono : MonoBehaviour
         matchMaking.onMatchMakingSuccess += OnMatchFound;
         matchMaking.onMathcUpdate += OnMatchUpdated;
         matchMaking.MakeaDaMactch();
+
     }
 
     public void OnMatchFound(Match match)
@@ -124,7 +126,7 @@ public class MatchMakingMono : MonoBehaviour
         }
     }
 
-    private void StateMatchFinished(Match match)
+    public void StateMatchFinished(Match match)
     {
         if (_opponentData.ShootTimeInMiliseconds == null)
         {

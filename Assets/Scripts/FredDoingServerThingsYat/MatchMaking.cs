@@ -22,6 +22,7 @@ public class MatchMaking
     public Action<Match> onMathcUpdate;
 
     public ulong CurrentMatchId;
+    public Match CurrentMatch;
 
     public MatchMaking(ConnectionService connectionService)
     {
@@ -37,6 +38,7 @@ public class MatchMaking
         if (match != null)
         {
             CurrentMatchId = match.Id;
+            CurrentMatch = match;
             onMatchMakingSuccess.Invoke(match);
             _connectionService.Connection.Db.Match.OnUpdate += (context, row, newRow) =>
             {

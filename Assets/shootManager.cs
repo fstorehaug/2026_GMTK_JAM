@@ -27,6 +27,8 @@ public class ShootManager : MonoBehaviour
 
     [SerializeField] private AudioManager MyAudioManager;
 
+    [SerializeField] private MatchMakingMono _matchMakingMono;
+
     [SerializeField] private BackgroundManager[] backgrounds;
 
 
@@ -159,7 +161,12 @@ public class ShootManager : MonoBehaviour
         }
         else
             _rightPlayerScript.TooSoon();
-        
+
+        if (ShootTimeLeft > 0 & ShootTimeRight > 0)
+        {
+            _matchMakingMono.StateMatchFinished(_matchService.CurrentMatch);
+        }
+
     }
 
     public void ShootLeft()
@@ -184,6 +191,12 @@ public class ShootManager : MonoBehaviour
         }
         else
             _leftPlayerScript.TooSoon();
+
+        if (ShootTimeLeft > 0 & ShootTimeRight > 0)
+        {
+            _matchMakingMono.StateMatchFinished(_matchService.CurrentMatch);
+        }
+            
         
     }
 
