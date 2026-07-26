@@ -706,9 +706,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ce6da7fade8d147a7c9b6e6b62fb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Buildings
-  _minInterval: 1
-  _maxInterval: 5
-  _moveTime: 28.5
+  _speedAll: 1
+  _speedDownMult: 0.5
+  _building1MoveDistance: 7.5
+  _building2MoveDistance: 3
+  _building3MoveDistance: 6
+  _building4MoveDistance: 4.5
+  _building5MoveDistance: 1.75
   building1: {fileID: 1995582433719774293}
   building2: {fileID: 1796980423569427576}
   building3: {fileID: 2515936919961778383}
@@ -5589,9 +5593,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ce6da7fade8d147a7c9b6e6b62fb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Buildings
-  _minInterval: 1
-  _maxInterval: 5
-  _moveTime: 15
+  _speedAll: 1
+  _speedDownMult: 1.6
+  _building1MoveDistance: 7.5
+  _building2MoveDistance: 3
+  _building3MoveDistance: 5
+  _building4MoveDistance: 4.5
+  _building5MoveDistance: 1.7
   building1: {fileID: 1995582433719774293}
   building2: {fileID: 1796980423569427576}
   building3: {fileID: 2515936919961778383}

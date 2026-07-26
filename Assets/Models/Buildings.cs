@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class Buildings : BackgroundManager
 {
+    [SerializeField] private float _speedAll = 1f;
+    [SerializeField] private float _speedDownMult = 1.6f;
 
-    [SerializeField] private float _minInterval = 1f;
-    [SerializeField] private float _maxInterval = 5f;
-    [SerializeField] private float _moveTime = 8f;
+    [SerializeField] private float _building1MoveDistance = 7.5f;
+    [SerializeField] private float _building2MoveDistance = 3f;
+    [SerializeField] private float _building3MoveDistance = 5f;
+    [SerializeField] private float _building4MoveDistance = 4.5f;
+    [SerializeField] private float _building5MoveDistance = 1.7f;
 
     [SerializeField] private GameObject building1;
     [SerializeField] private GameObject building2;
@@ -33,113 +37,107 @@ public class Buildings : BackgroundManager
     [SerializeField] private EyeRock eye5;
 
 
-
-    private bool _isMoving = false;
-
-    private Coroutine actionCoroutine;
-
     public override void BeginAnimations()
     {
-        StartCoroutine("MoveUp", _moveTime);
-    }
-    
-    private IEnumerator DoActionAtRandomIntervals()
-    {
-        while (true)
-        {
-            // Calculate a brand new wait duration for every cycle
-            float waitTime = Random.Range(_minInterval, _maxInterval);
-            yield return new WaitForSeconds(waitTime);
-
-            if (_isMoving == false)
-                StartCoroutine("MoveUp", _moveTime);
-        }
+        StartCoroutine("MoveUp", _speedAll);
     }
 
-    private IEnumerator MoveUp(float animTime)
+    private IEnumerator MoveUp(float speed)
     {
-        _isMoving = true;
         float elapsedTime = 0f;
         float progress = 0f;
         Vector3 tmpPosition;
+        tmpPosition = building1.transform.position;
+        float animTime = 3.1f;
 
-        while (elapsedTime < 3.1f)
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building1.transform.position;
-            building1.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * 0.13f, tmpPosition.z);
+            
+            building1.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * _building1MoveDistance, tmpPosition.z);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.0f);
 
         elapsedTime = 0f;
+        tmpPosition = building2.transform.position;
+        animTime = 2.5f;
 
-        while (elapsedTime < 2.5f)
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building2.transform.position;
-            building2.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * 0.1f, tmpPosition.z);
+            
+            building2.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * _building2MoveDistance, tmpPosition.z);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.0f);
 
         elapsedTime = 0f;
+        tmpPosition = building3.transform.position;
+        animTime = 2.5f; 
 
-        while (elapsedTime < 2.5f)
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building3.transform.position;
-            building3.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * 0.15f, tmpPosition.z);
+            
+            building3.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * _building3MoveDistance, tmpPosition.z);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.0f);
 
         elapsedTime = 0f;
+        tmpPosition = building4.transform.position;
+        animTime = 2.2f;
 
-        while (elapsedTime < 2.2f)
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building4.transform.position;
-            building4.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * 0.15f, tmpPosition.z);
+            
+            building4.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * _building4MoveDistance, tmpPosition.z);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.0f);
 
         elapsedTime = 0f;
+        tmpPosition = building5.transform.position;
+        animTime = 1.3f;
 
-        while (elapsedTime < 1.3f)
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building5.transform.position;
-            building5.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * 0.15f, tmpPosition.z);
+            
+            building5.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * _building5MoveDistance, tmpPosition.z);
             yield return null;
         }
 
         yield return new WaitForSeconds(2f);
-
+        speed = speed * _speedDownMult;
 
         eye1.StartCoroutine("Blink", 0.3f);
         yield return new WaitForSeconds(0.2f);
         laserbeam1.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         splat2.SetActive(true);
-        elapsedTime = 0f;
 
-        while (elapsedTime < 1.25f)
+        elapsedTime = 0f;
+        tmpPosition = building2.transform.position;
+        animTime = 1.25f;
+
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building2.transform.position;
-            building2.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -0.7f, tmpPosition.z);
+            
+            building2.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -_building2MoveDistance, tmpPosition.z);
             yield return null;
         }
 
@@ -148,14 +146,17 @@ public class Buildings : BackgroundManager
         laserbeam2.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         splat5.SetActive(true);
-        elapsedTime = 0f;
 
-        while (elapsedTime < 0.75f)
+        elapsedTime = 0f;
+        tmpPosition = building5.transform.position;
+        animTime = 0.75f;
+
+        while (elapsedTime <animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building5.transform.position;
-            building5.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -0.7f, tmpPosition.z);
+            
+            building5.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -_building5MoveDistance, tmpPosition.z);
             yield return null;
         }
 
@@ -164,14 +165,17 @@ public class Buildings : BackgroundManager
         laserbeam3.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         splat3.SetActive(true);
-        elapsedTime = 0f;
 
-        while (elapsedTime < 1.25f)
+        elapsedTime = 0f;
+        tmpPosition = building3.transform.position;
+        animTime = 1.25f;
+
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building3.transform.position;
-            building3.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -0.6f, tmpPosition.z);
+            
+            building3.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -_building3MoveDistance, tmpPosition.z);
             yield return null;
         }
 
@@ -181,14 +185,17 @@ public class Buildings : BackgroundManager
 
         yield return new WaitForSeconds(0.5f);
         splat4.SetActive(true);
-        elapsedTime = 0f;
 
-        while (elapsedTime < 1.1f)
+        elapsedTime = 0f;
+        tmpPosition = building4.transform.position;
+        animTime = 1.1f;
+
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building4.transform.position;
-            building4.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -0.6f, tmpPosition.z);
+            
+            building4.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -_building4MoveDistance, tmpPosition.z);
             yield return null;
         }
 
@@ -199,23 +206,19 @@ public class Buildings : BackgroundManager
 
         yield return new WaitForSeconds(0.5f);
         splat1.SetActive(true);
-        elapsedTime = 0f;
 
-        while (elapsedTime < 2f)
+        elapsedTime = 0f;
+        tmpPosition = building1.transform.position;
+        animTime = 2f;
+
+        while (elapsedTime < animTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * speed;
             progress = elapsedTime / animTime;
-            tmpPosition = building1.transform.position;
-            building1.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -0.6f, tmpPosition.z);
+            
+            building1.transform.position = new Vector3(tmpPosition.x, tmpPosition.y + progress * -_building1MoveDistance, tmpPosition.z);
             yield return null;
         }
-
         
-        
-
-        elapsedTime = 0f;
-        progress = 0f;
-        
-        _isMoving = false;
     }
 }
