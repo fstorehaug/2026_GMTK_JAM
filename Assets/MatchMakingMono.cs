@@ -21,7 +21,7 @@ public class MatchMakingMono : MonoBehaviour
         public bool leftPlayer;
         public Identity identity;
         public string name;
-        public Match ShootTimeInMiliseconds;
+        public float? ShootTimeInMiliseconds;
     }
 
     void Start()
