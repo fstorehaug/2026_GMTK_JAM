@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnLocalDuelPressed()
     {
-        SceneManager.LoadScene("DuelScene");
+        SceneManager.LoadScene("LocalDuelScene");
     }
 
     private void OnOnlineDuelPressed()

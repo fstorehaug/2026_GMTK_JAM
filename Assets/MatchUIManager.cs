@@ -15,6 +15,8 @@ public class MatchUIManager : MonoBehaviour
 {
     public MatchUIState UIState;
 
+    [SerializeField] private bool _local;
+
     [SerializeField] private GameObject _waitingUI;
     [SerializeField] private GameObject _versusUI;
     [SerializeField] private GameObject _roundOverUI;
@@ -31,6 +33,7 @@ public class MatchUIManager : MonoBehaviour
 
     [SerializeField] private Button _waitingMainMenuButton;
 
+    [SerializeField] private Button _rematchButton;
     [SerializeField] private Button _findNewDuelButton;
     [SerializeField] private Button _roundOverMainMenuButton;
 
@@ -41,14 +44,24 @@ public class MatchUIManager : MonoBehaviour
     {
         _waitingMainMenuButton.onClick.AddListener(OnMainMenuPressed);
     
+        _rematchButton.onClick.AddListener(OnRematchPressed);
         _findNewDuelButton.onClick.AddListener(OnFindNewDuelPressed);
         _roundOverMainMenuButton.onClick.AddListener(OnMainMenuPressed);
+
+        _rematchButton.gameObject.SetActive(_local);
+        _findNewDuelButton.gameObject.SetActive(!_local);
     }
 
     private void Update()
     {
         if (_versusUI.activeSelf && Time.timeSinceLevelLoad > _timeVersusShown + _timeToShowVersus)
             _versusUI.SetActive(false);
+    }
+
+    private void OnRematchPressed()
+    {
+        ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ScopeService>().RenewScope();
+        SceneManager.LoadScene("LocalDuelScene");
     }
 
     private void OnFindNewDuelPressed()
@@ -67,6 +80,8 @@ public class MatchUIManager : MonoBehaviour
     public void SetUIState(MatchUIState state)
     {
         UIState = state;
+
+        if (_waitingUI == null || _roundOverUI == null || _versusUI == null) return;
 
         _waitingUI.SetActive(UIState == MatchUIState.Waiting);
         _roundOverUI.SetActive(UIState == MatchUIState.RoundOver);
