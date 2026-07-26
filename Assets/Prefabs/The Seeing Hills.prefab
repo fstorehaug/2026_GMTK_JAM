@@ -649,7 +649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6282405513680489240
 Transform:
   m_ObjectHideFlags: 0
@@ -708,7 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Buildings
   _minInterval: 1
   _maxInterval: 5
-  _moveTime: 15
+  _moveTime: 28.5
   building1: {fileID: 1995582433719774293}
   building2: {fileID: 1796980423569427576}
   building3: {fileID: 2515936919961778383}

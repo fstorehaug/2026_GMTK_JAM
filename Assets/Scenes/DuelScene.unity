@@ -2219,10 +2219,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: The Seeing Hills
       objectReference: {fileID: 0}
-    - target: {fileID: 1788264071677115863, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6282405513680489240, guid: 42fec1ab97228e743b8ce002a5308647, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -2442,8 +2438,8 @@ Transform:
   m_GameObject: {fileID: 1945441560}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -30}
-  m_LocalScale: {x: 2.43, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 10.8}
+  m_LocalScale: {x: 3.7186291, y: 1.5303, z: 1.5303}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 829626903}

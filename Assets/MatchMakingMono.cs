@@ -128,11 +128,31 @@ public class MatchMakingMono : MonoBehaviour
 
     private void StateMatchFinished(Match match)
     {
-        _StatusText.text = "MatchFinished";
-        _gameManagerMono.ServerMatchFinished();
-        _shootMAnager.ServerMatchFinised();
+        if (_opponentData.ShootTimeInMiliseconds == null)
+        {
+            if (_opponentData.leftPlayer)
+            {
+                if (match.TimeInMilSecondsPlayerLeft != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerLeft;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
+            else
+            {
+                if (match.TimeInMilSecondsPlayerRight != null)
+                {
+                    _opponentData.ShootTimeInMiliseconds = match.TimeInMilSecondsPlayerRight;
+                    _shootMAnager.OpponentShootTimeFromServer((float)_opponentData.ShootTimeInMiliseconds);
+                }
+            }
 
-        _matchUIManager.SetUIState(MatchUIState.RoundOver);
+            _StatusText.text = "MatchFinished";
+            _gameManagerMono.ServerMatchFinished();
+            _shootMAnager.ServerMatchFinised(_opponentData.ShootTimeInMiliseconds);
+
+            _matchUIManager.SetUIState(MatchUIState.RoundOver);
+        }
     }
 
     private void StateMatchReadyLetsGo(Match match)

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using Microsoft.Extensions.DependencyInjection;
+using SpacetimeDB.Types;
 using UnityEngine.SceneManagement;
 
 public class ShootManager : MonoBehaviour
@@ -63,9 +64,14 @@ public class ShootManager : MonoBehaviour
         {
             g.gameObject.SetActive(false);
         }
+        
         randomMapIndex = UnityEngine.Random.RandomRange(0, backgrounds.Length);
         backgrounds[randomMapIndex].gameObject.SetActive(true);
         
+        /** use this to test specific stage in duelscene scene
+        backgrounds[1].gameObject.SetActive(true);
+        backgrounds[1].BeginAnimations();
+        **/
     }
     public void Start()
     {
@@ -175,13 +181,14 @@ public class ShootManager : MonoBehaviour
         _leftPlayerScript.Shoot(ShootTimeLeft);
     }
 
-    public void OpponentShootTimeFromServer(float opponentDataShootTimeInMiliseconds)
+    public void OpponentShootTimeFromServer(float opponentDataShootTimeInSeconds)
     {
-        ShootRightRemotePlayer(opponentDataShootTimeInMiliseconds);
+        ShootRightRemotePlayer(opponentDataShootTimeInSeconds);
     }
-    public void ServerMatchFinised()
+    public void ServerMatchFinised(float? remoteShootTime)
     {
-        
+        if (_rightHasShot == false && remoteShootTime != null)
+            ShootRightRemotePlayer((float)remoteShootTime);
     }
 
     public void HandleLocalPlayerShotLogic(float? LocalPlayerShootTimeServer)
