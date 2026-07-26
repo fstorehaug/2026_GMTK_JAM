@@ -58,7 +58,9 @@ public class MatchMakingMono : MonoBehaviour
 
         if (match.State == 2)
         {
-            OnMatchUpdated(match);
+            OnMatchUpdated(match, 0);
+            OnMatchUpdated(match, 1);
+            OnMatchUpdated(match, 2);
         }
     }
 
@@ -105,9 +107,9 @@ public class MatchMakingMono : MonoBehaviour
         };
     }
 
-    public void OnMatchUpdated(Match match)
+    public void OnMatchUpdated(Match match, int state)
     {
-        switch (match.State)
+        switch (state)
         {
             case 0:
                 StateLookingForMatch(match);
