@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using TMPro;
 using UnityEngine;
 
 public class ConnectToServerMono : MonoBehaviour
@@ -17,6 +18,9 @@ public class ConnectToServerMono : MonoBehaviour
     private void Awake()
     {
         _connectionService = ServiceRegistration.ServiceProvider.ServiceProvider.GetRequiredService<ConnectionService>();
+        if (_connectionService.Connection != null)
+            Destroy(this);
+        
         DontDestroyOnLoad(this);
         _onConnectCallback += () =>
         {
