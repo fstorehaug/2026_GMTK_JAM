@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using TMPro;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -7,7 +8,6 @@ using UnityEngine.InputSystem;
 public class BoardVisualizerMono : MonoBehaviour
 {
     [SerializeField] private TriangleVisualizer trianglePrefab;
-    [SerializeField] private int BoardSize = 3;
     [SerializeField] private float tilePositionOffset;
     [SerializeField] private PopulationCounter populationCounter;
 
@@ -16,16 +16,16 @@ public class BoardVisualizerMono : MonoBehaviour
 
     private Board _board;
     private BoardValidator _boardValidator;
-    private List<TriangleVisualizer> _tiangles = new();
+    private readonly List<TriangleVisualizer> _triangles = new();
 
     void Start()
     {
         _camera = Camera.main;
-        _board = new Board(BoardSize);
+        _board = ServiceRegistration.RegisteredServices.GetRequiredService<Board>();
         _boardValidator = new BoardValidator(_board);
-        foreach (var coordinate in _board._tiles.Keys)
+        foreach (var coordinate in _board.Tiles.Keys)
         {
-           var tileGo = GenerateTile(_board._tiles[coordinate]);
+           var tileGo = GenerateTile(_board.Tiles[coordinate]);
            tileGo.transform.position = new Vector3(coordinate.X, coordinate.Y, 0) * tilePositionOffset;
         }
         _board.GenerateState();
@@ -174,31 +174,31 @@ public class BoardVisualizerMono : MonoBehaviour
 
 public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordinate)
 {
-    if (_board._tiles[coordinate].Empty)
+    if (_board.Tiles[coordinate].Empty)
     {
         swapCoordinate = new TileCoordinate(-10, -10);
         return false;
     }
 
-    if (_board.InBounds(coordinate.Up()) && _board._tiles[coordinate.Up()].Empty)
+    if (_board.InBounds(coordinate.Up()) && _board.Tiles[coordinate.Up()].Empty)
     {
         swapCoordinate = coordinate.Up();
         return true;
     }
 
-    if (_board.InBounds(coordinate.Down()) && _board._tiles[coordinate.Down()].Empty)
+    if (_board.InBounds(coordinate.Down()) && _board.Tiles[coordinate.Down()].Empty)
     {
         swapCoordinate = coordinate.Down();
         return true;
     }
 
-    if (_board.InBounds(coordinate.Left()) && _board._tiles[coordinate.Left()].Empty)
+    if (_board.InBounds(coordinate.Left()) && _board.Tiles[coordinate.Left()].Empty)
     {
         swapCoordinate = coordinate.Left();
         return true;
     }
 
-    if (_board.InBounds(coordinate.Right()) && _board._tiles[coordinate.Right()].Empty)
+    if (_board.InBounds(coordinate.Right()) && _board.Tiles[coordinate.Right()].Empty)
     {
         swapCoordinate = coordinate.Right();
         return true;
@@ -210,7 +210,7 @@ public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordi
 
     public void UpdateVisualState()
     {
-        foreach (var vis in _tiangles)
+        foreach (var vis in _triangles)
         {
             vis.UpdateState();
         }
@@ -240,7 +240,7 @@ public bool TileCanMove(TileCoordinate coordinate, out TileCoordinate swapCoordi
             }
 
 
-            _tiangles.Add(subTileVisual);
+            _triangles.Add(subTileVisual);
         }
 
         return tileGameObject;

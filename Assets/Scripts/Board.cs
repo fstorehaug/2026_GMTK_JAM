@@ -4,35 +4,40 @@ using UnityEngine;
 
 public class Board
 {
-    public int GridSize { get; private set; }
-    public Dictionary<TileCoordinate, Tile> _tiles { get; private set; } = new();
+    public int GridSize { get; private set; } = 3;
+    public Dictionary<TileCoordinate, Tile> Tiles { get; private set; } = new();
 
-    private TileCoordinate _emptyStartTile = new TileCoordinate(1, 1);
-    public Board(int gridSize)
+    private readonly TileCoordinate _emptyStartTile = new TileCoordinate(1, 1);
+    private readonly TileBag _tileBag;
+    public Board(TileBag tileBag)
     {
-        this.GridSize = gridSize;
+        _tileBag = tileBag;
         for (int x = 0; x < GridSize; x++)
         {
             for (int y = 0; y < GridSize ; y++)
             {
                 var pos = new TileCoordinate(x, y);
-                _tiles.Add(pos, new Tile(pos));
+                Tiles.Add(pos, new Tile(pos));
             }
         }
     }
 
     public void GenerateState()
     {
-        foreach (var tilesValue in _tiles.Values)
+        foreach (var tilesValue in Tiles.Values)
         {
-            tilesValue.RandomizeTile();
+            var tileTemplate = _tileBag.Draw();
+            for (int i = 0; i < 8 ; i++)
+            {
+                tilesValue.SubTiles[i].State = tileTemplate.SubTiles[i].State;
+            }
             tilesValue.Empty = false;
         }
 
-        var emptyTile = _tiles[_emptyStartTile];
+        var emptyTile = Tiles[_emptyStartTile];
         emptyTile.Empty = true;
 
-        foreach (var subTile in _tiles[_emptyStartTile].SubTiles)
+        foreach (var subTile in Tiles[_emptyStartTile].SubTiles)
         {
             subTile.State = TileState.Empty;
         }
@@ -50,16 +55,16 @@ public class Board
     {
         for (int i = 0; i < 8; i++)
         {
-            (_tiles[coordinateOne].SubTiles[i].State, _tiles[coordinateTwo].SubTiles[i].State) = 
-                (_tiles[coordinateTwo].SubTiles[i].State, _tiles[coordinateOne].SubTiles[i].State);
+            (Tiles[coordinateOne].SubTiles[i].State, Tiles[coordinateTwo].SubTiles[i].State) = 
+                (Tiles[coordinateTwo].SubTiles[i].State, Tiles[coordinateOne].SubTiles[i].State);
         }
 
-        (_tiles[coordinateOne].Empty, _tiles[coordinateTwo].Empty) = (_tiles[coordinateTwo].Empty, _tiles[coordinateOne].Empty);
+        (Tiles[coordinateOne].Empty, Tiles[coordinateTwo].Empty) = (Tiles[coordinateTwo].Empty, Tiles[coordinateOne].Empty);
     }
 
     public bool RotateSubTileLeftCounterClockwise(TileCoordinate coordinate, int subTileIndex)
     {
-        if (_tiles[coordinate].Empty)
+        if (Tiles[coordinate].Empty)
             return false;
 
         if (subTileIndex == 0 || subTileIndex == 1)
@@ -69,15 +74,15 @@ public class Board
                 return false;
             }
 
-            if (_tiles[coordinate.Down()].Empty)
+            if (Tiles[coordinate.Down()].Empty)
             {
                 return false;
             }
 
-            (_tiles[coordinate].SubTiles[0].State, _tiles[coordinate].SubTiles[1].State, _tiles[coordinate.Down()].SubTiles[4].State,
-                    _tiles[coordinate.Down()].SubTiles[5].State) =
-                (_tiles[coordinate].SubTiles[1].State, _tiles[coordinate.Down()].SubTiles[4].State, _tiles[coordinate.Down()].SubTiles[5].State,
-                    _tiles[coordinate].SubTiles[0].State);
+            (Tiles[coordinate].SubTiles[0].State, Tiles[coordinate].SubTiles[1].State, Tiles[coordinate.Down()].SubTiles[4].State,
+                    Tiles[coordinate.Down()].SubTiles[5].State) =
+                (Tiles[coordinate].SubTiles[1].State, Tiles[coordinate.Down()].SubTiles[4].State, Tiles[coordinate.Down()].SubTiles[5].State,
+                    Tiles[coordinate].SubTiles[0].State);
             return true;
         }
         if (subTileIndex == 2 || subTileIndex == 3)
@@ -85,14 +90,14 @@ public class Board
             if ( !InBounds(coordinate.Right()))
                 return false;
 
-            if (_tiles[coordinate.Right()].Empty)
+            if (Tiles[coordinate.Right()].Empty)
                 return false;
             
 
-            (_tiles[coordinate].SubTiles[2].State, _tiles[coordinate].SubTiles[3].State, _tiles[coordinate.Right()].SubTiles[6].State,
-                    _tiles[coordinate.Right()].SubTiles[7].State) =
-                (_tiles[coordinate].SubTiles[3].State, _tiles[coordinate.Right()].SubTiles[6].State, _tiles[coordinate.Right()].SubTiles[7].State,
-                    _tiles[coordinate].SubTiles[2].State);
+            (Tiles[coordinate].SubTiles[2].State, Tiles[coordinate].SubTiles[3].State, Tiles[coordinate.Right()].SubTiles[6].State,
+                    Tiles[coordinate.Right()].SubTiles[7].State) =
+                (Tiles[coordinate].SubTiles[3].State, Tiles[coordinate.Right()].SubTiles[6].State, Tiles[coordinate.Right()].SubTiles[7].State,
+                    Tiles[coordinate].SubTiles[2].State);
             return true;
         }
         if (subTileIndex == 4 || subTileIndex == 5)
@@ -130,7 +135,7 @@ public class Board
 
     public void RotateTileLeft(TileCoordinate coordinate)
     {
-        var tile = _tiles[coordinate];
+        var tile = Tiles[coordinate];
         var stateCopy = new TileState[8];
 
         for (int i = 0; i < 8; i++)
@@ -146,7 +151,7 @@ public class Board
 
     public void RotateTileRight(TileCoordinate coordinate)
     {
-        var tile = _tiles[coordinate];
+        var tile = Tiles[coordinate];
         var stateCopy = new TileState[8];
 
         for (int i = 0; i < 8; i++)
@@ -162,8 +167,8 @@ public class Board
 
     public bool InnerEdge(TileCoordinate coordinate, int innerEdgeIndex)
     {
-        var a = (_tiles[coordinate].SubTiles[innerEdgeIndex].State == TileState.Active && _tiles[coordinate].SubTiles[(innerEdgeIndex + 8) % 8].State != TileState.Active);
-        var b = ((_tiles[coordinate].SubTiles[innerEdgeIndex].State != TileState.Active) && (_tiles[coordinate].SubTiles[(innerEdgeIndex + 8) % 8].State == TileState.Active));
+        var a = (Tiles[coordinate].SubTiles[innerEdgeIndex].State == TileState.Active && Tiles[coordinate].SubTiles[(innerEdgeIndex + 8) % 8].State != TileState.Active);
+        var b = ((Tiles[coordinate].SubTiles[innerEdgeIndex].State != TileState.Active) && (Tiles[coordinate].SubTiles[(innerEdgeIndex + 8) % 8].State == TileState.Active));
 
         return a || b;
     }
@@ -174,25 +179,25 @@ public class Board
         switch (outEdgeIndex)
         {
             case 0 or 1:
-                if (!InBounds(coordinate.Down()) && _tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
+                if (!InBounds(coordinate.Down()) && Tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
                 {
                     return true;
                 }
                 return OuterEdgeFuc(coordinate, coordinate.Down(), outEdgeIndex);
             case 2 or 3:
-                if (!InBounds(coordinate.Right()) && _tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
+                if (!InBounds(coordinate.Right()) && Tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
                 {
                     return true;
                 }
                 return OuterEdgeFuc(coordinate, coordinate.Right(), outEdgeIndex);
             case 4 or 5:
-                if (!InBounds(coordinate.Up()) && _tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
+                if (!InBounds(coordinate.Up()) && Tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
                 {
                     return true;
                 }
                 return OuterEdgeFuc(coordinate, coordinate.Up(), outEdgeIndex);
             case 6 or 7:
-                if (!InBounds(coordinate.Left()) && _tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
+                if (!InBounds(coordinate.Left()) && Tiles[coordinate].SubTiles[outEdgeIndex].State == TileState.Active)
                 {
                     return true;
                 }
@@ -204,10 +209,10 @@ public class Board
 
     private bool OuterEdgeFuc(TileCoordinate innerTile, TileCoordinate outerTile, int outEdgeIndex)
     {
-        var a = _tiles[innerTile].SubTiles[outEdgeIndex].State == TileState.Active &&
-                _tiles[outerTile].SubTiles[5 ^ outEdgeIndex].State != TileState.Active;
-        var b = _tiles[innerTile].SubTiles[outEdgeIndex].State == TileState.Active &&
-                _tiles[outerTile].SubTiles[5 ^ outEdgeIndex].State != TileState.Active;
+        var a = Tiles[innerTile].SubTiles[outEdgeIndex].State == TileState.Active &&
+                Tiles[outerTile].SubTiles[5 ^ outEdgeIndex].State != TileState.Active;
+        var b = Tiles[innerTile].SubTiles[outEdgeIndex].State == TileState.Active &&
+                Tiles[outerTile].SubTiles[5 ^ outEdgeIndex].State != TileState.Active;
 
         return a || b;
     }
@@ -245,7 +250,7 @@ public class SubTile
     }
 }
 
-public struct TileCoordinate
+public record TileCoordinate
 {
     public int X;
     public int Y;
@@ -279,20 +284,20 @@ public static class TileCoordinateExtensions
 
 public static class TileExtensions
 {
-    public static void RandomizeTile(this Tile tile)
-    {
-        foreach (var tileSubTile in tile.SubTiles)
-        {
-            if (Random.value > .5f)
-            {
-                tileSubTile.State = TileState.Active;
-            }
-            else
-            {
-                tileSubTile.State = TileState.Inactive;
-            }
-        }
-    }
+    //public static void RandomizeTile(this Tile tile)
+    //{
+    //    foreach (var tileSubTile in tile.SubTiles)
+    //    {
+    //        if (Random.value > .5f)
+    //        {
+    //            tileSubTile.State = TileState.Active;
+    //        }
+    //        else
+    //        {
+    //            tileSubTile.State = TileState.Inactive;
+    //        }
+    //    }
+    //}
 } 
 
 //public static class SubTileCoordinateExtensions()
@@ -398,7 +403,7 @@ public class BoardValidator
 
         foreach (var subTileIndex in subTilesIndecies)
         {
-            if (_board._tiles[coordinate].SubTiles[subTileIndex].State != TileState.Active)
+            if (_board.Tiles[coordinate].SubTiles[subTileIndex].State != TileState.Active)
             {
                 all = false;
                 break;
@@ -413,8 +418,8 @@ public class BoardValidator
 
         foreach (var subTileIndex in subTileIndexes)
         {
-            _board._tiles[coordinate].SubTiles[subTileIndex].State = TileState.Inactive;
-            list.Add(_board._tiles[coordinate].SubTiles[subTileIndex]);
+            _board.Tiles[coordinate].SubTiles[subTileIndex].State = TileState.Inactive;
+            list.Add(_board.Tiles[coordinate].SubTiles[subTileIndex]);
         }
 
         return list;
@@ -426,7 +431,7 @@ public class BoardValidator
     {
         var structuresCompleted = new List<Structure>();
 
-        foreach (var coordinate in _board._tiles.Keys)
+        foreach (var coordinate in _board.Tiles.Keys)
         {
             if (!SubTilesActive(coordinate, LargeRocketRight))
             {
@@ -520,7 +525,7 @@ public class BoardValidator
     {
         var structuresCompleted = new List<Structure>();
 
-        foreach (var coordinate in _board._tiles.Keys)
+        foreach (var coordinate in _board.Tiles.Keys)
         {
             if (!SubTilesActive(coordinate, SmallRocketRight))
             {
@@ -539,7 +544,7 @@ public class BoardValidator
             structuresCompleted.Add(new Structure(rocketPieces, Effect.SmallRocket));
         }
         
-        foreach (var coordinate in _board._tiles.Keys)
+        foreach (var coordinate in _board.Tiles.Keys)
         {
             if (!SubTilesActive(coordinate, SmallRocketCenterTop))
             {
